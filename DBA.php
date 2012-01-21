@@ -1,10 +1,12 @@
 <?php
 
+require_once('config.php');
+
 class Database{
 
 	private $connection = null;
 
-	public function __construct($host = 'localhost', $database = '', $username = '', $password = ''){
+	public function __construct($host = HOST, $database = DATABASE, $username = USERNAME, $password = PASSWORD){
 		$this->host = $host;
 		$this->database = $database;
 		$this->username = $username;
@@ -24,10 +26,6 @@ class Database{
 		if (!$db_selected) {
 			die ('Can\'t select database : ' . $this->database . ' ' . mysql_error());
 		}
-	}
-
-	public function close(){
-		mysql_close($this->connection);
 	}
 
 	public function query($query){
