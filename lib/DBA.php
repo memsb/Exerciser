@@ -1,6 +1,6 @@
 <?php
 
-require_once('config.php');
+require_once dirname(__FILE__) . '/../config.php';
 
 class Database{
 
@@ -20,11 +20,11 @@ class Database{
 	public function connect(){
 		$this->connection = mysql_connect($this->host, $this->username, $this->password);
 		if (!$this->connection){
-			die('Could not connect: ' . mysql_error());
+			throw new Exception("Could not connect to SQL database");
 		}
 		$db_selected = mysql_select_db($this->database, $this->connection);
 		if (!$db_selected) {
-			die ('Can\'t select database : ' . $this->database . ' ' . mysql_error());
+			throw new Exception("Could not select database");
 		}
 	}
 

@@ -1,7 +1,7 @@
 <?php
 
-require_once('DBA.php');
-require_once('interfaces.php');
+require_once dirname(__FILE__) . '/../lib/DBA.php';
+require_once dirname(__FILE__) . '/../lib/interfaces.php';
 
 class User extends CRUD {
 
@@ -28,6 +28,9 @@ class User extends CRUD {
 						Gender
 						FROM Users WHERE User_ID = '" . $userID . "'"
 					);
+		if( mysql_num_rows($result) == 0 ){
+			throw new Exception("No matching entry in database");
+		}
 		$row = mysql_fetch_array($result);
 		$this->user_id = $row['User_ID'];
 		$this->username = $row['Username'];
@@ -52,6 +55,7 @@ class User extends CRUD {
 								$this->weight . "', '" . 
 								$this->gender . "')"
 					);
+		$this->user_id = mysql_insert_id();
 	}
 
 	public function update(){
@@ -113,7 +117,7 @@ class xmlUser implements View {
 		$this->writer->endDocument();
 	}
 
-	public function addElements($user, $writer){
+	public function addElements($user, &$writer){
 		$writer->startElement('user');
 		
 		$writer->startElement('user_id');
@@ -153,6 +157,96 @@ class xmlUser implements View {
 		}else{
 			return '';
 		}
+	}
+}
+
+class jsonUser implements View {
+
+	private $type = 'user+json';
+
+	public function jsonUser(){		
+	}
+
+	public function parse($data, $user){
+		$this->data = json_decode($data, true);
+		$user_data = $this->data['user'];
+		$user->user_id = $user_data['user_id'];
+		$user->username = $user_data['username'];
+		$user->password = $user_data['password'];
+		$user->age = $user_data['age'];
+		$user->weight = $user_data['weight'];
+		$user->gender = $user_data['gender'];
+	}
+
+	public function generateDocument($user){
+		$this->data = array();
+		$this->addElements($user, $this->data);
+	}
+
+	public function addElements($user, &$data){
+		$data = array('user' => 
+				array(
+					'user_id' => $user->user_id,
+					'username' => $user->username,
+					'password' => $user->password,
+					'age' => $user->age,
+					'weight' => $user->weight,
+					'gender' => $user->gender
+				)
+			);
+	}
+
+	public function type(){
+		return $this->type;
+	}
+ 
+	public function toString(){
+		return json_encode($this->data);
+	}
+}
+
+class yamlUser implements View {
+
+	private $type = 'user+yaml';
+
+	public function yamlUser(){		
+	}
+
+	public function parse($data, $user){
+		$this->data = yaml_parse($data);
+		$user_data = $this->data['user'];
+		$user->user_id = $user_data['user_id'];
+		$user->username = $user_data['username'];
+		$user->password = $user_data['password'];
+		$user->age = $user_data['age'];
+		$user->weight = $user_data['weight'];
+		$user->gender = $user_data['gender'];
+	}
+
+	public function generateDocument($user){
+		$this->data = array();
+		$this->addElements($user, $this->data);
+	}
+
+	public function addElements($user, &$data){
+		$data = array('user' => 
+				array(
+					'user_id' => $user->user_id,
+					'username' => $user->username,
+					'password' => $user->password,
+					'age' => $user->age,
+					'weight' => $user->weight,
+					'gender' => $user->gender
+				)
+			);
+	}
+
+	public function type(){
+		return $this->type;
+	}
+ 
+	public function toString(){
+		return yaml_emit($this->data);
 	}
 }
 

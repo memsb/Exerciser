@@ -5,7 +5,7 @@ interface View {
 
 	public function generateDocument($model);
 	
-	public function addElements($model, $writer);
+	public function addElements($model, &$writer);
 
 	public function type();
  
