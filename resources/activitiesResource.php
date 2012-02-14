@@ -1,25 +1,21 @@
 <?php
 
 require_once dirname(__FILE__) . '/../classes/activities.php';
+require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
 
 /**
  * @namespace Tonic\Exerciser\Activities
  * @uri /activities/
  */
-class ActivitiesResource extends Resource {
+class ActivitiesResource extends MultiViewResource {
 
-	private $views = array(	'xml' => 'xmlActivities', 
-				'json' => 'jsonActivities', 
-				'yaml' => 'yamlActivities'
+	protected $views = array(	'xml' => 'xmlActivities', 
+					'json' => 'jsonActivities', 
+					'yaml' => 'yamlActivities'
 				);
 
-	function get_view($request){		
-		$request->mimetypes['yaml'] = 'text/x-yaml';
-		$format = $request->mostAcceptable(array_keys($this->views));
-		if(!$format){
-			throw new Exception("Format not acceptable");
-		}
-		return new $this->views[$format];
+	function __construct($parameters){
+		  parent::__construct($parameters);
 	}
     
 	/**
@@ -31,21 +27,18 @@ class ActivitiesResource extends Resource {
 		$response = new Response($request);
 
 		$view = $this->get_view($request);
-
-		$model = new Activities();
+		$model = new Activities($request->uri);
 
 		try{
 			$model->load();
 			$view->generateDocument($model);
 
-			$response = new Response($request);
 			$response->code = Response::OK;
 			$response->addHeader('Content-type', $view->type());
 			$response->body = $view->toString(); 
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
-		}    
-
+		}
 		return $response;
 	}
 }

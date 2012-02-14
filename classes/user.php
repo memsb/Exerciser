@@ -2,18 +2,22 @@
 
 require_once dirname(__FILE__) . '/../lib/DBA.php';
 require_once dirname(__FILE__) . '/../lib/interfaces.php';
+require_once dirname(__FILE__) . '/../lib/utils.php';
 
 class User extends CRUD {
 
 	//values
 	protected $user_id;
-	protected $username;
 	protected $password;
+	protected $username;
 	protected $age;
 	protected $weight;
 	protected $gender;
 
-	public function User(){
+	protected $required = array('username', 'age', 'weight', 'gender');
+
+	public function User($uri){
+		$this->uri = $uri;
 	}
 
 	public function load($userID){
@@ -21,18 +25,19 @@ class User extends CRUD {
 		$db = new Database();
 		$db->connect();
 		$result = $db->query("SELECT 	User_ID,
-						Username, 
+						Username,
 						Password, 
 						Age, 
 						Weight, 
 						Gender
-						FROM Users WHERE User_ID = '" . $userID . "'"
+						FROM Users WHERE User_ID = '" . mysql_real_escape_string($userID) . "'"
 					);
 		if( mysql_num_rows($result) == 0 ){
 			throw new Exception("No matching entry in database");
 		}
 		$row = mysql_fetch_array($result);
 		$this->user_id = $row['User_ID'];
+		$this->password = $row['Password'];
 		$this->username = $row['Username'];
 		$this->age = $row['Age'];
 		$this->weight = $row['Weight'];
@@ -40,35 +45,36 @@ class User extends CRUD {
 	}
 
 	public function create(){
-		// add user to database
+		//$this->validate();
+		$this->password = generateAPIKey();
 		$db = new Database();
 		$db->connect();
-		$result = $db->query("INSERT INTO Users (	Username, 
+		$result = $db->query("INSERT INTO Users (	Username,
 								Password, 
 								Age, 
 								Weight, 
 								Gender
 								) VALUES ('" . 
-								$this->username . "', '" . 
-								$this->password . "', '" . 
-								$this->age . "', '" . 
-								$this->weight . "', '" . 
-								$this->gender . "')"
+								mysql_real_escape_string($this->username) . "', '" . 
+								$this->password . "', '" .
+								mysql_real_escape_string($this->age) . "', '" . 
+								mysql_real_escape_string($this->weight) . "', '" . 
+								mysql_real_escape_string($this->gender) . "')"
 					);
 		$this->user_id = mysql_insert_id();
+		$this->uri .= '/' . $this->user_id;
 	}
 
 	public function update(){
-		// add user to database
+		$this->validate();
 		$db = new Database();
 		$db->connect();
 		$result = $db->query("UPDATE Users SET 	
-							Username = 	'" . $this->username . "',
-							Password =  	'" . $this->password . "',
-							Age = 		'" . $this->age . "',
-							Weight = 	'" . $this->weight . "',
-							Gender = 	'" . $this->gender . "'
-					WHERE User_ID = '" . $this->user_id . "'"
+							Username = 	'" . mysql_real_escape_string($this->username) . "',
+							Age = 		'" . mysql_real_escape_string($this->age) . "',
+							Weight = 	'" . mysql_real_escape_string($this->weight) . "',
+							Gender = 	'" . mysql_real_escape_string($this->gender) . "'
+					WHERE User_ID = '" . mysql_real_escape_string($this->user_id) . "'"
 					);
 	}
 
@@ -76,33 +82,66 @@ class User extends CRUD {
 		// add user to database
 		$db = new Database();
 		$db->connect();
-		$result = $db->query("DELETE FROM Users WHERE User_ID = '" . $this->user_id . "'");
+		$result = $db->query("DELETE FROM Users WHERE User_ID = '" . mysql_real_escape_string($this->user_id) . "'");
+	}
+
+	public function validate(){
+		foreach( $this->required as $field )
+			if( ! isset($this->$field) )
+				throw new UnexpectedValueException("Data for field: $field required but not present");
 	}
 
 	public function location(){
-		return $this->user_id;
+		return $this->uri;
 	}
 }
 
 
 class xmlUser implements View {
 
-	private $type = 'user+xml';
+	private $type = 'application/xml+user';
 	private $writer;
 	private $data;
 
 	public function xmlUser(){
 	}
 
-	public function parse($data, $user){		
+	public function parse($data, $user){
+			
 		//check mime type
-		$this->data = new SimpleXMLElement($data);
+		libxml_use_internal_errors(true);
+		$this->data = simplexml_load_string($data);
+		if (!$this->data)
+			throw new Exception("Unable to parse XML");
+		
 		//parse xml into values
-		$user->username = $this->data->username;
-		$user->password = $this->data->password;
-		$user->age = $this->data->age;
-		$user->weight = $this->data->weight;
-		$user->gender = $this->data->gender;
+		foreach( $user->required as $field )
+			$user->$field = (string)$this->data->$field;
+		
+		$user->validate();
+	}
+
+	public function generateNewUserDocument($user){
+		$this->writer = new XMLWriter();
+		$this->writer->openMemory();
+		$this->writer->setIndent(true);
+		$this->writer->setIndentString(' ');
+
+		// builds xml document	
+		$this->writer->startDocument('1.0', 'UTF-8');
+		$this->writer->startElement('new_user');
+		$this->writer->writeAttribute('uri', $user->location());
+		
+		$this->writer->startElement('user_id');
+		$this->writer->text($user->user_id);
+		$this->writer->endElement();
+
+		$this->writer->startElement('api_key');
+		$this->writer->text($user->password);
+		$this->writer->endElement();
+
+		$this->writer->endElement();
+		$this->writer->endDocument();
 	}
 
 	public function generateDocument($user){
@@ -119,6 +158,7 @@ class xmlUser implements View {
 
 	public function addElements($user, &$writer){
 		$writer->startElement('user');
+		$writer->writeAttribute('uri', $user->location());
 		
 		$writer->startElement('user_id');
 		$writer->text($user->user_id);
@@ -126,10 +166,6 @@ class xmlUser implements View {
 
 		$writer->startElement('username');
 		$writer->text($user->username);
-		$writer->endElement();
-
-		$writer->startElement('password');
-		$writer->text('');
 		$writer->endElement();
 		
 		$writer->startElement('age');
@@ -162,20 +198,26 @@ class xmlUser implements View {
 
 class jsonUser implements View {
 
-	private $type = 'user+json';
+	private $type = 'application/json+user';
 
 	public function jsonUser(){		
 	}
 
 	public function parse($data, $user){
 		$this->data = json_decode($data, true);
-		$user_data = $this->data['user'];
-		$user->user_id = $user_data['user_id'];
-		$user->username = $user_data['username'];
-		$user->password = $user_data['password'];
-		$user->age = $user_data['age'];
-		$user->weight = $user_data['weight'];
-		$user->gender = $user_data['gender'];
+		foreach( $user->required as $field )
+			$user->$field = $this->data['user'][$field];
+		$user->validate();
+	}
+
+	public function generateNewUserDocument($user){
+		$this->data = array('new_user' => 
+					array(
+						'user_id' => $user->user_id,
+						'api_key' => $user->password
+					),
+					'uri' => $user->location() . '.json'
+				);
 	}
 
 	public function generateDocument($user){
@@ -188,11 +230,11 @@ class jsonUser implements View {
 				array(
 					'user_id' => $user->user_id,
 					'username' => $user->username,
-					'password' => $user->password,
 					'age' => $user->age,
 					'weight' => $user->weight,
 					'gender' => $user->gender
-				)
+				),
+				'uri' => $user->location() . '.json'
 			);
 	}
 
@@ -207,20 +249,26 @@ class jsonUser implements View {
 
 class yamlUser implements View {
 
-	private $type = 'user+yaml';
+	private $type = 'text/x-yaml+user';
 
 	public function yamlUser(){		
 	}
 
 	public function parse($data, $user){
 		$this->data = yaml_parse($data);
-		$user_data = $this->data['user'];
-		$user->user_id = $user_data['user_id'];
-		$user->username = $user_data['username'];
-		$user->password = $user_data['password'];
-		$user->age = $user_data['age'];
-		$user->weight = $user_data['weight'];
-		$user->gender = $user_data['gender'];
+		foreach( $this->required as $field )
+			$user->$field = $this->data['user'][$field];
+		$user->validate();
+	}
+
+	public function generateNewUserDocument($user){
+		$this->data = array('new_user' => 
+					array(
+						'user_id' => $user->user_id,
+						'api_key' => $user->password
+					),
+					'uri' => $user->location() . '.json'
+				);
 	}
 
 	public function generateDocument($user){
@@ -233,11 +281,11 @@ class yamlUser implements View {
 				array(
 					'user_id' => $user->user_id,
 					'username' => $user->username,
-					'password' => $user->password,
 					'age' => $user->age,
 					'weight' => $user->weight,
 					'gender' => $user->gender
-				)
+				),
+				'uri' => $user->location() . '.yaml'
 			);
 	}
 

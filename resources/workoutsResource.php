@@ -1,25 +1,21 @@
 <?php
 
 require_once dirname(__FILE__) . '/../classes/workouts.php';
+require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
 
 /**
- * @namespace Tonic\Exerciser\Username\Workouts
- * @uri /([A-Za-z0-9_]+)/workouts/
+ * @namespace Tonic\Exerciser\Users\Username\Workouts
+ * @uri /users/([A-Za-z0-9_]+)/workouts/
  */
-class WorkoutsResource extends Resource {
+class WorkoutsResource extends MultiViewResource {
     
-	private $views = array(	'xml' => 'xmlWorkouts', 
-				'json' => 'jsonWorkouts', 
-				'yaml' => 'yamlWorkouts'
+	protected $views = array(	'xml' => 'xmlWorkouts', 
+					'json' => 'jsonWorkouts', 
+					'yaml' => 'yamlWorkouts'
 				);
 
-	function get_view($request){		
-		$request->mimetypes['yaml'] = 'text/x-yaml';
-		$format = $request->mostAcceptable(array_keys($this->views));
-		if(!$format){
-			throw new Exception("Format not acceptable");
-		}
-		return new $this->views[$format];
+	function __construct($parameters){
+		  parent::__construct($parameters);
 	}
 
 	/**
@@ -29,12 +25,19 @@ class WorkoutsResource extends Resource {
 	*/
 	function get($request) {
 		$response = new Response($request);
+		$ID = $this->parameters[0];
 
 		$view = $this->get_view($request);
+		$model = new Workouts($request->uri);
 
-		$model = new Workouts();
-		$bits = explode('/', $request->uri);
-		$ID = $bits[1];
+		if ( isset($_GET['date']) )
+			$model->setDate($_GET['date']);
+
+		if ( isset($_GET['from']) && isset($_GET['to']) )
+			$model->setPeriod($_GET['from'], $_GET['to']);
+
+		if ( isset($_GET['activity']) )
+			$model->setActivity($_GET['activity']);		
 
 		try{
 			$model->load($ID);
@@ -46,8 +49,7 @@ class WorkoutsResource extends Resource {
 			$response->body = $view->toString(); 
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
-		}        
-
+		}
 		return $response;
 	}
     
@@ -59,7 +61,7 @@ class WorkoutsResource extends Resource {
 	*/
 	function post($request) {
 		// forwards request on to workout
-		$test = new WorkoutResource(null);
+		$test = new WorkoutResource($this->parameters);
 		$response = $test->post($request);
 		return $response;
 	}
@@ -72,18 +74,16 @@ class WorkoutsResource extends Resource {
 	*/
 	function delete($request) {
 		$response = new Response($request);
-
-		$model = new Workouts();
-		$bits = explode('/', $request->uri);
-		$ID = $bits[1];
+		$ID = $this->parameters[0];
+	
+		$model = new Workouts($request->uri);		
 
 		try{
 			$model->load($ID);
 			$model->delete();
 
 			$response = new Response($request);
-			$response->code = Response::NOCONTENT; 
-			$response->body = $ID;
+			$response->code = Response::NOCONTENT;
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
 		}

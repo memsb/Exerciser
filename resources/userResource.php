@@ -1,25 +1,21 @@
 <?php
 
 require_once dirname(__FILE__) . '/../classes/user.php';
+require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
 
 /**
- * @namespace Tonic\Exerciser\Username
- * @uri /([A-Za-z0-9_]+)
+ * @namespace Tonic\Exerciser\Users\Username
+ * @uri /users/([A-Za-z0-9_]+)
  */
-class UsernameResource extends Resource {
+class UserResource extends MultiViewResource {
 
-	private $views = array(	'xml' => 'xmlUser', 
-				'json' => 'jsonUser', 
-				'yaml' => 'yamlUser'
+	protected $views = array(	'xml' => 'xmlUser', 
+					'json' => 'jsonUser', 
+					'yaml' => 'yamlUser'
 				);
 
-	function get_view($request){		
-		$request->mimetypes['yaml'] = 'text/x-yaml';
-		$format = $request->mostAcceptable(array_keys($this->views));
-		if(!$format){
-			throw new Exception("Format not acceptable");
-		}
-		return new $this->views[$format];
+	public function __construct($parameters){
+		  parent::__construct($parameters);
 	}
     
 	/**
@@ -27,14 +23,12 @@ class UsernameResource extends Resource {
 	* @param Request request
 	* @return Response
 	*/
-	function get($request) {
+	public function get($request) {
 		$response = new Response($request);
+		$ID = $this->parameters[0];
 
 		$view = $this->get_view($request);
-
-		$model = new User();
-		$bits = explode('/', $request->uri);
-		$ID = $bits[count($bits)-1];
+		$model = new User($request->uri);		
 
 		try{
 			$model->load($ID);
@@ -57,79 +51,69 @@ class UsernameResource extends Resource {
 	* @param Request request
 	* @return Response
 	*/
-	function put($request) {
+	public function put($request) {
 		$response = new Response($request);
-		try{
-			$view = $this->get_view($request);
-		}catch (Exception $e) {
-			$response->code = Response::UNSUPPORTEDMEDIATYPE;
-			return $response;
-		}
+		$ID = $this->parameters[0];
 
-		$model = new User();
-		$bits = explode('/', $request->uri);
-		$ID = $bits[count($bits)-1];
+		$view = $this->get_view($request);
+		$model = new User($request->uri);
 
 		try{
-			$user->load($ID);
+			$model->load($ID);
+			$this->isSecured($model->user_id, $model->password);
 			$view->parse($request->data, $model);
 			$model->update();		
 	
 			$response->code = Response::CREATED;
-			$response->body = $model->location();
+			$response->addHeader('Location', $model->location());
+		}catch (UnexpectedValueException $e) {
+			$response->code = Response::UNSUPPORTEDMEDIATYPE;
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
-			return $response;
 		}
 		return $response;  
 	}
 
-	/**
-	* Handle a DELETE request for this resource
-	* @param Request request
-	* @return Response
-	*/
-	function post($request){	
+	public function post($request){
 		$response = new Response($request);
-		try{
-			$view = $this->get_view($request);
+		$view = $this->get_view($request);
+		$model = new User($request->uri);
+
+		try{			
+			$view->parse($request->data, $model);
+			$model->create();
+			$view->generateNewUserDocument($model);
+			$response->code = Response::CREATED;
+			$response->addHeader('Content-type', $view->type());
+			$response->addHeader('Location', $model->location());
+			$response->body = $view->toString();
 		}catch (Exception $e) {
 			$response->code = Response::UNSUPPORTEDMEDIATYPE;
-			return $response;
-		}
-
-		$model = new User();
-
-		parse_str(urldecode($request->data), $data);
-		$view->parse($request->data, $model);
-		$model->create();
-			
-		$response->code = Response::CREATED;
-		$response->addHeader('Content-type', $view->type());
-		$response->body = $model->location();
+			$response->body = $e->getMessage();
+		}		
 
 		return $response;
 	}
 
+	
 	/**
 	* Handle a DELETE request for this resource
 	* @param Request request
 	* @return Response
 	*/
-	function delete($request) {
+	public function delete($request) {
 		$response = new Response($request);
+		$ID = $this->parameters[0];
 
-		$model = new User();
-		$bits = explode('/', $request->uri);
-		$ID = $bits[count($bits)-1];
+		$model = new User($request->uri);		
 
 		try{
 			$model->load($ID);
+			$this->isSecured($model->user_id, $model->password);
 			$model->delete();
 
 			$response = new Response($request);
-			$response->code = Response::NOCONTENT; 
-			$response->body = $model->username;
+			$response->code = Response::NOCONTENT;
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
 		} 

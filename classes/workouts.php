@@ -8,7 +8,22 @@ class Workouts extends CRUD {
 	protected $user_id;
 	protected $workouts = array();
 
-	public function Workouts(){
+	public function Workouts($uri){
+		$this->uri = $uri;
+	}
+
+	public function setDate($date){
+		$this->from = strtotime($date);
+		$this->to = strtotime('+1 day', $this->from);
+	}
+
+	public function setPeriod($from, $to){
+		$this->from = strtotime($from);
+		$this->to = strtotime($to);
+	}
+
+	public function setActivity($activity){
+		$this->activity = $activity;
 	}
 
 	public function load($user_id){
@@ -16,43 +31,46 @@ class Workouts extends CRUD {
 		// load in stats from database
 		$db = new Database();
 		$db->connect();
-		$result = $db->query("SELECT Workout_ID FROM Workouts WHERE User_ID = '" . $user_id . "'");
+		$params = '';
+		
+		if( isset($this->from) && isset($this->to) )
+			$params .= ' AND UNIX_TIMESTAMP(Start_Time) BETWEEN ' . 
+					mysql_real_escape_string($this->from) . 
+					' AND ' . 
+					mysql_real_escape_string($this->to);
+		if( isset($this->activity) )
+			$params .= ' AND Activity_ID = ' . mysql_real_escape_string($this->activity);
+
+		$result = $db->query("SELECT Workout_ID 
+					FROM Workouts 
+					WHERE User_ID = '" . mysql_real_escape_string($user_id) . "'" . $params);
+		if( ! $result )
+			return;
+
 		while($row = mysql_fetch_array($result)){
-			$workout = new Workout();
+			$workout = new Workout($this->uri . '/' . $row['Workout_ID']);
 			$workout->load($row['Workout_ID']);
 			$this->workouts[] = $workout;
 		}
-	}
-
-	public function create(){
-		$this->workouts->create();
 	}
 
 	public function delete(){
 		// add workout to database
 		$db = new Database();
 		$db->connect();
-		$result = $db->query("DELETE FROM Workouts WHERE User_ID = '" . $this->user_id . "'");
-	}
-
-	public function location(){
-		return $this->user_id . '/workouts';
-	}
-	
+		$result = $db->query("DELETE FROM Workouts WHERE User_ID = '" . mysql_real_escape_string($this->user_id) . "'");
+	}	
 }
 
 class xmlWorkouts implements View {
 
-	private $type = 'workouts+xml';
+	private $type = 'application/xml+workouts';
 	private $writer;
 
 	public function xmlWorkouts(){		
 	}
 
-	public function parse($data, $workouts){
-		$workout = new xmlWorkout();
-		$workout->parse($data, $workouts);
-		$workouts->workouts = $workout;		
+	public function parse($data, $workouts){	
 	}
 
 	public function generateDocument($workouts){
@@ -93,7 +111,7 @@ class xmlWorkouts implements View {
 
 class jsonWorkouts implements View {
 
-	private $type = 'workouts+json';
+	private $type = 'application/json+workouts';
 	private $writer;
 
 	public function jsonWorkouts(){		
@@ -127,7 +145,7 @@ class jsonWorkouts implements View {
 
 class yamlWorkouts implements View {
 
-	private $type = 'workouts+yaml';
+	private $type = 'text/x-yaml+workouts';
 	private $writer;
 
 	public function yamlWorkouts(){		
@@ -143,7 +161,7 @@ class yamlWorkouts implements View {
 	}
 
 	public function addElements($workouts, &$data){
-		$view = new jsonWorkout();
+		$view = new yamlWorkout();
 		foreach($workouts->workouts as $workout){			
 			$view->addElements($workout, $entry);
 			$data[] = $entry;

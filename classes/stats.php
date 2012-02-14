@@ -15,7 +15,8 @@ class Stats extends CRUD {
 	protected $popular_workout;
 	protected $most_kcal;
 
-	public function Stats(){
+	public function Stats($uri){
+		$this->uri = $uri;
 	}
 
 	public function load(){
@@ -37,19 +38,19 @@ class Stats extends CRUD {
 	}
 
 	private function longestWorkout($db){
-		$result = $db->query('SELECT Workout_ID FROM Workouts
+		$result = $db->query('SELECT Workout_ID, User_ID FROM Workouts
 					ORDER BY Duration DESC LIMIT 0,1');
 		$row = mysql_fetch_array($result);
-		$workout = new Workout();
+		$workout = new Workout('/' . $row['User_ID'] . '/workouts/' . $row['Workout_ID']);
 		$workout->load($row['Workout_ID']);
 		return $workout;
 	}
 
 	private function biggestWorkout($db){
-		$result = $db->query('SELECT Workout_ID FROM Workouts
+		$result = $db->query('SELECT Workout_ID, User_ID FROM Workouts
 					ORDER BY Kcal DESC LIMIT 0,1');
 		$row = mysql_fetch_array($result);
-		$workout = new Workout();
+		$workout = new Workout('/' . $row['User_ID'] . '/workouts/' . $row['Workout_ID']);
 		$workout->load($row['Workout_ID']);
 		return $workout;
 	}
@@ -59,7 +60,7 @@ class Stats extends CRUD {
 					JOIN Workouts USING (Activity_ID) 
 					GROUP BY Activity_ID ORDER BY num DESC LIMIT 0,1');
 		$row = mysql_fetch_array($result);
-		$activity = new Activity();
+		$activity = new Activity('/activities/' . $row['Activity_ID']);
 		$activity->load($row['Activity_ID']);
 		return $activity;
 	}
@@ -68,15 +69,19 @@ class Stats extends CRUD {
 		$result = $db->query('SELECT User_ID, SUM(Kcal) AS Kcal FROM Workouts GROUP BY User_ID 
 					ORDER BY Kcal DESC LIMIT 0,1');
 		$row = mysql_fetch_array($result);
-		$user = new User();
+		$user = new User('/' . $row['User_ID']);
 		$user->load($row['User_ID']);
 		return $user;
+	}
+	
+	public function location(){
+		return $this->uri;
 	}
 }
 
 class xmlStats implements View {
 
-	private $type = 'stats+xml';
+	private $type = 'application/xml+stats';
 	private $writer;
 
 	public function xmlStats(){		
@@ -100,6 +105,7 @@ class xmlStats implements View {
 
 	public function addElements($stats, &$writer){
 		$writer->startElement('statistics');
+		$writer->writeAttribute('uri', $stats->location());
 		
 		$writer->startElement('user_count');
 		$writer->text($stats->user_count);
@@ -143,7 +149,7 @@ class xmlStats implements View {
 
 class jsonStats implements View {
 
-	private $type = 'stats+json';
+	private $type = 'application/json+stats';
 
 	public function jsonStats(){		
 	}
@@ -173,7 +179,8 @@ class jsonStats implements View {
 					'biggest_workout' => $biggest,
 					'popular_activity' => $popular,
 					'most_kcal' => $user
-				)
+				),
+				'uri' => $stats->location() . '.json'
 			);
 	}
 
@@ -188,7 +195,7 @@ class jsonStats implements View {
 
 class yamlStats implements View {
 
-	private $type = 'stats+yaml';
+	private $type = 'text/x-yaml+stats';
 
 	public function yamlStats(){		
 	}
@@ -218,7 +225,8 @@ class yamlStats implements View {
 					'biggest_workout' => $biggest,
 					'popular_activity' => $popular,
 					'most_kcal' => $user
-				)
+				),
+				'uri' => $stats->location() . '.yaml'
 			);
 	}
 

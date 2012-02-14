@@ -1,25 +1,22 @@
 <?php
 
 require_once dirname(__FILE__) . '/../classes/workout.php';
+require_once dirname(__FILE__) . '/../classes/user.php';
+require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
 
 /**
- * @namespace Tonic\Exerciser\Username\Workouts\Workout
- * @uri /([A-Za-z0-9_]+)/workouts/([0-9]+)
+ * @namespace Tonic\Exerciser\Workouts\Workout
+ * @uri /workouts/([0-9]+)
  */
-class WorkoutResource extends Resource {
+class WorkoutResource extends MultiViewResource {
 
-	private $views = array(	'xml' => 'xmlWorkout', 
-				'json' => 'jsonWorkout', 
-				'yaml' => 'yamlWorkout'
+	protected $views = array(	'xml' => 'xmlWorkout', 
+					'json' => 'jsonWorkout', 
+					'yaml' => 'yamlWorkout'
 				);
 
-	function get_view($request){		
-		$request->mimetypes['yaml'] = 'text/x-yaml';
-		$format = $request->mostAcceptable(array_keys($this->views));
-		if(!$format){
-			throw new Exception("Format not acceptable");
-		}
-		return new $this->views[$format];
+	function __construct($parameters){
+		  parent::__construct($parameters);
 	}
     
 	/**
@@ -29,12 +26,10 @@ class WorkoutResource extends Resource {
 	*/
 	function get($request) {
 		$response = new Response($request);
+		$ID = $this->parameters[0];
 		
 		$view = $this->get_view($request);
-
-		$model = new Workout();
-		$bits = explode('/', $request->uri);
-		$ID = $bits[count($bits)-1];
+		$model = new Workout($request->uri);		
 
 		try{
 			$model->load($ID);
@@ -46,29 +41,30 @@ class WorkoutResource extends Resource {
 			$response->body = $view->toString();  
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
-		}       
-
+		}
 		return $response;
 	}
 
 	function post($request){
 		$response = new Response($request);
+		$ID = $this->parameters[0];
+		
+		$view = $this->get_view($request);
+		$model = new Workout($request->uri);
+
 		try{
-			$view = $this->get_view($request);
+			$user = new User('');
+			$user->load($model->user_id);
+			$this->isSecured($user->user_id, $user->password);
+
+			$view->parse($request->data, $model);
+			$model->create();		
+
+			$response->code = Response::CREATED;
+			$response->addHeader('Location', $model->location());
 		}catch (Exception $e) {
 			$response->code = Response::UNSUPPORTEDMEDIATYPE;
-			return $response;
 		}
-
-		$workout = new Workout();
-
-		$view->parse($request->data, $workout);
-		$workout->create();		
-
-		$response->code = Response::CREATED;
-		$response->body = $request->uri . $workout->location();
-		//
-		//UNAUTHORIZED
 		return $response;
 	}
 
@@ -79,30 +75,27 @@ class WorkoutResource extends Resource {
 	*/
 	function put($request) {
 		$response = new Response($request);
-		try{
-			$view = $this->get_view($request);
-		}catch (Exception $e) {
-			$response->code = Response::UNSUPPORTEDMEDIATYPE;
-			return $response;
-		}
-
-		$workout = new Workout();
-
-		$bits = explode('/', $request->uri);
-		$ID = $bits[count($bits)-1];
+		$ID = $this->parameters[0];
+		
+		$model = new Workout($request->uri);
+		$view = $this->get_view($request);	
 
 		try{
-			$workout->load($ID);
-			$view->parse($request->data, $workout);
-			$workout->update();		
+			$model->load($ID);
+			$user = new User('');
+			$user->load($model->user_id);
+			$this->isSecured($user->user_id, $user->password);
 
+			$view->parse($request->data, $model);
+			$model->update();		
+			
 			$response->code = Response::OK;
-			$response->body = $request->uri;
+			$response->addHeader('Location', $model->location());
+		}catch (UnexpectedValueException $e) {
+			$response->code = Response::UNSUPPORTEDMEDIATYPE;
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
 		}
-		//
-		//UNAUTHORIZED
 		return $response;
 	}
 
@@ -113,23 +106,21 @@ class WorkoutResource extends Resource {
 	*/
 	function delete($request) {
 		$response = new Response($request);
+		$ID = $this->parameters[0];
 
-		$workout = new Workout();
-
-		$bits = explode('/', $request->uri);
-		$ID = $bits[count($bits)-1];
+		$workout = new Workout($request->uri);
 
 		try{
 			$workout->load($ID);
-			$workout->delete();		
+			$user = new User('');
+			$user->load($workout->user_id);
+			$this->isSecured($user->user_id, $user->password);
 
+			$workout->delete();
 			$response->code = Response::NOCONTENT;
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
 		}
-
-		//Response::UNAUTHORIZED is also needed
-
 		return $response;
 	}
     

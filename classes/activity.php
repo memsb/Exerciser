@@ -3,56 +3,73 @@
 require_once dirname(__FILE__) . '/../lib/DBA.php';
 require_once dirname(__FILE__) . '/../lib/interfaces.php';
 
+/**
+*	@author Martin Buckley - MBuckley@gmail.com
+*	Represents an Activity a workout may include.
+*/
 class Activity extends CRUD {
 
-	protected $activity_id;
-	protected $activity_name;
-	protected $kcal_hour;
+	protected $activity_id = 0;
+	protected $activity_name = '';
+	protected $description = '';
+	protected $kcal_hour = 0;
 
-	public function Activity(){
+	/**
+	* @access public
+	*/
+	public function __construct(){
+		$this->db = new Database();
 	}
 
+	/**
+	* @access public
+	* @param Database instance
+	*/
+	public function setDatabase($db){
+		$this->db = $db;
+	}
+
+	/**
+	* Loads the  details of the activity specified by ID number
+	* @access public
+	* @param int the activity id number
+	*/
 	public function load($activityID){
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("SELECT 	Activity_ID,
-						Activity_name,
-						kcal_hour
-						FROM Activities WHERE Activity_ID = '" . $activityID . "'"
-					);		
-		if( mysql_num_rows($result) == 0 ){
-			throw new Exception("No matching entry in database");
-		}
-		$row = mysql_fetch_array($result);
-		$this->activity_id = $row['Activity_ID'];
-		$this->activity_name = $row['Activity_name'];
-		$this->kcal_hour = $row['kcal_hour'];
-	}
+		if( ! isset($this->db) )
+			throw new BadMethodCallException('Database not specified.');
 
-	public function location(){
-		return $this->activity_id;
+		$this->db->connect();
+		$id = $this->db->clean($activityID);
+		$result = $this->db->query("SELECT 	Activity_ID,
+							Activity_name,
+							Description,
+							kcal_hour
+							FROM Activities WHERE Activity_ID = '$id'"
+					);
+		
+		if( count($result) == 0 )
+			throw new LengthException("No matching entry in database");
+		
+		$this->activity_id = $result['Activity_ID'];
+		$this->activity_name = $result['Activity_name'];
+		$this->description = $result['Description'];
+		$this->kcal_hour = $result['kcal_hour'];
 	}
 }
 
+/**
+*	@author Martin Buckley - MBuckley@gmail.com
+*	An XML View of the Activity class.
+*/
+class xmlActivity extends View {
 
-class xmlActivity implements View {
+	protected $type = 'application/xml+activity';
 
-	private $type = 'activity+xml';
-	private $data;
-	private $writer;
-
-	public function xmlActivity(){
-	}
-
-	public function parse($data, $activity){		
-		//check mime type
-		$this->data = new SimpleXMLElement($data);
-		//parse xml into values
-		$activity->activity_id = $this->data->activity_id;
-		$activity->activity_hour = $this->data->activity_hour;
-		$activity->kcal_hour = $this->data->kal_hour;
-	}
-
+	/**
+	* Builds the XML document and stores internally
+	* @param Activity model to create a view of
+	* @access public
+	*/
 	public function generateDocument($activity){
 		$this->writer = new XMLWriter();
 		$this->writer->openMemory();
@@ -65,15 +82,26 @@ class xmlActivity implements View {
 		$this->writer->endDocument();
 	}
 
+	/**
+	* Adds the elements to the writer object passed
+	* @param Activity model to create a view of
+	* @param XMLWriter to add the elements to
+	* @access public
+	*/
 	public function addElements($activity, &$writer){
 		$writer->startElement('activity');
-		
-		$writer->startElement('acivity_id');
+		$writer->writeAttribute('uri', $activity->location());
+
+		$writer->startElement('activity_id');
 		$writer->text($activity->activity_id);
 		$writer->endElement();
 
 		$writer->startElement('activity_name');
 		$writer->text($activity->activity_name);
+		$writer->endElement();
+
+		$writer->startElement('description');
+		$writer->text($activity->description);
 		$writer->endElement();
 
 		$writer->startElement('kcal_hour');
@@ -83,10 +111,11 @@ class xmlActivity implements View {
 		$writer->endElement();
 	}
 
-	public function type(){
-		return $this->type;
-	}
- 
+	/**
+	* Outputs the document as a string
+	* @access public
+	* @return String containing to document
+	*/
 	public function toString(){
 		if($this->writer != null){		
 			return $this->writer->outputMemory();
@@ -96,80 +125,103 @@ class xmlActivity implements View {
 	}
 }
 
-class jsonActivity implements View {
 
-	private $type = 'activity+json';
-	private $data;
 
-	public function jsonActivity(){
-	}
+/**
+*	@author Martin Buckley - MBuckley@gmail.com
+*	An JSON View of the Activity class.
+*/
+class jsonActivity extends View {
 
-	public function parse($data, $activity){	
-		$this->data = json_decode($data, true);
-		$activity->activity_id = $this->data['activity']['activity_id'];
-		$activity->activity_hour = $this->data['activity']['activity_hour'];
-		$activity->kcal_hour = $this->data['activity']['kal_hour'];
-	}
+	protected $type = 'application/json+activity';
 
+	/**
+	* Builds the JSON document and stores internally
+	* @param Activity model to create a view of
+	* @access public
+	*/
 	public function generateDocument($activity){
 		$this->data = array();
 		$this->addElements($activity, $this->data);
 	}
 
+	/**
+	* Adds the elements to the writer object passed
+	* @param Activity model to create a view of
+	* @param Array to add the elements to
+	*/
 	public function addElements($activity, &$data){
 		$data = array('activity' => 
 				array(
-					'acivity_id' => $activity->activity_id,
+					'activity_id' => $activity->activity_id,
 					'activity_name' => $activity->activity_name,
+					'description' => $activity->description,
 					'kcal_hour' => $activity->kcal_hour
-				)
+				),
+				'uri' => $activity->location() . '.json'
 			);
 	}
 
-	public function type(){
-		return $this->type;
-	}
- 
+	/**
+	* Outputs the document as a string
+	* @access public
+	* @return String containing to document
+	*/
 	public function toString(){
-		return json_encode($this->data);
+		if( $this->data )
+			return json_encode($this->data);
+		else
+			return '';
 	}
 }
 
-class yamlActivity implements View {
 
-	private $type = 'activity+yaml';
-	private $data;
 
-	public function yamlActivity(){
-	}
+/**
+*	@author Martin Buckley - MBuckley@gmail.com
+*	An YAML View of the Activity class.
+*/
+class yamlActivity extends View {
 
-	public function parse($data, $activity){	
-		$this->data = yaml_parse($data);
-		$activity->activity_id = $this->data['activity']['activity_id'];
-		$activity->activity_hour = $this->data['activity']['activity_hour'];
-		$activity->kcal_hour = $this->data['activity']['kal_hour'];
-	}
+	protected $type = 'text/x-yaml+activity';
 
+	/**
+	* Builds the YAML document and stores internally
+	* @param Activity model to create a view of
+	* @access public
+	*/
 	public function generateDocument($activity){
 		$this->addElements($activity, $this->data);
 	}
 
+	/**
+	* Adds the elements to the writer object passed
+	* @param Activity model to create a view of
+	* @param Array to add the elements to
+	* @access public
+	*/
 	public function addElements($activity, &$data){
 		$data = array('activity' => 
 				array(
-					'acivity_id' => $activity->activity_id,
+					'activity_id' => $activity->activity_id,
 					'activity_name' => $activity->activity_name,
+					'description' => $activity->description,
 					'kcal_hour' => $activity->kcal_hour
-				)
+				),
+				'uri' => $activity->location() . '.yaml'
 			);
 	}
-
-	public function type(){
-		return $this->type;
-	}
  
-	public function toString(){
-		return yaml_emit($this->data);
+	/**
+	* Outputs the document as a string
+	* @access public
+	* @return String containing to document
+	*/
+	public function toString(){		
+		if( $this->data )
+			return yaml_emit($this->data);
+		else
+			return '';
 	}
 }
 

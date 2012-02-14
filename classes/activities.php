@@ -10,7 +10,8 @@ class Activities extends CRUD {
 	//values
 	protected $activities = array();
 
-	public function Activities(){
+	public function Activities($uri){
+		$this->uri = $uri;
 	}
 
 	public function load(){
@@ -22,17 +23,18 @@ class Activities extends CRUD {
 			throw new Exception("No matching entries in database");
 		}
 		while($row = mysql_fetch_array($result)){
-			$activity = new Activity();
+			$activity = new Activity($this->uri . '/' . $row['Activity_ID']);
 			$activity->load($row['Activity_ID']);
 			$this->activities[] = $activity;
 		}
 	}
+
 }
 
 
 class xmlActivities implements View {
 
-	private $type = 'activities+xml';
+	private $type = 'application/xml+activities';
 	private $writer;
 	private $data;
 
@@ -79,7 +81,7 @@ class xmlActivities implements View {
 
 class jsonActivities implements View {
 
-	private $type = 'activities+xml';
+	private $type = 'application/json+activities';
 	private $data;
 
 	public function jsonActivities(){
@@ -113,7 +115,7 @@ class jsonActivities implements View {
 
 class yamlActivities implements View {
 
-	private $type = 'activities+yaml';
+	private $type = 'text/x-yaml+activities';
 	private $data;
 
 	public function yamlActivities(){
