@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css">
+<link rel="start" href="../../overview-summary.html">
+
+<title>classes/workout.php (PHPDoctor)</title>
+
+</head>
+<body id="file" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../overview-files.html">Files</a></li>
+<li><a href="../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../todo-list.html">Todo</a></li>
+<li><a href="../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../index.html" target="_top">Frames</a>
+<a href="../../source/classes/workout.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<h1>classes/workout.php</h1>
+<hr>
+
+<a name="line1"></a><pre><?php
+<a name="line2"></a>
+<a name="line3"></a>require_once dirname(__FILE__) . '/../lib/CRUD.php';
+<a name="line4"></a>
+<a name="line5"></a>/**
+<a name="line6"></a>*	@author Martin Buckley - MBuckley@gmail.com
+<a name="line7"></a>*
+<a name="line8"></a>*/
+<a name="line9"></a>class Workout extends CRUD {
+<a name="line10"></a>
+<a name="line11"></a>	private $type = 'workout';
+<a name="line12"></a>
+<a name="line13"></a>	protected $workout_id = 0;
+<a name="line14"></a>	protected $username = '';
+<a name="line15"></a>	protected $user_id = 0;
+<a name="line16"></a>	protected $activity_id = 0;
+<a name="line17"></a>	protected $activity_name = '';
+<a name="line18"></a>	protected $start = 0;
+<a name="line19"></a>	protected $duration = 0;
+<a name="line20"></a>	protected $kcal = 0;
+<a name="line21"></a>
+<a name="line22"></a>	protected $required = array('user_id', 'activity_id', 'start', 'duration', 'kcal');
+<a name="line23"></a>
+<a name="line24"></a>	/**
+<a name="line25"></a>	*
+<a name="line26"></a>	*
+<a name="line27"></a>	*/
+<a name="line28"></a>	public function __construct($db){
+<a name="line29"></a>		$this->db = $db;
+<a name="line30"></a>		if( $this->db == NULL )
+<a name="line31"></a>			throw new BadMethodCallException('Database not specified.');
+<a name="line32"></a>		$this->db->connect();
+<a name="line33"></a>	}
+<a name="line34"></a>
+<a name="line35"></a>	/**
+<a name="line36"></a>	*
+<a name="line37"></a>	*
+<a name="line38"></a>	*/
+<a name="line39"></a>	public function setLocation($uri){
+<a name="line40"></a>		$this->uri = $uri;
+<a name="line41"></a>	}
+<a name="line42"></a>
+<a name="line43"></a>	/**
+<a name="line44"></a>	*
+<a name="line45"></a>	*
+<a name="line46"></a>	*/
+<a name="line47"></a>	public function load($workoutID){
+<a name="line48"></a>		$id = $this->db->clean($workoutID);
+<a name="line49"></a>		$result = $this->db->query("SELECT 	Users.Username AS Username,
+<a name="line50"></a>							Users.User_ID AS User_ID,
+<a name="line51"></a>							Activities.Activity_ID AS Activity_ID,
+<a name="line52"></a>							Activities.Activity_Name AS Activity_Name,
+<a name="line53"></a>							UNIX_TIMESTAMP(Start_Time) AS Start_Time, 
+<a name="line54"></a>							Duration, 
+<a name="line55"></a>							Kcal
+<a name="line56"></a>							FROM Workouts 
+<a name="line57"></a>							JOIN Users USING (User_ID)
+<a name="line58"></a>							JOIN Activities USING (Activity_ID)
+<a name="line59"></a>							WHERE Workout_ID = '$id'"
+<a name="line60"></a>					);
+<a name="line61"></a>		if( ! $result || count($result) == 0 )
+<a name="line62"></a>			throw new LengthException("Workout not found.");
+<a name="line63"></a>		
+<a name="line64"></a>		$row = $result[0];
+<a name="line65"></a>		$this->workout_id = $id;
+<a name="line66"></a>		$this->username = $row['Username'];
+<a name="line67"></a>		$this->user_id = $row['User_ID'];
+<a name="line68"></a>		$this->activity_id = $row['Activity_ID'];
+<a name="line69"></a>		$this->activity_name = $row['Activity_Name'];
+<a name="line70"></a>		$this->start = $row['Start_Time'];
+<a name="line71"></a>		$this->duration = $row['Duration'];
+<a name="line72"></a>		$this->kcal = $row['Kcal'];
+<a name="line73"></a>	}
+<a name="line74"></a>
+<a name="line75"></a>	/**
+<a name="line76"></a>	*
+<a name="line77"></a>	*
+<a name="line78"></a>	*/
+<a name="line79"></a>	public function create(){
+<a name="line80"></a>		$this->validate();
+<a name="line81"></a>		$user_id = $this->db->clean($this->user_id);
+<a name="line82"></a>		$activity_id = $this->db->clean($this->activity_id);
+<a name="line83"></a>		$start = $this->db->clean(strtotime($this->start));
+<a name="line84"></a>		$duration = $this->db->clean($this->duration);
+<a name="line85"></a>		$kcal = $this->db->clean($this->kcal);		
+<a name="line86"></a>		$result = $this->db->query("INSERT INTO Workouts (User_ID, Activity_ID, UNIX_TIMESTAMP(Start_Time), Duration, Kcal
+<a name="line87"></a>								) VALUES ('$user_id', '$activity_id', '$start', '$duration', '$kcal')");
+<a name="line88"></a>
+<a name="line89"></a>		if( ! $result )
+<a name="line90"></a>			throw new Exception("Workout not created.");
+<a name="line91"></a>
+<a name="line92"></a>		$this->workout_id = $this->db->insert_id();
+<a name="line93"></a>		$this->uri .= '/' . $this->workout_id;
+<a name="line94"></a>		return True;
+<a name="line95"></a>	}
+<a name="line96"></a>
+<a name="line97"></a>	/**
+<a name="line98"></a>	*
+<a name="line99"></a>	*
+<a name="line100"></a>	*/
+<a name="line101"></a>	public function update(){
+<a name="line102"></a>		$this->validate();
+<a name="line103"></a>		$activity_id = $this->db->clean($this->activity_id);
+<a name="line104"></a>		$start = $this->db->clean(strtotime($this->start));
+<a name="line105"></a>		$duration = $this->db->clean($this->duration);
+<a name="line106"></a>		$kcal = $this->db->clean($this->kcal);
+<a name="line107"></a>		$workout_id = $this->db->clean($this->workout_id);
+<a name="line108"></a>		$result = $this->db->query("UPDATE Workouts SET 
+<a name="line109"></a>						Activity_ID = 	'$activity_id',
+<a name="line110"></a>						Start_Time = 	UNIX_TIMESTAMP('$start'),
+<a name="line111"></a>						Duration = 	'$duration',
+<a name="line112"></a>						Kcal = 		'$kcal'
+<a name="line113"></a>						WHERE Workout_ID = '$workout_id'"
+<a name="line114"></a>					);
+<a name="line115"></a>		if( ! $result )
+<a name="line116"></a>			throw new Exception("Workout not updated.");
+<a name="line117"></a>		return True;
+<a name="line118"></a>	}
+<a name="line119"></a>
+<a name="line120"></a>	/**
+<a name="line121"></a>	*
+<a name="line122"></a>	*
+<a name="line123"></a>	*/
+<a name="line124"></a>	public function delete(){
+<a name="line125"></a>		$id = $this->db->clean($this->workout_id);
+<a name="line126"></a>		$result = $this->db->query("DELETE FROM Workouts WHERE Workout_ID = '$id'");
+<a name="line127"></a>		if(  ! $result )
+<a name="line128"></a>			throw new Exception("Workout not deleted.");
+<a name="line129"></a>
+<a name="line130"></a>		return True;
+<a name="line131"></a>	}
+<a name="line132"></a>
+<a name="line133"></a>	/**
+<a name="line134"></a>	*
+<a name="line135"></a>	*
+<a name="line136"></a>	*/
+<a name="line137"></a>	public function validate(){
+<a name="line138"></a>		foreach( $this->required as $field )
+<a name="line139"></a>			if( !$this->$field )
+<a name="line140"></a>				throw new UnexpectedValueException("Data for field: $field required but not present");
+<a name="line141"></a>	}
+<a name="line142"></a>
+<a name="line143"></a>	/**
+<a name="line144"></a>	*
+<a name="line145"></a>	*
+<a name="line146"></a>	*/
+<a name="line147"></a>	public function location(){
+<a name="line148"></a>		return $this->uri;
+<a name="line149"></a>	}
+<a name="line150"></a>
+<a name="line151"></a>	/**
+<a name="line152"></a>	*
+<a name="line153"></a>	*
+<a name="line154"></a>	*/
+<a name="line155"></a>	public function type($view){
+<a name="line156"></a>		return $view->type() . $this->type;
+<a name="line157"></a>	}
+<a name="line158"></a>
+<a name="line159"></a>	/**
+<a name="line160"></a>	*
+<a name="line161"></a>	*
+<a name="line162"></a>	*/
+<a name="line163"></a>	public function parse($data_str, $view){
+<a name="line164"></a>		if( ! $view )
+<a name="line165"></a>			throw new BadMethodCallException('Function not implemented.');
+<a name="line166"></a>
+<a name="line167"></a>		try{
+<a name="line168"></a>			$view->parse($data_str);
+<a name="line169"></a>			$data = $view->getArray();
+<a name="line170"></a>			$workout = $data['workout'];
+<a name="line171"></a>
+<a name="line172"></a>			foreach( $this->required as $field )
+<a name="line173"></a>				$this->$field = $workout[$field];
+<a name="line174"></a>		}catch(Exception $e){
+<a name="line175"></a>			throw new UnexpectedValueException($e->getMessage());
+<a name="line176"></a>		}
+<a name="line177"></a>	}
+<a name="line178"></a>
+<a name="line179"></a>	/**
+<a name="line180"></a>	*
+<a name="line181"></a>	*
+<a name="line182"></a>	*/
+<a name="line183"></a>	public function addProperties($view){
+<a name="line184"></a>		$view->startElement('workout');
+<a name="line185"></a>
+<a name="line186"></a>		$view->startElement('workout_id');
+<a name="line187"></a>		$view->text($this->workout_id);
+<a name="line188"></a>		$view->endElement();
+<a name="line189"></a>	
+<a name="line190"></a>		$view->startElement('username');
+<a name="line191"></a>		$view->text($this->username);
+<a name="line192"></a>		$view->endElement();
+<a name="line193"></a>
+<a name="line194"></a>		$view->startElement('user_id');
+<a name="line195"></a>		$view->text($this->user_id);
+<a name="line196"></a>		$view->endElement();
+<a name="line197"></a>
+<a name="line198"></a>		$view->startElement('activity_id');
+<a name="line199"></a>		$view->text($this->activity_id);
+<a name="line200"></a>		$view->endElement();
+<a name="line201"></a>
+<a name="line202"></a>		$view->startElement('activity_name');
+<a name="line203"></a>		$view->text($this->activity_name);
+<a name="line204"></a>		$view->endElement();
+<a name="line205"></a>
+<a name="line206"></a>		$view->startElement('start');
+<a name="line207"></a>		$view->text($this->start);
+<a name="line208"></a>		$view->endElement();
+<a name="line209"></a>
+<a name="line210"></a>		$view->startElement('duration');
+<a name="line211"></a>		$view->text($this->duration);
+<a name="line212"></a>		$view->endElement();
+<a name="line213"></a>
+<a name="line214"></a>		$view->startElement('kcal');
+<a name="line215"></a>		$view->text($this->kcal);
+<a name="line216"></a>		$view->endElement();
+<a name="line217"></a>
+<a name="line218"></a>		$view->endElement();
+<a name="line219"></a>	}	
+<a name="line220"></a>}
+<a name="line221"></a>
+<a name="line222"></a>?>
+<a name="line223"></a></pre>
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../overview-files.html">Files</a></li>
+<li><a href="../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../todo-list.html">Todo</a></li>
+<li><a href="../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../index.html" target="_top">Frames</a>
+<a href="../../source/classes/workout.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>

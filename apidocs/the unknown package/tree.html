@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+
+<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+<link rel="start" href="../overview-summary.html">
+
+<title>Tree (PHPDoctor)</title>
+
+</head>
+<body id="definition" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../overview-summary.html">Overview</a></li>
+<li><a href="../the unknown package/package-summary.html">Namespace</a></li>
+<li class="active">Class</li>
+<li><a href="../the unknown package/package-tree.html">Tree</a></li>
+<li><a href="../overview-files.html">Files</a></li>
+<li><a href="../deprecated-list.html">Deprecated</a></li>
+<li><a href="../todo-list.html">Todo</a></li>
+<li><a href="../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../index.html" target="_top">Frames</a>
+<a href="../the unknown package/tree.html" target="_top">No frames</a>
+</div>
+<div class="small_links">
+Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
+Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>
+</div>
+<hr>
+
+<div class="qualifiedName">The Unknown Package\Tree</div>
+<a href="../source/lib/view.php.html#line50" class="location">lib/view.php at line 50</a>
+
+<h1>Class Tree</h1>
+
+<pre class="tree"><strong>Tree</strong><br /></pre>
+
+<dl>
+<dt>All Known Subclasses:</dt>
+<dd><a href="../the unknown package/json.html">JSON</a> <a href="../the unknown package/xml.html">XML</a> <a href="../the unknown package/yaml.html">YAML</a> </dd>
+</dl>
+
+<hr>
+
+<p class="signature">public  class <strong>Tree</strong></p>
+
+<div class="comment" id="overview_description"><p></p></div>
+
+<dl>
+<dt>Author:</dt>
+<dd>Martin Buckley - MBuckley@gmail.com</dd>
+</dl>
+<hr>
+
+<table id="summary_field">
+<tr><th colspan="2">Field Summary</th></tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#head">$head</a></p></td>
+</tr>
+</table>
+
+<table id="summary_constructor">
+<tr><th colspan="2">Constructor Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>()</p><p class="description"></p></td>
+</tr>
+</table>
+
+<table id="summary_method">
+<tr><th colspan="2">Method Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#isEmpty()">isEmpty</a>()</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#create()">create</a>()</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#startElement()">startElement</a>(mixed name)</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#endElement()">endElement</a>()</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#text()">text</a>(mixed text)</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#toString()">toString</a>()</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#isHead()">isHead</a>(mixed node)</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type">protected  void</td>
+<td class="description"><p class="name"><a href="#process()">process</a>(mixed data)</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#getArray()">getArray</a>()</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#iterate()">iterate</a>(mixed current)</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#type()">type</a>()</p><p class="description"></p></td>
+</tr>
+</table>
+
+<h2 id="detail_field">Field Detail</h2>
+<a href="../source/lib/view.php.html#line52" class="location">lib/view.php at line 52</a>
+
+<h3 id="head">head</h3>
+<code class="signature">public  mixed <strong>$head</strong> = ''</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h2 id="detail_method">Constructor Detail</h2>
+<a href="../source/lib/view.php.html#line61" class="location">lib/view.php at line 61</a>
+
+<h3 id="__construct()">__construct</h3>
+<code class="signature">public  void <strong>__construct</strong>()</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<h2 id="detail_method">Method Detail</h2>
+<a href="../source/lib/view.php.html#line69" class="location">lib/view.php at line 69</a>
+
+<h3 id="isEmpty()">isEmpty</h3>
+<code class="signature">public  void <strong>isEmpty</strong>()</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line77" class="location">lib/view.php at line 77</a>
+
+<h3 id="create()">create</h3>
+<code class="signature">public  void <strong>create</strong>()</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line87" class="location">lib/view.php at line 87</a>
+
+<h3 id="startElement()">startElement</h3>
+<code class="signature">public  void <strong>startElement</strong>(mixed name)</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line102" class="location">lib/view.php at line 102</a>
+
+<h3 id="endElement()">endElement</h3>
+<code class="signature">public  void <strong>endElement</strong>()</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line114" class="location">lib/view.php at line 114</a>
+
+<h3 id="text()">text</h3>
+<code class="signature">public  void <strong>text</strong>(mixed text)</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line122" class="location">lib/view.php at line 122</a>
+
+<h3 id="toString()">toString</h3>
+<code class="signature">public  void <strong>toString</strong>()</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line130" class="location">lib/view.php at line 130</a>
+
+<h3 id="isHead()">isHead</h3>
+<code class="signature">public  void <strong>isHead</strong>(mixed node)</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line138" class="location">lib/view.php at line 138</a>
+
+<h3 id="process()">process</h3>
+<code class="signature">protected  void <strong>process</strong>(mixed data)</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line155" class="location">lib/view.php at line 155</a>
+
+<h3 id="getArray()">getArray</h3>
+<code class="signature">public  void <strong>getArray</strong>()</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line163" class="location">lib/view.php at line 163</a>
+
+<h3 id="iterate()">iterate</h3>
+<code class="signature">public  void <strong>iterate</strong>(mixed current)</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<a href="../source/lib/view.php.html#line183" class="location">lib/view.php at line 183</a>
+
+<h3 id="type()">type</h3>
+<code class="signature">public  void <strong>type</strong>()</code>
+<div class="details">
+<p></p></div>
+
+<hr>
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../overview-summary.html">Overview</a></li>
+<li><a href="../the unknown package/package-summary.html">Namespace</a></li>
+<li class="active">Class</li>
+<li><a href="../the unknown package/package-tree.html">Tree</a></li>
+<li><a href="../overview-files.html">Files</a></li>
+<li><a href="../deprecated-list.html">Deprecated</a></li>
+<li><a href="../todo-list.html">Todo</a></li>
+<li><a href="../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../index.html" target="_top">Frames</a>
+<a href="../the unknown package/tree.html" target="_top">No frames</a>
+</div>
+<div class="small_links">
+Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
+Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css">
+<link rel="start" href="../../overview-summary.html">
+
+<title>tests/userTest.php (PHPDoctor)</title>
+
+</head>
+<body id="file" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../overview-files.html">Files</a></li>
+<li><a href="../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../todo-list.html">Todo</a></li>
+<li><a href="../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../index.html" target="_top">Frames</a>
+<a href="../../source/tests/usertest.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<h1>tests/userTest.php</h1>
+<hr>
+
+<a name="line1"></a><pre><?php
+<a name="line2"></a>
+<a name="line3"></a>require_once('/var/www/exerciser/classes/user.php');
+<a name="line4"></a>require_once('/var/www/exerciser/lib/DBA.php');
+<a name="line5"></a>
+<a name="line6"></a>class TestOfUserClass extends UnitTestCase {
+<a name="line7"></a>
+<a name="line8"></a>	private $uri = 'user';
+<a name="line9"></a>	private $user;
+<a name="line10"></a>	private $db;
+<a name="line11"></a>
+<a name="line12"></a>	private $fields = array(
+<a name="line13"></a>				'user_id' => array('value' => 2, 'default' => 0), 
+<a name="line14"></a>				'username' => array('value' => 'username', 'default' => ''), 
+<a name="line15"></a>				'api_key' => array('value' => 1, 'default' => 0), 
+<a name="line16"></a>				'age' => array('value' => 3, 'default' => 0), 
+<a name="line17"></a>				'weight' => array('value' => 'activity', 'default' => ''), 
+<a name="line18"></a>				'gender' => array('value' => 123, 'default' => 0)
+<a name="line19"></a>				);
+<a name="line20"></a>
+<a name="line21"></a>	protected $Database_Mapping = array(
+<a name="line22"></a>			'user_id' => 'User_ID',
+<a name="line23"></a>			'username' => 'Username',
+<a name="line24"></a>			'api_key' => 'API_Key',
+<a name="line25"></a>			'age' => 'Age',
+<a name="line26"></a>			'weight' => 'Weight',
+<a name="line27"></a>			'gender' => 'Gender'
+<a name="line28"></a>			);
+<a name="line29"></a>
+<a name="line30"></a>	private function toDB(){
+<a name="line31"></a>		$data = array();
+<a name="line32"></a>		foreach( $this->Database_Mapping as $attribute_key => $database_key )
+<a name="line33"></a>			$data[$database_key] = $this->fields[$attribute_key]['value'];
+<a name="line34"></a>		return $data;
+<a name="line35"></a>	}
+<a name="line36"></a>
+<a name="line37"></a>	function setup(){
+<a name="line38"></a>		Mock::generate('Database');
+<a name="line39"></a>		$this->db = &new MockDatabase();
+<a name="line40"></a>		$this->db->setReturnValue('connect', '');
+<a name="line41"></a>		$this->db->setReturnValue('query', array($this->toDB()));
+<a name="line42"></a>		$this->user = new user($this->db);
+<a name="line43"></a>	}
+<a name="line44"></a>
+<a name="line45"></a>	function testResourceLocation() {		
+<a name="line46"></a>		$this->assertEqual($this->user->location(), '');
+<a name="line47"></a>		$this->user->setLocation($this->uri);
+<a name="line48"></a>		$this->assertEqual($this->user->location(), $this->uri);
+<a name="line49"></a>	}
+<a name="line50"></a>
+<a name="line51"></a>	function testNotLoaded() {
+<a name="line52"></a>		$this->user->setLocation($this->uri);
+<a name="line53"></a>		foreach($this->fields as $key => $value)
+<a name="line54"></a>			$this->assertEqual($this->user->$key, $value['default']);
+<a name="line55"></a>	}
+<a name="line56"></a>
+<a name="line57"></a>	function testNoDatabase(){
+<a name="line58"></a>		$this->expectException('BadMethodCallException');
+<a name="line59"></a>		$user = new user(NULL);
+<a name="line60"></a>	}
+<a name="line61"></a>
+<a name="line62"></a>	function testSetsAndGets() {
+<a name="line63"></a>		foreach($this->fields as $key => $value)
+<a name="line64"></a>			$this->user->$key = $value['value'];
+<a name="line65"></a>
+<a name="line66"></a>		foreach($this->fields as $key => $value)
+<a name="line67"></a>			$this->assertEqual($this->user->$key, $value['value']);
+<a name="line68"></a>	}
+<a name="line69"></a>
+<a name="line70"></a>	function testLoadFailure(){
+<a name="line71"></a>		$this->db = &new MockDatabase();
+<a name="line72"></a>		$this->db->setReturnValue('connect', '');
+<a name="line73"></a>		$this->db->setReturnValue('query', array());
+<a name="line74"></a>		$this->user = new User($this->db);
+<a name="line75"></a>		$this->expectException('LengthException');
+<a name="line76"></a>		$this->user->load(1);
+<a name="line77"></a>	}
+<a name="line78"></a>
+<a name="line79"></a>	function testLoadSuccess(){
+<a name="line80"></a>		$this->db = &new MockDatabase();
+<a name="line81"></a>		$this->db->setReturnValue('connect', '');
+<a name="line82"></a>		$this->db->setReturnValue('query', array($this->toDB()));
+<a name="line83"></a>		$id = $this->fields['user_id']['value'];
+<a name="line84"></a>		$this->db->setReturnValue('clean', $id);
+<a name="line85"></a>		$this->user = new User($this->db);
+<a name="line86"></a>		$this->user->load($id);
+<a name="line87"></a>		foreach($this->fields as $key => $value)
+<a name="line88"></a>			$this->assertEqual($this->user->$key, $value['value']);
+<a name="line89"></a>	}
+<a name="line90"></a>
+<a name="line91"></a>	function testCreateFailure(){
+<a name="line92"></a>		$this->db = &new MockDatabase();
+<a name="line93"></a>		$this->db->setReturnValue('connect', '');
+<a name="line94"></a>		$this->db->setReturnValue('query', False);
+<a name="line95"></a>
+<a name="line96"></a>		$this->user = new User($this->db);
+<a name="line97"></a>		$this->expectException('Exception');
+<a name="line98"></a>		$this->assertNotEqual($this->user->create(), True);
+<a name="line99"></a>	}
+<a name="line100"></a>
+<a name="line101"></a>	function testCreateSuccess(){
+<a name="line102"></a>		$this->db = &new MockDatabase();
+<a name="line103"></a>		$this->db->setReturnValue('connect', '');
+<a name="line104"></a>		$this->db->setReturnValue('query', True);
+<a name="line105"></a>		$this->db->setReturnValue('insert_id', $this->fields['user_id']['value']);
+<a name="line106"></a>
+<a name="line107"></a>		$this->user = new User($this->db);
+<a name="line108"></a>		foreach($this->fields as $key => $value)
+<a name="line109"></a>			$this->user->$key = $value['value'];
+<a name="line110"></a>		$this->assertEqual($this->user->create(), True);
+<a name="line111"></a>		$this->assertEqual($this->user->user_id, $this->fields['user_id']['value']);
+<a name="line112"></a>		$this->assertEqual($this->user->uri, '/' . $this->fields['user_id']['value']);
+<a name="line113"></a>	}
+<a name="line114"></a>
+<a name="line115"></a>	function testUpdateFailure(){
+<a name="line116"></a>		$this->db = &new MockDatabase();
+<a name="line117"></a>		$this->db->setReturnValue('connect', '');
+<a name="line118"></a>		$this->db->setReturnValue('query', False);
+<a name="line119"></a>
+<a name="line120"></a>		$this->user = new user($this->db);
+<a name="line121"></a>		$this->expectException('Exception');
+<a name="line122"></a>		$this->assertNotEqual($this->user->update(), True);
+<a name="line123"></a>	}
+<a name="line124"></a>
+<a name="line125"></a>	function testUpdateSuccess(){
+<a name="line126"></a>		$this->db = &new MockDatabase();
+<a name="line127"></a>		$this->db->setReturnValue('connect', '');
+<a name="line128"></a>		$this->db->setReturnValue('query', True);
+<a name="line129"></a>
+<a name="line130"></a>		$this->user = new user($this->db);
+<a name="line131"></a>		foreach($this->fields as $key => $value)
+<a name="line132"></a>			$this->user->$key = $value['value'];
+<a name="line133"></a>		$this->assertEqual($this->user->update(), True);
+<a name="line134"></a>	}
+<a name="line135"></a>
+<a name="line136"></a>	function testDeleteFailure(){
+<a name="line137"></a>		$this->db = &new MockDatabase();
+<a name="line138"></a>		$this->db->setReturnValue('connect', '');
+<a name="line139"></a>		$this->db->setReturnValue('query', False);		
+<a name="line140"></a>		$this->user = new user($this->db);
+<a name="line141"></a>		$id = $this->fields['user_id']['value'];
+<a name="line142"></a>		$this->expectException('Exception');
+<a name="line143"></a>		$this->assertNotEqual($this->user->delete($id), True);
+<a name="line144"></a>	}
+<a name="line145"></a>
+<a name="line146"></a>	function testDeleteSuccess(){
+<a name="line147"></a>		$this->db = &new MockDatabase();
+<a name="line148"></a>		$this->db->setReturnValue('connect', '');
+<a name="line149"></a>		$this->db->setReturnValue('query', True);		
+<a name="line150"></a>		$this->user = new user($this->db);
+<a name="line151"></a>		$id = $this->fields['user_id']['value'];
+<a name="line152"></a>		$this->assertEqual($this->user->delete($id), True);
+<a name="line153"></a>	}
+<a name="line154"></a>
+<a name="line155"></a>	function testValidation(){
+<a name="line156"></a>		foreach($this->fields as $key => $value)
+<a name="line157"></a>			$this->user->$key = NULL;
+<a name="line158"></a>		$this->expectException('UnexpectedValueException');
+<a name="line159"></a>		$this->user->validate();
+<a name="line160"></a>
+<a name="line161"></a>		foreach($this->fields as $key => $value)
+<a name="line162"></a>			$this->user->$key = $value['value'];
+<a name="line163"></a>		$this->user->validate();
+<a name="line164"></a>	}
+<a name="line165"></a>}
+<a name="line166"></a>
+<a name="line167"></a>class TestOfUserView extends UnitTestCase {
+<a name="line168"></a>
+<a name="line169"></a>	protected $input = array(
+<a name="line170"></a>				'username' => array('value' => 'username', 'default' => ''), 
+<a name="line171"></a>				'age' => array('value' => 3, 'default' => 0), 
+<a name="line172"></a>				'weight' => array('value' => 'activity', 'default' => ''), 
+<a name="line173"></a>				'gender' => array('value' => 123, 'default' => 0)
+<a name="line174"></a>				);
+<a name="line175"></a>
+<a name="line176"></a>	protected $user_data = array(
+<a name="line177"></a>				'user_id' => array('value' => 2, 'default' => 0), 
+<a name="line178"></a>				'username' => array('value' => 'username', 'default' => ''),				
+<a name="line179"></a>				'age' => array('value' => 3, 'default' => 0), 
+<a name="line180"></a>				'weight' => array('value' => 'activity', 'default' => ''), 
+<a name="line181"></a>				'gender' => array('value' => 123, 'default' => 0)
+<a name="line182"></a>				);
+<a name="line183"></a>
+<a name="line184"></a>	protected $registration_data = array(
+<a name="line185"></a>				'user_id' => array('value' => 2, 'default' => 0),			
+<a name="line186"></a>				'api_key' => array('value' => 1, 'default' => 0)
+<a name="line187"></a>				);
+<a name="line188"></a>
+<a name="line189"></a>	protected $view;
+<a name="line190"></a>	protected $db;
+<a name="line191"></a>	protected $user;
+<a name="line192"></a>
+<a name="line193"></a>	function setup(){
+<a name="line194"></a>		Mock::generate('Database');
+<a name="line195"></a>		$this->db = &new MockDatabase();
+<a name="line196"></a>		$this->db->setReturnValue('connect', '');		
+<a name="line197"></a>		$this->user = new user($this->db);
+<a name="line198"></a>	}
+<a name="line199"></a>
+<a name="line200"></a>	function testParseEmptyDocument() {		
+<a name="line201"></a>		$this->expectException('BadMethodCallException');
+<a name="line202"></a>		$this->user->parse(NULL, NULL);
+<a name="line203"></a>	}
+<a name="line204"></a>
+<a name="line205"></a>	protected function createNewUserDoc($data){
+<a name="line206"></a>		foreach($data as $key => $value)
+<a name="line207"></a>			$this->user->$key = $value['value'];
+<a name="line208"></a>
+<a name="line209"></a>		$doc = $this->user->generateNewUserDocument($this->view);
+<a name="line210"></a>		$this->assertNotNull($doc);
+<a name="line211"></a>		return $doc;
+<a name="line212"></a>	}
+<a name="line213"></a>
+<a name="line214"></a>	protected function createDoc($data){
+<a name="line215"></a>		foreach($data as $key => $value)
+<a name="line216"></a>			$this->user->$key = $value['value'];
+<a name="line217"></a>
+<a name="line218"></a>		$doc = $this->user->generateDocument($this->view);
+<a name="line219"></a>		$this->assertNotNull($doc);
+<a name="line220"></a>		return $doc;
+<a name="line221"></a>	}
+<a name="line222"></a>
+<a name="line223"></a>	protected function EmptyDocument() {
+<a name="line224"></a>		$this->assertNotNull($this->user->generateDocument($this->view));
+<a name="line225"></a>	}
+<a name="line226"></a>
+<a name="line227"></a>	protected function ParseEmptyDocument() {		
+<a name="line228"></a>		$this->expectException('Exception');
+<a name="line229"></a>		$this->user->parse(NULL, $this->view);
+<a name="line230"></a>	}
+<a name="line231"></a>
+<a name="line232"></a>	protected function ParseDocumentFailure() {		
+<a name="line233"></a>		$this->expectException('UnexpectedValueException');
+<a name="line234"></a>		$this->user->parse(NULL, $this->view);
+<a name="line235"></a>	}
+<a name="line236"></a>
+<a name="line237"></a>	protected function ParseDocument() {
+<a name="line238"></a>		$doc = $this->createDoc($this->input);
+<a name="line239"></a>		$this->user->parse($doc, $this->view);
+<a name="line240"></a>		foreach($this->input as $key => $value)
+<a name="line241"></a>			$this->assertEqual($this->user->$key, $value['value']);
+<a name="line242"></a>	}
+<a name="line243"></a>}
+<a name="line244"></a>
+<a name="line245"></a>class TestOfXMLUserClass extends TestOfUserView {
+<a name="line246"></a>
+<a name="line247"></a>	function setup(){
+<a name="line248"></a>		parent::setup();
+<a name="line249"></a>		$this->view = new XML();		
+<a name="line250"></a>	}
+<a name="line251"></a>
+<a name="line252"></a>	function testDocumentType() {
+<a name="line253"></a>		$this->assertEqual($this->user->type($this->view), 'application/xml+user');
+<a name="line254"></a>	}
+<a name="line255"></a>
+<a name="line256"></a>	function testEmptyDocument() {
+<a name="line257"></a>		parent::EmptyDocument();
+<a name="line258"></a>	}
+<a name="line259"></a>
+<a name="line260"></a>	function testParseEmptyDocument() {		
+<a name="line261"></a>		parent::ParseEmptyDocument();
+<a name="line262"></a>	}
+<a name="line263"></a>
+<a name="line264"></a>	function testParseDocumentFailure() {
+<a name="line265"></a>		parent::ParseDocumentFailure();
+<a name="line266"></a>	}
+<a name="line267"></a>
+<a name="line268"></a>	function testParseDocument() {
+<a name="line269"></a>		parent::ParseDocument();
+<a name="line270"></a>	}
+<a name="line271"></a>	
+<a name="line272"></a>	function testGenerateDocument() {
+<a name="line273"></a>		$doc = $this->createDoc($this->user_data);
+<a name="line274"></a>
+<a name="line275"></a>		$data = (array)simplexml_load_string($doc);
+<a name="line276"></a>		$this->assertNotNull($data);
+<a name="line277"></a>		
+<a name="line278"></a>		foreach($this->user_data as $key => $value)
+<a name="line279"></a>			$this->assertEqual($data[$key], $value['value']);
+<a name="line280"></a>	}
+<a name="line281"></a>
+<a name="line282"></a>	function testGenerateRegistrationDocument() {
+<a name="line283"></a>		$doc = $this->createNewUserDoc($this->registration_data);
+<a name="line284"></a>
+<a name="line285"></a>		$data = (array)simplexml_load_string($doc);
+<a name="line286"></a>		$this->assertNotNull($data);
+<a name="line287"></a>		
+<a name="line288"></a>		foreach($this->registration_data as $key => $value)
+<a name="line289"></a>			$this->assertEqual($data[$key], $value['value']);
+<a name="line290"></a>	}
+<a name="line291"></a>
+<a name="line292"></a>}
+<a name="line293"></a>
+<a name="line294"></a>class TestOfJSONUserClass extends TestOfUserView {
+<a name="line295"></a>
+<a name="line296"></a>	function setup(){
+<a name="line297"></a>		parent::setup();
+<a name="line298"></a>		$this->view = new JSON();		
+<a name="line299"></a>	}
+<a name="line300"></a>
+<a name="line301"></a>	function testDocumentType() {
+<a name="line302"></a>		$this->assertEqual($this->user->type($this->view), 'application/json+user');
+<a name="line303"></a>	}
+<a name="line304"></a>
+<a name="line305"></a>	function testEmptyDocument() {
+<a name="line306"></a>		parent::EmptyDocument();
+<a name="line307"></a>	}
+<a name="line308"></a>
+<a name="line309"></a>	function testParseEmptyDocument() {		
+<a name="line310"></a>		parent::ParseEmptyDocument();
+<a name="line311"></a>	}
+<a name="line312"></a>
+<a name="line313"></a>	function testParseDocumentFailure() {
+<a name="line314"></a>		parent::ParseDocumentFailure();
+<a name="line315"></a>	}
+<a name="line316"></a>
+<a name="line317"></a>	function testParseDocument() {
+<a name="line318"></a>		parent::ParseDocument();
+<a name="line319"></a>	}
+<a name="line320"></a>	
+<a name="line321"></a>	function testGenerateDocument() {
+<a name="line322"></a>		$doc = $this->createDoc($this->user_data);
+<a name="line323"></a>
+<a name="line324"></a>		$item = json_decode($doc, true);
+<a name="line325"></a>		$data = $item['user'];
+<a name="line326"></a>		$this->assertNotNull($data);
+<a name="line327"></a>
+<a name="line328"></a>		foreach($this->user_data as $key => $value)
+<a name="line329"></a>			$this->assertEqual($data[$key], $value['value']);
+<a name="line330"></a>	}
+<a name="line331"></a>
+<a name="line332"></a>	function testGenerateRegistrationDocument() {
+<a name="line333"></a>		$doc = $this->createNewUserDoc($this->registration_data);
+<a name="line334"></a>
+<a name="line335"></a>		$item = json_decode($doc, true);
+<a name="line336"></a>		$data = $item['new_user'];
+<a name="line337"></a>		$this->assertNotNull($data);
+<a name="line338"></a>		
+<a name="line339"></a>		foreach($this->registration_data as $key => $value)
+<a name="line340"></a>			$this->assertEqual($data[$key], $value['value']);
+<a name="line341"></a>	}
+<a name="line342"></a>}
+<a name="line343"></a>
+<a name="line344"></a>
+<a name="line345"></a>class TestOfYAMLUserClass extends TestOfUserView {
+<a name="line346"></a>
+<a name="line347"></a>	function setup(){
+<a name="line348"></a>		parent::setup();
+<a name="line349"></a>		$this->view = new YAML();		
+<a name="line350"></a>	}
+<a name="line351"></a>
+<a name="line352"></a>	function testDocumentType() {
+<a name="line353"></a>		$this->assertEqual($this->user->type($this->view), 'text/x-yaml+user');
+<a name="line354"></a>	}
+<a name="line355"></a>
+<a name="line356"></a>	function testEmptyDocument() {
+<a name="line357"></a>		parent::EmptyDocument();
+<a name="line358"></a>	}
+<a name="line359"></a>
+<a name="line360"></a>	function testParseEmptyDocument() {		
+<a name="line361"></a>		parent::ParseEmptyDocument();
+<a name="line362"></a>	}
+<a name="line363"></a>
+<a name="line364"></a>	function testParseDocumentFailure() {
+<a name="line365"></a>		parent::ParseDocumentFailure();
+<a name="line366"></a>	}
+<a name="line367"></a>
+<a name="line368"></a>	function testParseDocument() {
+<a name="line369"></a>		parent::ParseDocument();
+<a name="line370"></a>	}
+<a name="line371"></a>	
+<a name="line372"></a>	function testGenerateDocument() {
+<a name="line373"></a>		$doc = $this->createDoc($this->user_data);
+<a name="line374"></a>
+<a name="line375"></a>		$item = yaml_parse($doc);
+<a name="line376"></a>		$data = $item['user'];
+<a name="line377"></a>		$this->assertNotNull($data);
+<a name="line378"></a>
+<a name="line379"></a>		foreach($this->user_data as $key => $value)
+<a name="line380"></a>			$this->assertEqual($data[$key], $value['value']);
+<a name="line381"></a>	}
+<a name="line382"></a>
+<a name="line383"></a>	function testGenerateRegistrationDocument() {
+<a name="line384"></a>		$doc = $this->createNewUserDoc($this->registration_data);
+<a name="line385"></a>
+<a name="line386"></a>		$item = yaml_parse($doc);
+<a name="line387"></a>		$data = $item['new_user'];
+<a name="line388"></a>		$this->assertNotNull($data);
+<a name="line389"></a>		
+<a name="line390"></a>		foreach($this->registration_data as $key => $value)
+<a name="line391"></a>			$this->assertEqual($data[$key], $value['value']);
+<a name="line392"></a>	}
+<a name="line393"></a>}
+<a name="line394"></a>
+<a name="line395"></a>?>
+<a name="line396"></a></pre>
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../overview-files.html">Files</a></li>
+<li><a href="../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../todo-list.html">Todo</a></li>
+<li><a href="../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../index.html" target="_top">Frames</a>
+<a href="../../source/tests/usertest.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>

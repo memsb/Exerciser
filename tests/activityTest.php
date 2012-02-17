@@ -5,208 +5,191 @@ require_once('/var/www/exerciser/lib/DBA.php');
 
 class TestOfActivityClass extends UnitTestCase {
 
-	private $id = 7;
-	private $name = 'test';
-	private $kcal = 70;
-	private $desc = 'testing';
-	private $uri = 'test/url/';
+	private $uri = 'uri';
 	private $db;
+	private $activity;
+
+	protected $fields = array(
+				'activity_id' => array('value' => 2, 'default' => 0), 
+				'activity_name' => array('value' => 'name', 'default' => ''), 
+				'description' => array('value' => 'description', 'default' => ''), 
+				'kcal_hour' => array('value' => 200, 'default' => 0)
+				);
+
+	protected $Database_Mapping = array(
+				'activity_id' => 'Activity_ID',
+				'activity_name' => 'Activity_Name',
+				'description' => 'Description',
+				'kcal_hour' => 'Kcal_Hour'
+				);
+
+	private function toDB(){
+		$data = array();
+		foreach( $this->Database_Mapping as $attribute_key => $database_key )
+			$data[$database_key] = $this->fields[$attribute_key]['value'];
+		return $data;
+	}
 
 	function setup(){
 		Mock::generate('Database');
 		$this->db = &new MockDatabase();
 		$this->db->setReturnValue('connect', '');
+		$this->activity = new Activity($this->db);
 	}
 
-	function testResourceLocation() {
-		$activity = new Activity();
-		$this->assertEqual($activity->location(), '');
-		$activity->setLocation($this->uri);
-		$this->assertEqual($activity->location(), $this->uri);
+	function testResourceLocation() {		
+		$this->assertEqual($this->activity->location(), '');
+		$this->activity->setLocation($this->uri);
+		$this->assertEqual($this->activity->location(), $this->uri);
 	}
 
 	function testNotLoaded() {
-		$activity = new Activity();
-		$activity->setLocation($this->uri);
-		$this->assertEqual($activity->activity_id, 0);
-		$this->assertEqual($activity->activity_name, '');
-		$this->assertEqual($activity->description, '');
-		$this->assertEqual($activity->kcal_hour, 0);
+		$this->activity->setLocation($this->uri);
+		foreach($this->fields as $key => $value)
+			$this->assertEqual($this->activity->$key, $value['default']);
 	}
 
 	function testNoDatabase(){
-		$activity = new Activity();
-		$activity->setDatabase(NULL);
-		$this->assertEqual($activity->db, NULL);
-
 		$this->expectException('BadMethodCallException');
-		$activity->load(0);
+		$activity = new Activity(NULL);
 	}
 
-	function testSetsAndGets() {		
-		$activity = new Activity();
-		$activity->activity_id = $this->id;
-		$activity->activity_name = $this->name;
-		$activity->kcal_hour = $this->kcal;
-		$activity->description = $this->desc;
+	function testSetsAndGets() {
+		foreach($this->fields as $key => $value)
+			$this->activity->$key = $value['value'];
 
-		$this->assertEqual($activity->activity_id, $this->id);
-		$this->assertEqual($activity->activity_name, $this->name);
-		$this->assertEqual($activity->description, $this->desc);
-		$this->assertEqual($activity->kcal_hour, $this->kcal);
+		foreach($this->fields as $key => $value)
+			$this->assertEqual($this->activity->$key, $value['value']);
 	}
 
 	function testLoadFailure(){				
 		$this->db->setReturnValue('query', array());
-
-		$activity = new Activity();
-		$activity->setDatabase($this->db);
 		$this->expectException('LengthException');
-		$activity->load(0);
+		$this->activity->load(0);
 	}
 
 	function testLoadSuccess(){
-		$this->db->setReturnValue('query', array(
-							'Activity_ID' => $this->id,
-							'Activity_name' => $this->name,
-							'Description' => $this->desc,
-							'kcal_hour' => $this->kcal
-						));
-
-		$activity = new Activity();
-		$activity->setDatabase($this->db);
-		$activity->load(0);
-		$this->assertEqual($activity->activity_id, $this->id);
-		$this->assertEqual($activity->activity_name, $this->name);
-		$this->assertEqual($activity->description, $this->desc);
-		$this->assertEqual($activity->kcal_hour, $this->kcal);
+		$this->db->setReturnValue('query', array($this->toDB()));
+		$this->activity->load(0);
+		foreach($this->fields as $key => $value)
+			$this->assertEqual($this->activity->$key, $value['value']);
 	}
 }
 
 class TestOfActivityView extends UnitTestCase {
 
 	protected $view;
+	protected $db;
 	protected $activity;
-	protected $id = 7;
-	protected $name = 'test';
-	protected $kcal = 70;
-	protected $desc = 'testing';
-	protected $uri = 'test/url/';
 
-	function setup(){		
-		$this->activity = new Activity();
-		$this->activity->activity_id = $this->id;
-		$this->activity->activity_name = $this->name;
-		$this->activity->description = $this->desc;
-		$this->activity->kcal_hour = $this->kcal;
+	protected $fields = array(
+			'activity_id' => array('value' => 2, 'default' => 0), 
+			'activity_name' => array('value' => 'name', 'default' => ''), 
+			'description' => array('value' => 'description', 'default' => ''), 
+			'kcal_hour' => array('value' => 200, 'default' => 0)
+			);
+
+	function setup(){
+		Mock::generate('Database');
+		$this->db = &new MockDatabase();
+		$this->db->setReturnValue('connect', '');		
+		$this->activity = new Activity($this->db);
+	}
+
+	function testParseEmptyDocument() {		
+		$this->expectException('BadMethodCallException');
+		$this->activity->parse(NULL, NULL);
+	}
+
+	protected function createDoc(){
+		foreach($this->fields as $key => $value)
+			$this->activity->$key = $value['value'];
+
+		$doc = $this->activity->generateDocument($this->view);
+		$this->assertNotNull($doc);
+		return $doc;
 	}
 }
 
-
-class TestOfXMLAcivityClass extends TestOfActivityView {
+class TestOfXMLActivityClass extends TestOfActivityView {
 
 	function setup(){
 		parent::setup();
-		$this->view = new xmlActivity();		
+		$this->view = new XML();		
 	}
 
 	function testDocumentType() {
-		$this->assertEqual($this->view->type(), 'application/xml+activity');
-	}
-
-	function testParseDocument() {		
-		$this->expectException('BadMethodCallException');
-		$this->view->parse(NULL, NULL);
-	}
-
-	function testEmptyDocument() {
-		$this->assertEqual($this->view->toString(), '');
+		$this->assertEqual($this->activity->type($this->view), 'application/xml+activity');
 	}
 	
 	function testGenerateDocument() {
-		$this->view->generateDocument($this->activity);
-		$doc = $this->view->toString();
-		$this->assertNotNull($doc);
+		$doc = $this->createDoc();
 
 		$data = (array)simplexml_load_string($doc);
-		$this->assertNotNull($data);
+		$this->assertNotNull($data);		
 
-		$this->assertEqual($data['activity_id'], $this->id);
-		$this->assertEqual($data['activity_name'], $this->name);
-		$this->assertEqual($data['description'], $this->desc);
-		$this->assertEqual($data['kcal_hour'], $this->kcal);
-	}
-}
-
-class TestOfJSONAcivityClass extends TestOfActivityView {
-
-	function setup(){
-		parent::setup();
-		$this->view = new jsonActivity();		
-	}
-
-	function testDocumentType() {
-		$this->assertEqual($this->view->type(), 'application/json+activity');
-	}
-
-	function testParseDocument() {		
-		$this->expectException('BadMethodCallException');
-		$this->view->parse(NULL, NULL);
+		foreach($this->fields as $key => $value)
+			$this->assertEqual($this->activity->$key, $value['value']);
 	}
 
 	function testEmptyDocument() {
-		$this->assertEqual($this->view->toString(), '');
+		$this->assertNotNull($this->activity->generateDocument($this->view), '');
+	}
+}
+
+
+class TestOfJSONActivityClass extends TestOfActivityView {
+
+	function setup(){
+		parent::setup();
+		$this->view = new JSON();		
+	}
+
+	function testDocumentType() {
+		$this->assertEqual($this->activity->type($this->view), 'application/json+activity');
+	}
+
+	function testEmptyDocument() {
+		$this->assertNotNull($this->activity->generateDocument($this->view), '');
 	}
 	
 	function testGenerateDocument() {
-		$this->view->generateDocument($this->activity);
-		$doc = $this->view->toString();
-		$this->assertNotNull($doc);
+		$doc = $this->createDoc();
 
 		$item = json_decode($doc, true);
 		$data = $item['activity'];
 		$this->assertNotNull($data);
 
-		$this->assertEqual($data['activity_id'], $this->id);
-		$this->assertEqual($data['activity_name'], $this->name);
-		$this->assertEqual($data['description'], $this->desc);
-		$this->assertEqual($data['kcal_hour'], $this->kcal);
+		foreach($this->fields as $key => $value)
+			$this->assertEqual($data[$key], $value['value']);
 	}
 }
 
-class TestOfYAMLAcivityClass extends TestOfActivityView {
+
+class TestOfYAMLActivityClass extends TestOfActivityView {
 
 	function setup(){
 		parent::setup();
-		$this->view = new yamlActivity();		
-	}
-
-	function testDocumentType() {
-		$this->assertEqual($this->view->type(), 'text/x-yaml+activity');
-	}
-
-	function testParseDocument() {		
-		$this->expectException('BadMethodCallException');
-		$this->view->parse(NULL, NULL);
+		$this->view = new YAML();		
 	}
 
 	function testEmptyDocument() {
-		$this->assertEqual($this->view->toString(), '');
+		$this->assertNotNull($this->activity->generateDocument($this->view), '');
+	}
+
+	function testDocumentType() {
+		$this->assertEqual($this->activity->type($this->view), 'text/x-yaml+activity');
 	}
 	
 	function testGenerateDocument() {
-		$this->view->generateDocument($this->activity);
-		$doc = $this->view->toString();
-		$this->assertNotNull($doc);
+		$doc = $this->createDoc();
 
 		$item = yaml_parse($doc);
 		$data = $item['activity'];
 		$this->assertNotNull($data);
 
-		$this->assertEqual($data['activity_id'], $this->id);
-		$this->assertEqual($data['activity_name'], $this->name);
-		$this->assertEqual($data['description'], $this->desc);
-		$this->assertEqual($data['kcal_hour'], $this->kcal);
+		foreach($this->fields as $key => $value)
+			$this->assertEqual($data[$key], $value['value']);
 	}
 }
 
