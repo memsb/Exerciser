@@ -1,8 +1,11 @@
 <?php
 
-require_once('/var/www/exerciser/classes/activities.php');
-require_once('/var/www/exerciser/lib/DBA.php');
+require_once(CLASSES . 'activities.php');
+require_once(LIB . 'DBA.php');
 
+/*
+ * @namespace Exerciser\Tests\Models
+ */
 class TestOfActivitiesClass extends UnitTestCase {
 	
 	private $uri = 'test/url/';
@@ -73,6 +76,9 @@ class TestOfActivitiesClass extends UnitTestCase {
 
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfactivitiesView extends UnitTestCase {
 
 	protected $uri = 'test/url/';
@@ -123,6 +129,9 @@ class TestOfactivitiesView extends UnitTestCase {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfXMLAcivitiesClass extends TestOfactivitiesView {
 
 	function setup(){
@@ -149,7 +158,9 @@ class TestOfXMLAcivitiesClass extends TestOfactivitiesView {
 	}
 }
 
-
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfJSONAcivitiesClass extends TestOfactivitiesView {
 
 	function setup(){
@@ -176,6 +187,9 @@ class TestOfJSONAcivitiesClass extends TestOfactivitiesView {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfYAMLAcivitiesClass extends TestOfactivitiesView {
 
 	function setup(){

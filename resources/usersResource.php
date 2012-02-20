@@ -1,55 +1,56 @@
 <?php
 
-require_once dirname(__FILE__) . '/../classes/users.php';
-require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
+require_once CLASSES .  'users.php';
+require_once LIB .  'MultiViewResource.php';
 
 /**
- * @namespace Tonic\Exerciser\Users
+ * @author Martin Buckley - MBuckley@gmail.com
+ * Controller for Users resource
+ *
+ * @namespace Exerciser\Resources
  * @uri /users
  */
 class UsersResource extends MultiViewResource {
 
-	protected $views = array(	'xml' => 'xmlUsers', 
-					'json' => 'jsonUsers', 
-					'yaml' => 'yamlUsers'
-				);
-
-	function __construct($parameters){
-		  parent::__construct($parameters);
-	}
-    
 	/**
-	* Handle a GET request for this resource
-	* @param Request request
-	* @return Response
-	*/
-	function get($request) {
+	 * Constructor for Users reasource
+	 * @param array of configuration parameters
+	 */
+	public function __construct($parameters){
+		parent::__construct($parameters);
+		$this->model = new Users($this->db);
+	}
+
+	/**
+	 * Handle a GET request for this resource
+	 * Returns a document containing a list of users
+	 * @param Request request
+	 * @return Response
+	 */
+	public function get($request) {
 		$response = new Response($request);
-
-		$view = $this->get_view($request);
-		$model = new Users($request->uri);		
-
+		$this->model->location($request->uri);	
+		$this->view = $this->get_view($request);
 		try{
-			$model->load();
-			$view->generateDocument($model);
-
+			$this->model->load();
 			$response = new Response($request);
 			$response->code = Response::OK;
-			$response->addHeader('Content-type', $view->type());
-			$response->body = $view->toString();
+			$response->addHeader('Content-type', $this->model->type($this->view));
+			$response->body = $this->model->generateDocument($this->view);
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
-		}     
-
+		}
 		return $response;
 	}
 	
 	/**
-	* Handle a POST request for this resource
-	* @param Request request
-	* @return Response
-	*/
-	function post($request){
+	 * Handle a POST request for this resource
+	 * Forwards request on to User
+	 * @param Request request
+	 * @return Response
+	 */
+	public function post($request){
+		// forwards request on to User
 		$user = new UserResource($this->parameters);
 		return $user->post($request);		
 	}    

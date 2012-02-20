@@ -1,11 +1,15 @@
 <?php
 
-require_once('/var/www/exerciser/lib/DBA.php');
+require_once(LIB . 'DBA.php');
 
 define('TEST_DATABASE', 'test', true);
 define('TEST_USERNAME', 'test', true);
 define('TEST_PASSWORD', 'test', true);
 
+
+/*
+ * @namespace Exerciser\Tests\Lib
+ */
 class TestOfDBAClass extends UnitTestCase {
 	
 	private $db;

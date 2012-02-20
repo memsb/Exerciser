@@ -1,8 +1,11 @@
 <?php
 
-require_once('/var/www/exerciser/lib/CRUD.php');
-require_once('/var/www/exerciser/classes/user.php');
+require_once(LIB . 'CRUD.php');
+require_once(CLASSES . 'user.php');
 
+/*
+ * @namespace Exerciser\Tests\Resources
+ */
 class TestOfResource extends UnitTestCase {
 
 	protected $config = array();

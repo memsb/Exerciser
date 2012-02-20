@@ -1,44 +1,58 @@
 <?php
 
-require_once dirname(__FILE__) . '/../lib/interfaces.php';
+require_once LIB . 'CRUD.php';
 
+/**
+ *	@author Martin Buckley - MBuckley@gmail.com
+ *	Workout handles details of a Workout
+ * 	@namespace Exerciser
+ */
 class Workout extends CRUD {
 
-	protected $workout_id;
-	protected $username;
-	protected $user_id;
-	protected $activity_id;
-	protected $activity_name;
-	protected $start;
-	protected $duration;
-	protected $kcal;
+	protected $type = 'workout';
 
-	protected $required = array('user_id', 'activity_id', 'start_time', 'duration', 'kcal');
+	protected $workout_id = 0;
+	protected $username = '';
+	protected $user_id = 0;
+	protected $activity_id = 0;
+	protected $activity_name = '';
+	protected $start = 0;
+	protected $duration = 0;
+	protected $kcal = 0;
 
-	public function Workout($uri){
-		$this->uri = $uri;
+	protected $required = array('user_id', 'activity_id', 'start', 'duration', 'kcal');
+
+	/**
+	 * Constructor calls constructor in CRUD
+	 * @param Database instance to be used
+	 */
+	public function __construct($db){
+		parent::__construct($db);
 	}
 
+	/**
+	 * Loads the details of the specified Workout
+	 * @param Int the Workout ID
+	 */
 	public function load($workoutID){
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("SELECT 	Users.Username AS Username,
-						Users.User_ID AS User_ID,
-						Activities.Activity_ID AS Activity_ID,
-						Activities.Activity_Name AS Activity_Name,
-						UNIX_TIMESTAMP(Start_Time) AS Start_Time, 
-						Duration, 
-						Kcal
-						FROM Workouts 
-						JOIN Users USING (User_ID)
-						JOIN Activities USING (Activity_ID)
-						WHERE Workout_ID = '" . mysql_real_escape_string($workoutID) . "'"
+		$id = $this->db->clean($workoutID);
+		$result = $this->db->query("SELECT 	Users.Username AS Username,
+							Users.User_ID AS User_ID,
+							Activities.Activity_ID AS Activity_ID,
+							Activities.Activity_Name AS Activity_Name,
+							UNIX_TIMESTAMP(Start_Time) AS Start_Time, 
+							Duration, 
+							Kcal
+							FROM Workouts 
+							JOIN Users USING (User_ID)
+							JOIN Activities USING (Activity_ID)
+							WHERE Workout_ID = '$id'"
 					);
-		if( mysql_num_rows($result) == 0 ){
-			throw new Exception("No matching entry in database");
-		}
-		$row = mysql_fetch_array($result);
-		$this->workout_id = $workoutID;
+		if( ! $result || count($result) == 0 )
+			throw new LengthException("Workout not found.");
+		
+		$row = $result[0];
+		$this->workout_id = $id;
 		$this->username = $row['Username'];
 		$this->user_id = $row['User_ID'];
 		$this->activity_id = $row['Activity_ID'];
@@ -48,228 +62,135 @@ class Workout extends CRUD {
 		$this->kcal = $row['Kcal'];
 	}
 
+	/**
+	 * Creates a new workout using the current details
+	 * @return Boolean True on success
+	 */
 	public function create(){
 		$this->validate();
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("INSERT INTO Workouts (	User_ID, 
-								Activity_ID, 
-								UNIX_TIMESTAMP(Start_Time), 
-								Duration, 
-								Kcal
-								) VALUES ('" . 
-								mysql_real_escape_string($this->user_id) . "', '" . 
-								mysql_real_escape_string($this->activity_id) . "', '" . 
-								mysql_real_escape_string($this->start) . "', '" . 
-								mysql_real_escape_string($this->duration) . "', '" . 
-								mysql_real_escape_string($this->kcal) . "')"
-					);
-		$this->workout_id = mysql_insert_id();
+		$user_id = $this->db->clean($this->user_id);
+		$activity_id = $this->db->clean($this->activity_id);
+		$start = $this->db->clean(strtotime($this->start));
+		$duration = $this->db->clean($this->duration);
+		$kcal = $this->db->clean($this->kcal);		
+		$result = $this->db->query("INSERT INTO Workouts (User_ID, Activity_ID, UNIX_TIMESTAMP(Start_Time), Duration, Kcal
+								) VALUES ('$user_id', '$activity_id', '$start', '$duration', '$kcal')");
+
+		if( ! $result )
+			throw new Exception("Workout not created.");
+
+		$this->workout_id = $this->db->insert_id();
 		$this->uri .= '/' . $this->workout_id;
+		return True;
 	}
 
+	/**
+	 * Updates the current workout
+	 * @return Boolean True on success
+	 */
 	public function update(){
 		$this->validate();
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("UPDATE Workouts SET 
-						Activity_ID = 	'" . mysql_real_escape_string($this->activity_id) . "',
-						Start_Time = 	UNIX_TIMESTAMP('" . strtotime($this->start) . "'),
-						Duration = 	'" . mysql_real_escape_string($this->duration) . "',
-						Kcal = 		'" . mysql_real_escape_string($this->kcal) . "'
-						WHERE Workout_ID = '" . mysql_real_escape_string($this->workout_id) . "'"
+		$activity_id = $this->db->clean($this->activity_id);
+		$start = $this->db->clean(strtotime($this->start));
+		$duration = $this->db->clean($this->duration);
+		$kcal = $this->db->clean($this->kcal);
+		$workout_id = $this->db->clean($this->workout_id);
+		$result = $this->db->query("UPDATE Workouts SET 
+						Activity_ID = 	'$activity_id',
+						Start_Time = 	UNIX_TIMESTAMP('$start'),
+						Duration = 	'$duration',
+						Kcal = 		'$kcal'
+						WHERE Workout_ID = '$workout_id'"
 					);
-		if( !$result ){
-			throw new Exception("No matching entry in database");
-		}
+		if( ! $result )
+			throw new Exception("Workout not updated.");
+		return True;
 	}
 
+	/**
+	 * Deletes the current workout
+	 * @return Boolean True on success
+	 */
 	public function delete(){
-		// add workout to database
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("DELETE FROM Workouts WHERE Workout_ID = '" . mysql_real_escape_string($this->workout_id) . "'");
+		$id = $this->db->clean($this->workout_id);
+		$result = $this->db->query("DELETE FROM Workouts WHERE Workout_ID = '$id'");
+		if(  ! $result )
+			throw new Exception("Workout not deleted.");
+
+		return True;
 	}
 
+	/**
+	 * Iterates through the required values to check they are specified
+	 */
 	public function validate(){
 		foreach( $this->required as $field )
 			if( !$this->$field )
-				throw new UnexpectedValueException("Data for field: $field required but not present");
+				throw new Exception("Data for field: $field required but not present");
 	}
 
-	public function location(){
-		return $this->uri;
-	}
-	
-}
+	/**
+	 * Utilises the View specified to read data from the document
+	 * @param String containing the document 
+	 * @param View specifying the document type
+	 */
+	public function parse($data_str, $view){
+		if( ! $view )
+			throw new BadMethodCallException('Function not implemented.');
 
-class xmlWorkout implements View {
+		try{
+			$view->parse($data_str);
+			$data = $view->getArray();
+			$workout = $data['workout'];
 
-	private $type = 'application/xml+workout';
-	private $writer;
-
-	public function xmlWorkout(){		
-	}
-
-	public function parse($data, $workout){
-		//check mime type
-		$this->data = new SimpleXMLElement($data);
-		//parse xml into values
-		foreach( $workout->required as $field )
-			$workout->$field = $this->data->$field;
-		$workout->validate();
-	}
-
-	public function generateDocument($workout){
-		$this->writer = new XMLWriter();
-		$this->writer->openMemory();
-		$this->writer->setIndent(true);
-		$this->writer->setIndentString(' ');
-
-		// builds xml document	
-		$this->writer->startDocument('1.0', 'UTF-8');
-		$this->addElements($workout, $this->writer);
-		$this->writer->endDocument();
-	}
-
-	public function addElements($workout, &$writer){
-		$writer->startElement('workout');
-		$writer->writeAttribute('uri', $workout->location());
-
-		$writer->startElement('workout_id');
-		$writer->text($workout->workout_id);
-		$writer->endElement();
-	
-		$writer->startElement('username');
-		$writer->text($workout->username);
-		$writer->endElement();
-
-		$writer->startElement('user_id');
-		$writer->text($workout->user_id);
-		$writer->endElement();
-
-		$writer->startElement('activity_id');
-		$writer->text($workout->activity_id);
-		$writer->endElement();
-
-		$writer->startElement('activity_name');
-		$writer->text($workout->activity_name);
-		$writer->endElement();
-
-		$writer->startElement('start');
-		$writer->text($workout->start);
-		$writer->endElement();
-
-		$writer->startElement('duration');
-		$writer->text($workout->duration);
-		$writer->endElement();
-
-		$writer->startElement('kcal');
-		$writer->text($workout->kcal);
-		$writer->endElement();
-
-		$writer->endElement();
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		if($this->writer != null){		
-			return $this->writer->outputMemory();
-		}else{
-			return '';
+			foreach( $this->required as $field )
+				$this->$field = $workout[$field];
+		}catch(Exception $e){
+			throw new UnexpectedValueException($e->getMessage());
 		}
 	}
+
+	/**
+	 * Adds elements to the specified View
+	 * @param View specifying the document type
+	 */
+	public function addProperties($view){
+		$view->startElement('workout');
+
+		$view->startElement('workout_id');
+		$view->text($this->workout_id);
+		$view->endElement();
+	
+		$view->startElement('username');
+		$view->text($this->username);
+		$view->endElement();
+
+		$view->startElement('user_id');
+		$view->text($this->user_id);
+		$view->endElement();
+
+		$view->startElement('activity_id');
+		$view->text($this->activity_id);
+		$view->endElement();
+
+		$view->startElement('activity_name');
+		$view->text($this->activity_name);
+		$view->endElement();
+
+		$view->startElement('start');
+		$view->text($this->start);
+		$view->endElement();
+
+		$view->startElement('duration');
+		$view->text($this->duration);
+		$view->endElement();
+
+		$view->startElement('kcal');
+		$view->text($this->kcal);
+		$view->endElement();
+
+		$view->endElement();
+	}	
 }
 
-class jsonWorkout implements View {
-
-	private $type = 'application/json+workout';
-	private $data;
-
-	public function jsonWorkout(){
-	}
-
-	public function parse($data, $workout){	
-		$this->data = json_decode($data, true);
-		foreach( $workout->required as $field )
-			$workout->$field = $this->data['workout'][$field];
-		$workout->validate();
-	}
-
-	public function generateDocument($workout){
-		$this->data = array();
-		$this->addElements($workout, $this->data);
-	}
-
-	public function addElements($workout, &$data){
-		$data = array('workout' => 
-				array(
-					'workout_id' => $workout->workout_id,
-					'username' => $workout->username,
-					'user_id' => $workout->user_id,
-					'activity_id' => $workout->activity_id,
-					'activity_name' => $workout->activity_name,
-					'start' => $workout->start,
-					'duration' => $workout->duration,
-					'kcal' => $workout->kcal
-				),
-				'uri' => $workout->location() . '.json'
-			);
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		return json_encode($this->data);
-	}
-}
-
-class yamlWorkout implements View {
-
-	private $type = 'text/x-yaml+workout';
-	private $data;
-
-	public function yamlWorkout(){
-	}
-
-	public function parse($data, $workout){	
-		$this->data = yaml_parse($data);
-		foreach( $workout->required as $field )
-			$workout->$field = $this->data['workout'][$field];
-		$workout->validate();
-	}
-
-	public function generateDocument($workout){
-		$this->addElements($workout, $this->data);
-	}
-
-	public function addElements($workout, &$data){
-		$data = array('workout' => 
-				array(
-					'workout_id' => $workout->workout_id,
-					'username' => $workout->username,
-					'user_id' => $workout->user_id,
-					'activity_id' => $workout->activity_id,
-					'activity_name' => $workout->activity_name,
-					'start' => $workout->start,
-					'duration' => $workout->duration,
-					'kcal' => $workout->kcal
-				),
-				'uri' => $workout->location() . '.yaml'
-			);
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		return yaml_emit($this->data);
-	}
-}
 ?>

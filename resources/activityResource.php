@@ -1,62 +1,49 @@
 <?php
 
-require_once dirname(__FILE__) . '/../classes/activity.php';
-require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
+require_once CLASSES .  'activity.php';
+require_once LIB .  'MultiViewResource.php';
 
 /**
- *	@author Martin Buckley - MBuckley@gmail.com
- *	Resource controller for an activity.
+ * @author Martin Buckley - MBuckley@gmail.com
+ * Resource controller for an activity.
  *
- * @namespace Tonic\Exerciser\Activities\Activity
+ * @namespace Exerciser\Resources
  * @uri /activities/([0-9]+)/
  */
 class ActivityResource extends MultiViewResource {
 
-	protected $views = array(	'xml' => 'xmlActivity', 
-					'json' => 'jsonActivity', 
-					'yaml' => 'yamlActivity'
-				);
-
 	/**
-	* Creates an instance of the resource
-	* @param array parameters
-	*/
-	function __construct($parameters){
+	 * Creates an default instance of model
+	 * @param array parameters
+	 */
+	public function __construct($parameters){
 		parent::__construct($parameters);
-		$this->model = new Activity();
-	}
-
-	/**
-	* Sets the model to be controlled
-	* @param Activity model
-	*/
-	function setModel($model){
-		$this->model = $model;
+		$this->model = new Activity($this->db);
 	}
     
 	/**
-	* Handle a GET request for this resource
-	* @param Request request object containing parameters
-	* @return Response
-	*/
-	function get($request) {
+	 * Handle a GET request for this resource
+	 * returns a document containing information on an activity
+	 * @param Request request object containing parameters
+	 * @return Response
+	 */
+	public function get($request) {
 		$response = new Response($request);
 		$ID = $this->parameters[0];
-
-		$view = $this->get_view($request);		
-		$this->model->location($request->uri);
+		
+		$this->view = $this->get_view($request);
+		$this->model->setLocation($request->uri);
 
 		try{
 			$this->model->load($ID);						
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
 			return $response;
-		}
-	     
-		$view->generateDocument($this->model);
+		}	     
+		
 		$response->code = Response::OK;
-		$response->addHeader('Content-type', $view->type());
-		$response->body = $view->toString();
+		$response->addHeader('Content-type', $this->model->type($this->view));
+		$response->body = $this->model->generateDocument($this->view);
 		return $response;
 	}
 }

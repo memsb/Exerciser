@@ -1,41 +1,42 @@
 <?php
 
-require_once dirname(__FILE__) . '/../classes/activities.php';
-require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
+require_once CLASSES .  'activities.php';
+require_once LIB .  'MultiViewResource.php';
 
 /**
- * @namespace Tonic\Exerciser\Activities
+ * @author Martin Buckley - MBuckley@gmail.com
+ * Controller for Activities.
+ *
+ * @namespace Exerciser\Resources
  * @uri /activities/
  */
 class ActivitiesResource extends MultiViewResource {
 
-	protected $views = array(	'xml' => 'xmlActivities', 
-					'json' => 'jsonActivities', 
-					'yaml' => 'yamlActivities'
-				);
-
-	function __construct($parameters){
-		  parent::__construct($parameters);
-	}
-    
 	/**
-	* Handle a GET request for this resource
-	* @param Request request
-	* @return Response
-	*/
-	function get($request) {
-		$response = new Response($request);
+	 * Constructor creates a new default instance of a model
+	 * @param array or configuration parameters
+	 */
+	public function __construct($parameters){
+		parent::__construct($parameters);		
+		$this->model = new Activities($this->db);
+	}
 
-		$view = $this->get_view($request);
-		$model = new Activities($request->uri);
+	/**
+	 * Handle a GET request for this resource
+	 * Returns a document containing a list of all stored activities
+	 * @param Request request
+	 * @return Response
+	 */
+	public function get($request) {
+		$response = new Response($request);
+		$this->view = $this->get_view($request);
+		$this->model->setLocation($request->uri);
 
 		try{
-			$model->load();
-			$view->generateDocument($model);
-
+			$this->model->load();
 			$response->code = Response::OK;
-			$response->addHeader('Content-type', $view->type());
-			$response->body = $view->toString(); 
+			$response->addHeader('Content-type', $this->model->type($this->view));
+			$response->body = $this->model->generateDocument($this->view);
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
 		}

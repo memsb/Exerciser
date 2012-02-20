@@ -1,8 +1,11 @@
 <?php
 
-require_once('/var/www/exerciser/classes/workouts.php');
-require_once('/var/www/exerciser/lib/DBA.php');
+require_once(CLASSES . 'workouts.php');
+require_once(LIB . 'DBA.php');
 
+/*
+ * @namespace Exerciser\Tests\Models
+ */
 class TestOfWorkoutsClass extends UnitTestCase {
 
 	private $workouts;
@@ -84,6 +87,9 @@ class TestOfWorkoutsClass extends UnitTestCase {
 
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfWorkoutsView extends UnitTestCase {
 
 	protected $fields = array(
@@ -126,6 +132,9 @@ class TestOfWorkoutsView extends UnitTestCase {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfXMLWorkoutsClass extends TestOfWorkoutsView {
 
 	function setup(){
@@ -153,6 +162,9 @@ class TestOfXMLWorkoutsClass extends TestOfWorkoutsView {
 }
 
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfJSONWorkoutsClass extends TestOfWorkoutsView {
 
 	function setup(){
@@ -179,6 +191,9 @@ class TestOfJSONWorkoutsClass extends TestOfWorkoutsView {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfYAMLWorkoutsClass extends TestOfWorkoutsView {
 
 	function setup(){

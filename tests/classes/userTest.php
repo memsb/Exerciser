@@ -1,8 +1,11 @@
 <?php
 
-require_once('/var/www/exerciser/classes/user.php');
-require_once('/var/www/exerciser/lib/DBA.php');
+require_once(CLASSES . 'user.php');
+require_once(LIB . 'DBA.php');
 
+/*
+ * @namespace Exerciser\Tests\Models
+ */
 class TestOfUserClass extends UnitTestCase {
 
 	private $uri = 'user';
@@ -164,6 +167,9 @@ class TestOfUserClass extends UnitTestCase {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfUserView extends UnitTestCase {
 
 	protected $input = array(
@@ -242,6 +248,9 @@ class TestOfUserView extends UnitTestCase {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfXMLUserClass extends TestOfUserView {
 
 	function setup(){
@@ -291,6 +300,9 @@ class TestOfXMLUserClass extends TestOfUserView {
 
 }
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfJSONUserClass extends TestOfUserView {
 
 	function setup(){
@@ -342,6 +354,9 @@ class TestOfJSONUserClass extends TestOfUserView {
 }
 
 
+/*
+ * @namespace Exerciser\Tests\Views
+ */
 class TestOfYAMLUserClass extends TestOfUserView {
 
 	function setup(){

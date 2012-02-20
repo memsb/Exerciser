@@ -1,7 +1,10 @@
 <?php
 
-require_once('/var/www/exerciser/lib/view.php');
+require_once(LIB . 'view.php');
 
+/*
+ * @namespace Exerciser\Tests\Lib
+ */
 class TestOfNodeClass extends UnitTestCase {
 
 	private $node;
@@ -39,7 +42,9 @@ class TestOfNodeClass extends UnitTestCase {
 	}
 }
 
-
+/*
+ * @namespace Exerciser\Tests\Lib
+ */
 class TestOfTreeClass extends UnitTestCase {
 
 	private $tree;
@@ -147,6 +152,9 @@ class TestOfTreeClass extends UnitTestCase {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Lib
+ */
 class TestOfXMLTreeClass extends UnitTestCase {
 
 	private $tree;
@@ -180,6 +188,9 @@ class TestOfXMLTreeClass extends UnitTestCase {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Lib
+ */
 class TestOfJSONTreeClass extends UnitTestCase {
 
 	private $tree;
@@ -202,6 +213,9 @@ class TestOfJSONTreeClass extends UnitTestCase {
 	}
 }
 
+/*
+ * @namespace Exerciser\Tests\Lib
+ */
 class TestOfYAMLTreeClass extends UnitTestCase {
 
 	private $tree;
@@ -232,12 +246,4 @@ YAML;
 		$this->assertEqual(preg_replace("'\s+'", '', $input), preg_replace("'\s+'", '', $output));
 	}
 }
-
-
-
-
-
-
-
-
 ?>

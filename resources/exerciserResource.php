@@ -1,41 +1,41 @@
 <?php
 
-require_once dirname(__FILE__) . '/../classes/stats.php';
-require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
+require_once CLASSES .  'stats.php';
+require_once LIB .  'MultiViewResource.php';
 
 /**
- * @namespace Tonic\Exerciser
+ * @author Martin Buckley - MBuckley@gmail.com
+ * Controller for Stats Resource.
+ *
+ * @namespace Exerciser\Resources
  * @uri /
  */
 class ExerciserResource extends MultiViewResource {
 
-	protected $views = array(	'xml' => 'xmlStats', 
-					'json' => 'jsonStats', 
-					'yaml' => 'yamlStats'
-				);
-
-	function __construct($parameters){
-		  parent::__construct($parameters);
+	/**
+	 * Constructor for Stats reasource
+	 * @param array of configuration parameters
+	 */
+	public function __construct($parameters){
+		parent::__construct($parameters);
+		$this->model = new Stats($this->db);
 	}
     
 	/**
-	* Handle a GET request for this resource
-	* @param Request request
-	* @return Response
-	*/
-	function get($request) {
+	 * Handle a GET request for this resource
+	 * Returns a document containing service usage statistics
+	 * @param Request request
+	 * @return Response
+	 */
+	public function get($request) {
 		$response = new Response($request);
-
-		$view = $this->get_view($request);
-		$model = new Stats($request->uri);
-
+		$this->model->setLocation($request->uri);
+		$this->view = $this->get_view($request);
 		try{
-			$model->load();			
-			$view->generateDocument($model);
-			
+			$this->model->load();			
 			$response->code = Response::OK;
-			$response->addHeader('Content-type', $view->type());
-			$response->body = $view->toString();
+			$response->addHeader('Content-type', $this->model->type($this->view));
+			$response->body = $this->model->generateDocument($this->view);
 		}catch (Exception $e) {
 			$response->code = Response::NOTFOUND;
 		}

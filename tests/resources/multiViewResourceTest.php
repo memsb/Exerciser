@@ -1,7 +1,10 @@
 <?php
 
-require_once('/var/www/exerciser/lib/MultiViewResource.php');
+require_once(LIB . 'MultiViewResource.php');
 
+/*
+ * @namespace Exerciser\Tests\Lib
+ */
 class TestOfMultiViewResource extends UnitTestCase {
 
 	private $config = array();

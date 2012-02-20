@@ -1,11 +1,12 @@
 <?php
+namespace Exerciser;
 
-require_once 'resources/exerciserResource.php';
-require_once 'resources/userResource.php';
-require_once 'resources/usersResource.php';
-require_once 'resources/workoutsResource.php';
-require_once 'resources/workoutResource.php';
-require_once 'resources/activitiesResource.php';
-require_once 'resources/activityResource.php';
+require_once RESOURCES . 'exerciserResource.php';
+require_once RESOURCES . 'workoutsResource.php';
+require_once RESOURCES . 'workoutResource.php';
+require_once RESOURCES . 'usersResource.php';
+require_once RESOURCES . 'userResource.php';
+require_once RESOURCES . 'activitiesResource.php';
+require_once RESOURCES . 'activityResource.php';
 
 ?>

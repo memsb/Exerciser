@@ -1,149 +1,71 @@
 <?php
 
-require_once dirname(__FILE__) . '/../lib/DBA.php';
-require_once dirname(__FILE__) . '/../lib/interfaces.php';
+require_once LIB . 'CRUD.php';
+require_once CLASSES . 'activity.php';
 
-require_once('activity.php');
-
+/**
+ *	@author Martin Buckley - MBuckley@gmail.com
+ *	Contains a list of Activity
+ * 	@namespace Exerciser
+ */
 class Activities extends CRUD {
 
-	//values
+	protected $type = 'activities';
 	protected $activities = array();
 
-	public function Activities($uri){
-		$this->uri = $uri;
+	/**
+	 * Constructor calls constructor in CRUD
+	 * @param Database instance to be used
+	 */
+	public function __construct($db){		
+		parent::__construct($db);
 	}
 
-	public function load(){
-		// load in stats from database
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("SELECT Activity_ID FROM Activities");
-		if( mysql_num_rows($result) == 0 ){
-			throw new Exception("No matching entries in database");
-		}
-		while($row = mysql_fetch_array($result)){
-			$activity = new Activity($this->uri . '/' . $row['Activity_ID']);
+	/**
+	 * Loads all activities from database
+	 */
+	public function load(){		
+		$result = $this->db->query("SELECT Activity_ID FROM Activities");		
+		foreach($result as $row) {	
+			$activity = new Activity($this->db);
+			$activity->setLocation($this->uri . '/' . $row['Activity_ID']);
 			$activity->load($row['Activity_ID']);
 			$this->activities[] = $activity;
 		}
 	}
 
-}
-
-
-class xmlActivities implements View {
-
-	private $type = 'application/xml+activities';
-	private $writer;
-	private $data;
-
-	public function xmlActivity(){
+	/**
+	 * Gives a count of how many Activity have been loaded
+	 * @return Int the number of activities loaded
+	 */
+	public function size(){
+		return count($this->activities);
 	}
 
-	public function parse($data, $activities){
+	/**
+	 * Gives the list of loaded activities
+	 * @return array of Activity
+	 */
+	public function getActivities(){
+		return $this->activities;
 	}
 
-	public function generateDocument($activities){
-		$this->writer = new XMLWriter();
-		$this->writer->openMemory();
-		$this->writer->setIndent(true);
-		$this->writer->setIndentString(' ');
-
-		// builds xml document	
-		$this->writer->startDocument('1.0', 'UTF-8');
-		$this->addElements($activities, $this->writer);
-		$this->writer->endDocument();
-	}
-
-	public function addElements($activities, &$writer){
-		$writer->startElement('activities');
-		$view = new xmlActivity();
-		foreach($activities->activities as $activity){			
-			$view->addElements($activity, $writer);
+	/**
+	 * Generates a document representation of the model in the requested view
+	 * @param View type requested
+	 * @return String containing the document
+	 */
+	public function generateDocument($view){
+		$view->startDocument();
+		$view->startElement('activities');
+		$i = 0;
+		foreach($this->activities as $activity){
+			$view->startElement($i++);		
+			$activity->addProperties($view);
+			$view->endElement();
 		}
-
-		$writer->endElement();
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		if($this->writer != null){		
-			return $this->writer->outputMemory();
-		}else{
-			return '';
-		}
-	}
-}
-
-class jsonActivities implements View {
-
-	private $type = 'application/json+activities';
-	private $data;
-
-	public function jsonActivities(){
-	}
-
-	public function parse($data, $activities){
-	}
-
-	public function generateDocument($activities){
-		$data = array();
-		$this->addElements($activities, $data);
-		$this->data['activities'] = $data;
-	}
-
-	public function addElements($activities, &$data){
-		$view = new jsonActivity();
-		foreach($activities->activities as $activity){			
-			$view->addElements($activity, $entry);
-			$data[] = $entry;
-		}
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		return json_encode($this->data);
-	}
-}
-
-class yamlActivities implements View {
-
-	private $type = 'text/x-yaml+activities';
-	private $data;
-
-	public function yamlActivities(){
-	}
-
-	public function parse($data, $activities){
-	}
-
-	public function generateDocument($activities){
-		$data = array();
-		$this->addElements($activities, $data);
-		$this->data['activities'] = $data;
-	}
-
-	public function addElements($activities, &$data){		
-		$view = new yamlActivity();
-		foreach($activities->activities as $activity){
-			$view->addElements($activity, $entry);
-			$data[] = $entry;
-		}
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		return yaml_emit($this->data);
+		$view->endElement();
+		return $view->toString();
 	}
 }
 

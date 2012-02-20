@@ -1,152 +1,73 @@
 <?php
 
-require_once dirname(__FILE__) . '/../lib/DBA.php';
-require_once dirname(__FILE__) . '/../lib/interfaces.php';
-require_once dirname(__FILE__) . '/../lib/utils.php';
-require_once dirname(__FILE__) . '/user.php';
+require_once LIB . 'CRUD.php';
+require_once CLASSES . '/user.php';
 
+/**
+ *	@author Martin Buckley - MBuckley@gmail.com
+ *	Users stores a list of User instances
+ * 	@namespace Exerciser
+ */
 class Users extends CRUD {
 
+	protected $type = 'users';
 	protected $users = array();
 
-	public function Users($uri){
-		$this->uri = $uri;
+	/**
+	 * Constructor calls constructor in CRUD
+	 * @param Database instance to be used
+	 */
+	public function __construct($db){
+		parent::__construct($db);
 	}
 
+	/**
+	 * Gives a count of User loaded
+	 * @param Int the count
+	 */
+	public function size(){
+		return count($this->users);
+	}
+
+	/**
+	 * Adds a User to the user list
+	 * @param User the user
+	 */
+	public function addUser(User $user){
+		$this->users[] = $user;
+	}
+
+	/**
+	 * Loads all User from database
+	 */
 	public function load(){
-		// load in stats from database
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("SELECT User_ID FROM Users");
-		
-		while($row = mysql_fetch_array($result)){
+		$result = $this->db->query("SELECT User_ID FROM Users");		
+		foreach($result as $row){
 			$id = $row['User_ID'];
-			$user = new User($this->uri . '/' . $id);
+			$user = new User($this->db);
+			$user->setLocation($this->uri . '/' . $id);
 			$user->load($id);
 			$this->users[] = $user;
 		}
 	}
 
-	public function location(){
-		return $this->uri;
-	}
-}
-
-
-class xmlUsers implements View {
-
-	private $type = 'application/xml+users';
-	private $writer;
-	private $data;
-
-	public function xmlUser(){
-	}
-
-	public function parse($data, $user){		
-		//lists of users cannot be passed
-	}
-
-	public function generateDocument($users){
-		$this->writer = new XMLWriter();
-		$this->writer->openMemory();
-		$this->writer->setIndent(true);
-		$this->writer->setIndentString(' ');
-
-		// builds xml document	
-		$this->writer->startDocument('1.0', 'UTF-8');
-		$this->addElements($users, $this->writer);
-		$this->writer->endDocument();
-	}
-
-	public function addElements($users, &$writer){
-		$writer->startElement('users');
-
-		foreach($users->users as $user){
-			$view = new xmlUser();
-			$view->addElements($user, $writer);
+	/**
+	 * Generates a document representation of the model in the requested view
+	 * @param View type requested
+	 * @return String containing the document
+	 */
+	public function generateDocument($view){
+		$view->startDocument();
+		$view->startElement('users');
+		$i = 0;
+		foreach($this->users as $user){
+			$view->startElement($i++);		
+			$user->addProperties($view);
+			$view->endElement();
 		}
 
-		$writer->endElement();
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		if($this->writer != null){		
-			return $this->writer->outputMemory();
-		}else{
-			return '';
-		}
-	}
-}
-
-class jsonUsers implements View {
-
-	private $type = 'application/json+users';
-
-	public function jsonUser(){		
-	}
-
-	public function parse($data, $users){
-		
-	}
-
-	public function generateDocument($users){
-		$data = array();
-		$this->addElements($users, $data);
-		$this->data['users'] = $data;
-	}
-
-	public function addElements($users, &$data){
-		$view = new jsonUser();
-		foreach($users->users as $user){			
-			$view->addElements($user, $entry);
-			$data[] = $entry;
-		}
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		return json_encode($this->data);
-	}
-}
-
-class yamlUsers implements View {
-
-	private $type = 'text/x-yaml+users';
-
-	public function yamlUser(){		
-	}
-
-	public function parse($data, $users){
-		
-	}
-
-	public function generateDocument($users){
-		$data = array();
-		$this->addElements($users, $data);
-		$this->data['users'] = $data;
-	}
-
-	public function addElements($users, &$data){
-		$view = new yamlUser();
-		foreach($users->users as $user){			
-			$view->addElements($user, $entry);
-			$data[] = $entry;
-		}
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		return yaml_emit($this->data);
+		$view->endElement();
+		return $view->toString();
 	}
 }
 

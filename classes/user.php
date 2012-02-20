@@ -1,300 +1,201 @@
 <?php
 
-require_once dirname(__FILE__) . '/../lib/DBA.php';
-require_once dirname(__FILE__) . '/../lib/interfaces.php';
-require_once dirname(__FILE__) . '/../lib/utils.php';
+require_once LIB . 'CRUD.php';
+require_once LIB . 'utils.php';
 
+/**
+ *	@author Martin Buckley - MBuckley@gmail.com
+ *	User holds details of a site user, can be used as a part of autherisation
+ * 	@namespace Exerciser
+ */
 class User extends CRUD {
 
-	//values
-	protected $user_id;
-	protected $password;
-	protected $username;
-	protected $age;
-	protected $weight;
-	protected $gender;
+	protected $type = 'user';
+	public $user_id = 0;
+	public $api_key = 0;
+	protected $username = '';
+	protected $age = 0;
+	protected $weight = 0;
+	protected $gender = 'Male';
 
 	protected $required = array('username', 'age', 'weight', 'gender');
 
-	public function User($uri){
-		$this->uri = $uri;
+	/**
+	 * Constructor calls constructor in CRUD
+	 * @param Database instance to be used
+	 */
+	public function __construct($db){
+		parent::__construct($db);
 	}
 
+	/**
+	 * Loads details for the specified User
+	 * @param Int the User ID
+	 */
 	public function load($userID){
-		// load in stats from database
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("SELECT 	User_ID,
-						Username,
-						Password, 
-						Age, 
-						Weight, 
-						Gender
-						FROM Users WHERE User_ID = '" . mysql_real_escape_string($userID) . "'"
-					);
-		if( mysql_num_rows($result) == 0 ){
-			throw new Exception("No matching entry in database");
-		}
-		$row = mysql_fetch_array($result);
+		$id = $this->db->clean($userID);
+		$result = $this->db->query("SELECT 	User_ID,
+							Username,
+							API_Key, 
+							Age, 
+							Weight, 
+							Gender
+							FROM Users WHERE User_ID = '$id'"
+						);
+		if(  ! $result || count($result) == 0 )
+			throw new LengthException("User not found.");
+		
+		$row = $result[0];
 		$this->user_id = $row['User_ID'];
-		$this->password = $row['Password'];
+		$this->api_key = $row['API_Key'];
 		$this->username = $row['Username'];
 		$this->age = $row['Age'];
 		$this->weight = $row['Weight'];
 		$this->gender = $row['Gender'];
 	}
 
+	/**
+	 * Creates a new User given the current details
+	 * @return Boolean True on success 
+	 */
 	public function create(){
-		//$this->validate();
-		$this->password = generateAPIKey();
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("INSERT INTO Users (	Username,
-								Password, 
+		$this->validate();
+		$this->api_key = generateAPIKey();
+		$username = $this->db->clean($this->username);
+		$api_key = $this->api_key;
+		$age = $this->db->clean($this->age);
+		$weight = $this->db->clean($this->weight);
+		$gender = $this->db->clean($this->gender);
+		$result = $this->db->query("INSERT INTO Users (	Username,
+								API_Key, 
 								Age, 
 								Weight, 
 								Gender
-								) VALUES ('" . 
-								mysql_real_escape_string($this->username) . "', '" . 
-								$this->password . "', '" .
-								mysql_real_escape_string($this->age) . "', '" . 
-								mysql_real_escape_string($this->weight) . "', '" . 
-								mysql_real_escape_string($this->gender) . "')"
+								) VALUES ('$username', '$api_key', '$age', '$weight', '$gender')"
 					);
-		$this->user_id = mysql_insert_id();
+		if ( ! $result )
+			throw new Exception("User not created.");
+
+		$this->user_id = $this->db->insert_id();
 		$this->uri .= '/' . $this->user_id;
+		return True;
 	}
 
+	/**
+	 * Updates the current users details
+	 * @return Boolean True on success
+	 */
 	public function update(){
 		$this->validate();
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("UPDATE Users SET 	
-							Username = 	'" . mysql_real_escape_string($this->username) . "',
-							Age = 		'" . mysql_real_escape_string($this->age) . "',
-							Weight = 	'" . mysql_real_escape_string($this->weight) . "',
-							Gender = 	'" . mysql_real_escape_string($this->gender) . "'
-					WHERE User_ID = '" . mysql_real_escape_string($this->user_id) . "'"
-					);
+		$user_id = $this->db->clean($this->user_id);
+		$username = $this->db->clean($this->username);
+		$age = $this->db->clean($this->age);
+		$weight = $this->db->clean($this->weight);
+		$gender = $this->db->clean($this->gender);
+		$result = $this->db->query("UPDATE Users SET 	
+								Username = 	'$username',
+								Age = 		'$age',
+								Weight = 	'$weight',
+								Gender = 	'$gender'
+						WHERE User_ID = '$user_id'"
+						);
+		if ( ! $result )
+			throw new Exception("User not updated.");
+		return True;
 	}
 
+	/**
+	 * Deletes User and users Workout from system
+	 * @return Boolean True on success
+	 */
 	public function delete(){
-		// add user to database
-		$db = new Database();
-		$db->connect();
-		$result = $db->query("DELETE FROM Users WHERE User_ID = '" . mysql_real_escape_string($this->user_id) . "'");
+		$id = $this->db->clean($this->user_id);
+		$result = $this->db->query("DELETE FROM Users WHERE User_ID = '$id'");
+		if ( ! $result )
+			throw new Exception("User not deleted.");
+		$this->db->query("DELETE FROM Workouts WHERE User_ID = '$id'");
+		return True;
 	}
 
+	/**
+	 * Iterates through the required values to check they are specified
+	 */
 	public function validate(){
 		foreach( $this->required as $field )
 			if( ! isset($this->$field) )
 				throw new UnexpectedValueException("Data for field: $field required but not present");
 	}
 
-	public function location(){
-		return $this->uri;
-	}
-}
+	/**
+	 * Utilises the View specified to read data from the document
+	 * @param String containing the document 
+	 * @param View specifying the document type
+	 */
+	public function parse($data_str, $view){
+		if( ! $view )
+			throw new BadMethodCallException('Function not implemented.');
 
+		try{
+			$view->parse($data_str);
+			$data = $view->getArray();
+			$user = $data['user'];
 
-class xmlUser implements View {
-
-	private $type = 'application/xml+user';
-	private $writer;
-	private $data;
-
-	public function xmlUser(){
-	}
-
-	public function parse($data, $user){
-			
-		//check mime type
-		libxml_use_internal_errors(true);
-		$this->data = simplexml_load_string($data);
-		if (!$this->data)
-			throw new Exception("Unable to parse XML");
-		
-		//parse xml into values
-		foreach( $user->required as $field )
-			$user->$field = (string)$this->data->$field;
-		
-		$user->validate();
-	}
-
-	public function generateNewUserDocument($user){
-		$this->writer = new XMLWriter();
-		$this->writer->openMemory();
-		$this->writer->setIndent(true);
-		$this->writer->setIndentString(' ');
-
-		// builds xml document	
-		$this->writer->startDocument('1.0', 'UTF-8');
-		$this->writer->startElement('new_user');
-		$this->writer->writeAttribute('uri', $user->location());
-		
-		$this->writer->startElement('user_id');
-		$this->writer->text($user->user_id);
-		$this->writer->endElement();
-
-		$this->writer->startElement('api_key');
-		$this->writer->text($user->password);
-		$this->writer->endElement();
-
-		$this->writer->endElement();
-		$this->writer->endDocument();
-	}
-
-	public function generateDocument($user){
-		$this->writer = new XMLWriter();
-		$this->writer->openMemory();
-		$this->writer->setIndent(true);
-		$this->writer->setIndentString(' ');
-
-		// builds xml document	
-		$this->writer->startDocument('1.0', 'UTF-8');
-		$this->addElements($user, $this->writer);
-		$this->writer->endDocument();
-	}
-
-	public function addElements($user, &$writer){
-		$writer->startElement('user');
-		$writer->writeAttribute('uri', $user->location());
-		
-		$writer->startElement('user_id');
-		$writer->text($user->user_id);
-		$writer->endElement();
-
-		$writer->startElement('username');
-		$writer->text($user->username);
-		$writer->endElement();
-		
-		$writer->startElement('age');
-		$writer->text($user->age);
-		$writer->endElement();
-
-		$writer->startElement('weight');
-		$writer->text($user->weight);
-		$writer->endElement();
-
-		$writer->startElement('gender');
-		$writer->text($user->gender);
-		$writer->endElement();
-
-		$writer->endElement();
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		if($this->writer != null){		
-			return $this->writer->outputMemory();
-		}else{
-			return '';
+			foreach( $this->required as $field )
+				$this->$field = $user[$field];
+		}catch(Exception $e){
+			throw new UnexpectedValueException($e->getMessage());
 		}
 	}
-}
 
-class jsonUser implements View {
+	/**
+	 * Adds elements to the specified View
+	 * @param View specifying the document type
+	 */
+	public function addProperties($view){
+		$view->startElement('user');
+		
+		$view->startElement('user_id');
+		$view->text($this->user_id);
+		$view->endElement();
 
-	private $type = 'application/json+user';
+		$view->startElement('username');
+		$view->text($this->username);
+		$view->endElement();
+		
+		$view->startElement('age');
+		$view->text($this->age);
+		$view->endElement();
 
-	public function jsonUser(){		
+		$view->startElement('weight');
+		$view->text($this->weight);
+		$view->endElement();
+
+		$view->startElement('gender');
+		$view->text($this->gender);
+		$view->endElement();
+
+		$view->endElement();
 	}
 
-	public function parse($data, $user){
-		$this->data = json_decode($data, true);
-		foreach( $user->required as $field )
-			$user->$field = $this->data['user'][$field];
-		$user->validate();
-	}
+	/**
+	 * Returns a String containing the document of the type specified by the view
+	 * @param View determining document type
+	 * @return String containing the document 
+	 */
+	public function generateNewUserDocument($view){		
+		$view->startDocument();
+		$view->startElement('new_user');
+		
+		$view->startElement('user_id');
+		$view->text($this->user_id);
+		$view->endElement();
 
-	public function generateNewUserDocument($user){
-		$this->data = array('new_user' => 
-					array(
-						'user_id' => $user->user_id,
-						'api_key' => $user->password
-					),
-					'uri' => $user->location() . '.json'
-				);
-	}
+		$view->startElement('api_key');
+		$view->text($this->api_key);
+		$view->endElement();
 
-	public function generateDocument($user){
-		$this->data = array();
-		$this->addElements($user, $this->data);
-	}
-
-	public function addElements($user, &$data){
-		$data = array('user' => 
-				array(
-					'user_id' => $user->user_id,
-					'username' => $user->username,
-					'age' => $user->age,
-					'weight' => $user->weight,
-					'gender' => $user->gender
-				),
-				'uri' => $user->location() . '.json'
-			);
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		return json_encode($this->data);
-	}
-}
-
-class yamlUser implements View {
-
-	private $type = 'text/x-yaml+user';
-
-	public function yamlUser(){		
-	}
-
-	public function parse($data, $user){
-		$this->data = yaml_parse($data);
-		foreach( $this->required as $field )
-			$user->$field = $this->data['user'][$field];
-		$user->validate();
-	}
-
-	public function generateNewUserDocument($user){
-		$this->data = array('new_user' => 
-					array(
-						'user_id' => $user->user_id,
-						'api_key' => $user->password
-					),
-					'uri' => $user->location() . '.json'
-				);
-	}
-
-	public function generateDocument($user){
-		$this->data = array();
-		$this->addElements($user, $this->data);
-	}
-
-	public function addElements($user, &$data){
-		$data = array('user' => 
-				array(
-					'user_id' => $user->user_id,
-					'username' => $user->username,
-					'age' => $user->age,
-					'weight' => $user->weight,
-					'gender' => $user->gender
-				),
-				'uri' => $user->location() . '.yaml'
-			);
-	}
-
-	public function type(){
-		return $this->type;
-	}
- 
-	public function toString(){
-		return yaml_emit($this->data);
+		$view->endElement();
+		return $view->toString();
 	}
 }
 

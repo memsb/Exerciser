@@ -1,9 +1,12 @@
 <?php
 
-require_once('/var/www/exerciser/lib/CRUD.php');
-require_once('/var/www/exerciser/lib/DBA.php');
-require_once('/var/www/exerciser/lib/view.php');
+require_once(LIB . 'CRUD.php');
+require_once(LIB . 'DBA.php');
+require_once(LIB . 'view.php');
 
+/*
+ * @namespace Exerciser\Tests\Lib
+ */
 class TestOfCRUDClass extends UnitTestCase {
 
 	private $uri = 'uri';

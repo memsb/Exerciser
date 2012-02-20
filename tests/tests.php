@@ -3,7 +3,16 @@ require_once('/usr/share/php5/simpletest/autorun.php');
 require_once('/usr/share/php5/simpletest/unit_tester.php');
 require_once('/usr/share/php5/simpletest/web_tester.php');
 require_once('/usr/share/php5/simpletest/mock_objects.php');
+require_once('/var/www/exerciser/config.php');
 
+define('TEST_CLASSES', ROOT . 'tests/classes/', true);
+define('TEST_LIB', ROOT . 'tests/lib/', true);
+define('TEST_RESOURCES', ROOT . 'tests/resources/', true);
+
+
+/*
+ * @namespace Exerciser\Tests
+ */
 class AllTests extends TestSuite {
 	function AllTests() {
 		$this->TestSuite('All tests');

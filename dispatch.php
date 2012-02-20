@@ -1,9 +1,10 @@
 <?php
+namespace Exerciser;
 
 // load Tonic library
 require_once '/usr/share/php5/tonic/lib/tonic.php';
-require_once 'includes.php';
 require_once 'config.php';
+require_once 'includes.php';
 
 
 // handle request

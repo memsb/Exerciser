@@ -1,10 +1,13 @@
 <?php
 
-require_once('/var/www/exerciser/tests/resources/resourceTest.php');
-require_once('/var/www/exerciser/resources/workoutsResource.php');
-require_once('/var/www/exerciser/classes/workouts.php');
-require_once('/var/www/exerciser/classes/user.php');
+require_once(TEST_RESOURCES . 'resourceTest.php');
+require_once(RESOURCES . 'workoutsResource.php');
+require_once(CLASSES . 'workouts.php');
+require_once(CLASSES . 'user.php');
 
+/*
+ * @namespace Exerciser\Tests\Resources
+ */
 class TestOfWorkoutsResource extends TestOfResource {
 
 	protected $uri = '/users/1/workouts/';
