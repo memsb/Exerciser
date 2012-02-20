@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -57,7 +57,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <dl>
 <dt>Author:</dt>
-<dd>Martin Buckley - MBuckley@gmail.com CRUD - Create Retrive Update Delete. A basis for classes to represent system objects</dd>
+<dd>Martin Buckley - MBuckley@gmail.com</dd>
 </dl>
 <hr>
 
@@ -65,7 +65,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db, <a href="../the unknown package/database.html">Database</a> instance)</p><p class="description">Constructor calls constructor in CRUD</p></td>
 </tr>
 </table>
 
@@ -73,117 +73,92 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setLocation()">setLocation</a>(mixed uri, String the)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#size()">size</a>(Int the)</p><p class="description">Gives a count of User loaded</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#size()">size</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#addUser()">addUser</a>(<a href="../the unknown package/user.html">User</a> the, <a href="../the unknown package/user.html">User</a> user)</p><p class="description">Adds a User to the user list</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addUser()">addUser</a>(<a href="../the unknown package/user.html">User</a> user)</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#load()">load</a>(mixed ID)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#load()">load</a>(mixed optional, mixed ID)</p><p class="description">Loads all User from database</p></td>
 </tr>
 <tr>
 <td class="type"> String</td>
-<td class="description"><p class="name"><a href="#location()">location</a>()</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#generateDocument()">generateDocument</a>(mixed view)</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#type()">type</a>(mixed view)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#generateDocument()">generateDocument</a>(View type, mixed view, View the)</p><p class="description">Generates a document representation of the model in the requested view</p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from The Unknown Package\CRUD</th></tr>
-<tr><td><a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
+<tr><td><a href="../the unknown package/crud.html#__construct()">__construct</a>, <a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#type()">type</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../source/classes/users.php.html#line20" class="location">classes/users.php at line 20</a>
+<a href="../source/classes/users.php.html#line19" class="location">classes/users.php at line 19</a>
 
 <h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(mixed db)</code>
+<code class="signature">public  void <strong>__construct</strong>(mixed db, <a href="../the unknown package/database.html">Database</a> instance)</code>
 <div class="details">
-<p></p></div>
+<p>Constructor calls constructor in CRUD</p><dl>
+<dt>Parameters:</dt>
+<dd>instance - to be used</dd>
+</dl>
+</div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/classes/users.php.html#line31" class="location">classes/users.php at line 31</a>
-
-<h3 id="setLocation()">setLocation</h3>
-<code class="signature">public  void <strong>setLocation</strong>(mixed uri, String the)</code>
-<div class="details">
-<p></p><dl>
-<dt>Parameters:</dt>
-<dd>the - location uri</dd>
-</dl>
-</div>
-
-<hr>
-
-<a href="../source/classes/users.php.html#line39" class="location">classes/users.php at line 39</a>
+<a href="../source/classes/users.php.html#line27" class="location">classes/users.php at line 27</a>
 
 <h3 id="size()">size</h3>
-<code class="signature">public  void <strong>size</strong>()</code>
+<code class="signature">public  void <strong>size</strong>(Int the)</code>
 <div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/users.php.html#line47" class="location">classes/users.php at line 47</a>
-
-<h3 id="addUser()">addUser</h3>
-<code class="signature">public  void <strong>addUser</strong>(<a href="../the unknown package/user.html">User</a> user)</code>
-<div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/users.php.html#line55" class="location">classes/users.php at line 55</a>
-
-<h3 id="load()">load</h3>
-<code class="signature">public  void <strong>load</strong>(mixed ID)</code>
-<div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/users.php.html#line70" class="location">classes/users.php at line 70</a>
-
-<h3 id="location()">location</h3>
-<code class="signature">public  String <strong>location</strong>()</code>
-<div class="details">
-<p></p><dl>
-<dt>Returns:</dt>
-<dd>the location uri</dd>
+<p>Gives a count of User loaded</p><dl>
+<dt>Parameters:</dt>
+<dd>the - count</dd>
 </dl>
 </div>
 
 <hr>
 
-<a href="../source/classes/users.php.html#line78" class="location">classes/users.php at line 78</a>
+<a href="../source/classes/users.php.html#line35" class="location">classes/users.php at line 35</a>
 
-<h3 id="generateDocument()">generateDocument</h3>
-<code class="signature">public  void <strong>generateDocument</strong>(mixed view)</code>
+<h3 id="addUser()">addUser</h3>
+<code class="signature">public  void <strong>addUser</strong>(<a href="../the unknown package/user.html">User</a> the, <a href="../the unknown package/user.html">User</a> user)</code>
 <div class="details">
-<p></p></div>
+<p>Adds a User to the user list</p><dl>
+<dt>Parameters:</dt>
+<dd>the - user</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/classes/users.php.html#line96" class="location">classes/users.php at line 96</a>
+<a href="../source/classes/users.php.html#line42" class="location">classes/users.php at line 42</a>
 
-<h3 id="type()">type</h3>
-<code class="signature">public  void <strong>type</strong>(mixed view)</code>
+<h3 id="load()">load</h3>
+<code class="signature">public  void <strong>load</strong>(mixed optional, mixed ID)</code>
 <div class="details">
-<p></p></div>
+<p>Loads all User from database</p><dl>
+<dt>Parameters:</dt>
+<dd>optional - identifier</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/classes/users.php.html#line58" class="location">classes/users.php at line 58</a>
+
+<h3 id="generateDocument()">generateDocument</h3>
+<code class="signature">public  String <strong>generateDocument</strong>(View type, mixed view, View the)</code>
+<div class="details">
+<p>Generates a document representation of the model in the requested view</p><dl>
+<dt>Parameters:</dt>
+<dd>type - requested</dd>
+<dt>Returns:</dt>
+<dd>containing the document</dd>
+</dl>
+</div>
 
 <hr>
 

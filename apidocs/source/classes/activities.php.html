@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -38,80 +38,77 @@
 
 <a name="line1"></a><pre><?php
 <a name="line2"></a>
-<a name="line3"></a>require_once dirname(__FILE__) . '/../lib/CRUD.php';
-<a name="line4"></a>require_once 'activity.php';
+<a name="line3"></a>require_once LIB . 'CRUD.php';
+<a name="line4"></a>require_once CLASSES . 'activity.php';
 <a name="line5"></a>
 <a name="line6"></a>/**
-<a name="line7"></a>*
-<a name="line8"></a>*
-<a name="line9"></a>*/
-<a name="line10"></a>class Activities extends CRUD {
-<a name="line11"></a>
-<a name="line12"></a>	private $type = 'activities';
-<a name="line13"></a>	protected $activities = array();
-<a name="line14"></a>
-<a name="line15"></a>	/**
-<a name="line16"></a>	*
-<a name="line17"></a>	*
-<a name="line18"></a>	*/
-<a name="line19"></a>	public function __construct($db){		
-<a name="line20"></a>		if( $db == NULL )
-<a name="line21"></a>			throw new BadMethodCallException('Database not specified.');
-<a name="line22"></a>		$this->db = $db;
-<a name="line23"></a>		$this->db->connect();
-<a name="line24"></a>	}
-<a name="line25"></a>
-<a name="line26"></a>	/**
-<a name="line27"></a>	*
-<a name="line28"></a>	*
-<a name="line29"></a>	*/
-<a name="line30"></a>	public function load(){		
-<a name="line31"></a>		$result = $this->db->query("SELECT Activity_ID FROM Activities");		
-<a name="line32"></a>		foreach($result as $row) {	
-<a name="line33"></a>			$activity = new Activity($this->db);
-<a name="line34"></a>			$activity->setLocation($this->uri . '/' . $row['Activity_ID']);
-<a name="line35"></a>			$activity->load($row['Activity_ID']);
-<a name="line36"></a>			$this->activities[] = $activity;
-<a name="line37"></a>		}
-<a name="line38"></a>	}
-<a name="line39"></a>
-<a name="line40"></a>	public function size(){
-<a name="line41"></a>		return count($this->activities);
-<a name="line42"></a>	}
-<a name="line43"></a>
-<a name="line44"></a>	public function getActivities(){
-<a name="line45"></a>		return $this->activities;
-<a name="line46"></a>	}
-<a name="line47"></a>
-<a name="line48"></a>	/**
-<a name="line49"></a>	*
-<a name="line50"></a>	*
-<a name="line51"></a>	*/
-<a name="line52"></a>	public function generateDocument($view){
-<a name="line53"></a>		$view->startDocument();
-<a name="line54"></a>		$view->startElement('activities');
-<a name="line55"></a>		$i = 0;
-<a name="line56"></a>		foreach($this->activities as $activity){
-<a name="line57"></a>			$view->startElement($i++);		
-<a name="line58"></a>			$activity->addProperties($view);
-<a name="line59"></a>			$view->endElement();
-<a name="line60"></a>		}
-<a name="line61"></a>		$view->endElement();
-<a name="line62"></a>		return $view->toString();
-<a name="line63"></a>	}
-<a name="line64"></a>
-<a name="line65"></a>	/**
-<a name="line66"></a>	*
-<a name="line67"></a>	*
-<a name="line68"></a>	*/
-<a name="line69"></a>	public function type($view){
-<a name="line70"></a>		return $view->type() . $this->type;
-<a name="line71"></a>	}
-<a name="line72"></a>
-<a name="line73"></a>}
-<a name="line74"></a>
-<a name="line75"></a>?>
-<a name="line76"></a></pre>
+<a name="line7"></a> *	@author Martin Buckley - MBuckley@gmail.com
+<a name="line8"></a> *	Contains a list of Activity
+<a name="line9"></a> * 	@namespace Exerciser
+<a name="line10"></a> */
+<a name="line11"></a>class Activities extends CRUD {
+<a name="line12"></a>
+<a name="line13"></a>	protected $type = 'activities';
+<a name="line14"></a>	protected $activities = array();
+<a name="line15"></a>
+<a name="line16"></a>	/**
+<a name="line17"></a>	 * Constructor calls constructor in CRUD
+<a name="line18"></a>	 * @param Database instance to be used
+<a name="line19"></a>	 */
+<a name="line20"></a>	public function __construct($db){		
+<a name="line21"></a>		parent::__construct($db);
+<a name="line22"></a>	}
+<a name="line23"></a>
+<a name="line24"></a>	/**
+<a name="line25"></a>	 * Loads all activities from database
+<a name="line26"></a>	 */
+<a name="line27"></a>	public function load(){		
+<a name="line28"></a>		$result = $this->db->query("SELECT Activity_ID FROM Activities");		
+<a name="line29"></a>		foreach($result as $row) {	
+<a name="line30"></a>			$activity = new Activity($this->db);
+<a name="line31"></a>			$activity->setLocation($this->uri . '/' . $row['Activity_ID']);
+<a name="line32"></a>			$activity->load($row['Activity_ID']);
+<a name="line33"></a>			$this->activities[] = $activity;
+<a name="line34"></a>		}
+<a name="line35"></a>	}
+<a name="line36"></a>
+<a name="line37"></a>	/**
+<a name="line38"></a>	 * Gives a count of how many Activity have been loaded
+<a name="line39"></a>	 * @return Int the number of activities loaded
+<a name="line40"></a>	 */
+<a name="line41"></a>	public function size(){
+<a name="line42"></a>		return count($this->activities);
+<a name="line43"></a>	}
+<a name="line44"></a>
+<a name="line45"></a>	/**
+<a name="line46"></a>	 * Gives the list of loaded activities
+<a name="line47"></a>	 * @return array of Activity
+<a name="line48"></a>	 */
+<a name="line49"></a>	public function getActivities(){
+<a name="line50"></a>		return $this->activities;
+<a name="line51"></a>	}
+<a name="line52"></a>
+<a name="line53"></a>	/**
+<a name="line54"></a>	 * Generates a document representation of the model in the requested view
+<a name="line55"></a>	 * @param View type requested
+<a name="line56"></a>	 * @return String containing the document
+<a name="line57"></a>	 */
+<a name="line58"></a>	public function generateDocument($view){
+<a name="line59"></a>		$view->startDocument();
+<a name="line60"></a>		$view->startElement('activities');
+<a name="line61"></a>		$i = 0;
+<a name="line62"></a>		foreach($this->activities as $activity){
+<a name="line63"></a>			$view->startElement($i++);		
+<a name="line64"></a>			$activity->addProperties($view);
+<a name="line65"></a>			$view->endElement();
+<a name="line66"></a>		}
+<a name="line67"></a>		$view->endElement();
+<a name="line68"></a>		return $view->toString();
+<a name="line69"></a>	}
+<a name="line70"></a>}
+<a name="line71"></a>
+<a name="line72"></a>?>
+<a name="line73"></a></pre>
 <div class="header">
 <h1>PHPDoctor</h1>
 <ul>

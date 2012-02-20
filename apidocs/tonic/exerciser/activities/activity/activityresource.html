@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css">
 <link rel="start" href="../../../../overview-summary.html">
@@ -67,25 +67,22 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(array parameters)</p><p class="description">Creates an instance of the resource</p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(array parameters)</p><p class="description">Creates an default instance of model</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setModel()">setModel</a>(<a href="../../../../the unknown package/activity.html">Activity</a> model)</p><p class="description">Sets the model to be controlled</p></td>
-</tr>
-<tr>
 <td class="type"> Response</td>
-<td class="description"><p class="name"><a href="#get()">get</a>(Request request)</p><p class="description">Handle a GET request for this resource</p></td>
+<td class="description"><p class="name"><a href="#get()">get</a>(Request request)</p><p class="description">Handle a GET request for this resource
+returns a document containing information on an activity</p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from The Unknown Package\MultiViewResource</th></tr>
-<tr><td><a href="../../../../the unknown package/multiviewresource.html#__construct()">__construct</a>, <a href="../../../../the unknown package/multiviewresource.html#get_view()">get_view</a>, <a href="../../../../the unknown package/multiviewresource.html#isSecured()">isSecured</a></td></tr></table>
+<tr><td><a href="../../../../the unknown package/multiviewresource.html#__construct()">__construct</a>, <a href="../../../../the unknown package/multiviewresource.html#get_view()">get_view</a>, <a href="../../../../the unknown package/multiviewresource.html#isSecured()">isSecured</a>, <a href="../../../../the unknown package/multiviewresource.html#setModel()">setModel</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
 <a href="../../../../source/resources/activityresource.php.html#line19" class="location">resources/activityResource.php at line 19</a>
@@ -93,26 +90,18 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>(array parameters)</code>
 <div class="details">
-<p>Creates an instance of the resource</p></div>
+<p>Creates an default instance of model</p></div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../../../../source/resources/activityresource.php.html#line28" class="location">resources/activityResource.php at line 28</a>
-
-<h3 id="setModel()">setModel</h3>
-<code class="signature">public  void <strong>setModel</strong>(<a href="../../../../the unknown package/activity.html">Activity</a> model)</code>
-<div class="details">
-<p>Sets the model to be controlled</p></div>
-
-<hr>
-
-<a href="../../../../source/resources/activityresource.php.html#line37" class="location">resources/activityResource.php at line 37</a>
+<a href="../../../../source/resources/activityresource.php.html#line30" class="location">resources/activityResource.php at line 30</a>
 
 <h3 id="get()">get</h3>
 <code class="signature">public  Response <strong>get</strong>(Request request)</code>
 <div class="details">
-<p>Handle a GET request for this resource</p><dl>
+<p>Handle a GET request for this resource
+returns a document containing information on an activity</p><dl>
 <dt>Parameters:</dt>
 <dd>request - object containing parameters</dd>
 </dl>

@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:26 +0000">
+
+<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+<link rel="start" href="../overview-summary.html">
+
+<title>Database (PHPDoctor)</title>
+
+</head>
+<body id="definition" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../overview-summary.html">Overview</a></li>
+<li><a href="../exerciser/package-summary.html">Namespace</a></li>
+<li class="active">Class</li>
+<li><a href="../exerciser/package-tree.html">Tree</a></li>
+<li><a href="../overview-files.html">Files</a></li>
+<li><a href="../deprecated-list.html">Deprecated</a></li>
+<li><a href="../todo-list.html">Todo</a></li>
+<li><a href="../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../index.html" target="_top">Frames</a>
+<a href="../exerciser/database.html" target="_top">No frames</a>
+</div>
+<div class="small_links">
+Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
+Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>
+</div>
+<hr>
+
+<div class="qualifiedName">Exerciser\Database</div>
+<a href="../source/lib/dba.php.html#line10" class="location">lib/DBA.php at line 10</a>
+
+<h1>Class Database</h1>
+
+<pre class="tree"><strong>Database</strong><br /></pre>
+
+<hr>
+
+<p class="signature">public  class <strong>Database</strong></p>
+
+<div class="comment" id="overview_description"><p></p></div>
+
+<dl>
+<dt>Author:</dt>
+<dd>Martin Buckley - MBuckley@gmail.com DataBase Abstraction layer controlls access to the database.</dd>
+</dl>
+<hr>
+
+<table id="summary_constructor">
+<tr><th colspan="2">Constructor Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed host, mixed database, mixed username, mixed password, String the)</p><p class="description">Constructor sets the database access parameters</p></td>
+</tr>
+</table>
+
+<table id="summary_method">
+<tr><th colspan="2">Method Summary</th></tr>
+<tr>
+<td class="type"> String</td>
+<td class="description"><p class="name"><a href="#clean()">clean</a>(String the, mixed value)</p><p class="description">Sanitises the variable to prevent SQL injection</p></td>
+</tr>
+<tr>
+<td class="type"> Boolean</td>
+<td class="description"><p class="name"><a href="#connected()">connected</a>()</p><p class="description">Checks if a valid database connection exists</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#connect()">connect</a>()</p><p class="description">Connects to the database</p></td>
+</tr>
+<tr>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#query()">query</a>(String the, mixed query)</p><p class="description">Performs the specified query. </p></td>
+</tr>
+<tr>
+<td class="type"> Int</td>
+<td class="description"><p class="name"><a href="#insert_id()">insert_id</a>()</p><p class="description">Returns the ID of the last record inserted</p></td>
+</tr>
+</table>
+
+<h2 id="detail_method">Constructor Detail</h2>
+<a href="../source/lib/dba.php.html#line31" class="location">lib/DBA.php at line 31</a>
+
+<h3 id="__construct()">__construct</h3>
+<code class="signature">public  void <strong>__construct</strong>(mixed host, mixed database, mixed username, mixed password, String the)</code>
+<div class="details">
+<p>Constructor sets the database access parameters</p><dl>
+<dt>Parameters:</dt>
+<dd>the - host name</dd>
+<dd>the - database</dd>
+<dd>the - username</dd>
+<dd>the - password</dd>
+</dl>
+</div>
+
+<hr>
+
+<h2 id="detail_method">Method Detail</h2>
+<a href="../source/lib/dba.php.html#line43" class="location">lib/DBA.php at line 43</a>
+
+<h3 id="clean()">clean</h3>
+<code class="signature">public  String <strong>clean</strong>(String the, mixed value)</code>
+<div class="details">
+<p>Sanitises the variable to prevent SQL injection</p><dl>
+<dt>Parameters:</dt>
+<dd>the - value</dd>
+<dt>Returns:</dt>
+<dd>the sanitised value</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/lib/dba.php.html#line51" class="location">lib/DBA.php at line 51</a>
+
+<h3 id="connected()">connected</h3>
+<code class="signature">public  Boolean <strong>connected</strong>()</code>
+<div class="details">
+<p>Checks if a valid database connection exists</p><dl>
+<dt>Returns:</dt>
+<dd>True if connected</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/lib/dba.php.html#line58" class="location">lib/DBA.php at line 58</a>
+
+<h3 id="connect()">connect</h3>
+<code class="signature">public  void <strong>connect</strong>()</code>
+<div class="details">
+<p>Connects to the database</p></div>
+
+<hr>
+
+<a href="../source/lib/dba.php.html#line75" class="location">lib/DBA.php at line 75</a>
+
+<h3 id="query()">query</h3>
+<code class="signature">public  array <strong>query</strong>(String the, mixed query)</code>
+<div class="details">
+<p>Performs the specified query. Results are returned as an array</p><dl>
+<dt>Parameters:</dt>
+<dd>the - SQL query</dd>
+<dt>Returns:</dt>
+<dd>of results</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/lib/dba.php.html#line92" class="location">lib/DBA.php at line 92</a>
+
+<h3 id="insert_id()">insert_id</h3>
+<code class="signature">public  Int <strong>insert_id</strong>()</code>
+<div class="details">
+<p>Returns the ID of the last record inserted</p><dl>
+<dt>Returns:</dt>
+<dd>the ID number</dd>
+</dl>
+</div>
+
+<hr>
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../overview-summary.html">Overview</a></li>
+<li><a href="../exerciser/package-summary.html">Namespace</a></li>
+<li class="active">Class</li>
+<li><a href="../exerciser/package-tree.html">Tree</a></li>
+<li><a href="../overview-files.html">Files</a></li>
+<li><a href="../deprecated-list.html">Deprecated</a></li>
+<li><a href="../todo-list.html">Todo</a></li>
+<li><a href="../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../index.html" target="_top">Frames</a>
+<a href="../exerciser/database.html" target="_top">No frames</a>
+</div>
+<div class="small_links">
+Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
+Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>

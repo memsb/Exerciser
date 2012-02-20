@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css">
 <link rel="start" href="../../../../../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Exerciser\Users\Username\Workouts\WorkoutsResource</div>
-<a href="../../../../../source/resources/workoutsresource.php.html#line10" class="location">resources/workoutsResource.php at line 10</a>
+<a href="../../../../../source/resources/workoutsresource.php.html#line14" class="location">resources/workoutsResource.php at line 14</a>
 
 <h1>Class WorkoutsResource</h1>
 
@@ -56,6 +56,8 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <div class="comment" id="overview_description"><p></p></div>
 
 <dl>
+<dt>Author:</dt>
+<dd>Martin Buckley - MBuckley@gmail.com Controller for Workouts resource</dd>
 <dt>Uri:</dt>
 <dd>/users/([A-Za-z0-9_]+)/workouts/</dd>
 </dl>
@@ -65,7 +67,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed parameters)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed parameters, array of)</p><p class="description">Constructor for Workouts reasource</p></td>
 </tr>
 </table>
 
@@ -73,70 +75,80 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setModel()">setModel</a>(<a href="../../../../../the unknown package/activity.html">Activity</a> model)</p><p class="description">Sets the model to be controlled</p></td>
+<td class="description"><p class="name"><a href="#setUser()">setUser</a>(<a href="../../../../../the unknown package/user.html">User</a> model, mixed user)</p><p class="description">Sets the user model</p></td>
 </tr>
 <tr>
 <td class="type"> Response</td>
-<td class="description"><p class="name"><a href="#get()">get</a>(Request request)</p><p class="description">Handle a GET request for this resource</p></td>
+<td class="description"><p class="name"><a href="#get()">get</a>(Request request)</p><p class="description">Handle a GET request for this resource
+Returns a document containing information on a specified users workouts</p></td>
 </tr>
 <tr>
 <td class="type"> Response</td>
-<td class="description"><p class="name"><a href="#post()">post</a>(Request request)</p><p class="description">Handle a POST request for this resource</p></td>
+<td class="description"><p class="name"><a href="#post()">post</a>(Request request)</p><p class="description">Handle a POST request for this resource
+Forwards request on to workout</p></td>
 </tr>
 <tr>
 <td class="type"> Response</td>
-<td class="description"><p class="name"><a href="#delete()">delete</a>(Request request)</p><p class="description">Handle a DELETE request for this resource</p></td>
+<td class="description"><p class="name"><a href="#delete()">delete</a>(Request request)</p><p class="description">Handle a DELETE request for this resource
+Deletes the specified users workouts</p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from The Unknown Package\MultiViewResource</th></tr>
-<tr><td><a href="../../../../../the unknown package/multiviewresource.html#__construct()">__construct</a>, <a href="../../../../../the unknown package/multiviewresource.html#get_view()">get_view</a>, <a href="../../../../../the unknown package/multiviewresource.html#isSecured()">isSecured</a></td></tr></table>
+<tr><td><a href="../../../../../the unknown package/multiviewresource.html#__construct()">__construct</a>, <a href="../../../../../the unknown package/multiviewresource.html#get_view()">get_view</a>, <a href="../../../../../the unknown package/multiviewresource.html#isSecured()">isSecured</a>, <a href="../../../../../the unknown package/multiviewresource.html#setModel()">setModel</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../../../../../source/resources/workoutsresource.php.html#line16" class="location">resources/workoutsResource.php at line 16</a>
+<a href="../../../../../source/resources/workoutsresource.php.html#line20" class="location">resources/workoutsResource.php at line 20</a>
 
 <h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(mixed parameters)</code>
+<code class="signature">public  void <strong>__construct</strong>(mixed parameters, array of)</code>
 <div class="details">
-<p></p></div>
+<p>Constructor for Workouts reasource</p><dl>
+<dt>Parameters:</dt>
+<dd>of - configuration parameters</dd>
+</dl>
+</div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../../../../../source/resources/workoutsresource.php.html#line25" class="location">resources/workoutsResource.php at line 25</a>
+<a href="../../../../../source/resources/workoutsresource.php.html#line30" class="location">resources/workoutsResource.php at line 30</a>
 
-<h3 id="setModel()">setModel</h3>
-<code class="signature">public  void <strong>setModel</strong>(<a href="../../../../../the unknown package/activity.html">Activity</a> model)</code>
+<h3 id="setUser()">setUser</h3>
+<code class="signature">public  void <strong>setUser</strong>(<a href="../../../../../the unknown package/user.html">User</a> model, mixed user)</code>
 <div class="details">
-<p>Sets the model to be controlled</p></div>
+<p>Sets the user model</p></div>
 
 <hr>
 
-<a href="../../../../../source/resources/workoutsresource.php.html#line34" class="location">resources/workoutsResource.php at line 34</a>
+<a href="../../../../../source/resources/workoutsresource.php.html#line40" class="location">resources/workoutsResource.php at line 40</a>
 
 <h3 id="get()">get</h3>
 <code class="signature">public  Response <strong>get</strong>(Request request)</code>
 <div class="details">
-<p>Handle a GET request for this resource</p></div>
+<p>Handle a GET request for this resource
+Returns a document containing information on a specified users workouts</p></div>
 
 <hr>
 
-<a href="../../../../../source/resources/workoutsresource.php.html#line68" class="location">resources/workoutsResource.php at line 68</a>
+<a href="../../../../../source/resources/workoutsresource.php.html#line75" class="location">resources/workoutsResource.php at line 75</a>
 
 <h3 id="post()">post</h3>
 <code class="signature">public  Response <strong>post</strong>(Request request)</code>
 <div class="details">
-<p>Handle a POST request for this resource</p></div>
+<p>Handle a POST request for this resource
+Forwards request on to workout</p></div>
 
 <hr>
 
-<a href="../../../../../source/resources/workoutsresource.php.html#line80" class="location">resources/workoutsResource.php at line 80</a>
+<a href="../../../../../source/resources/workoutsresource.php.html#line88" class="location">resources/workoutsResource.php at line 88</a>
 
 <h3 id="delete()">delete</h3>
 <code class="signature">public  Response <strong>delete</strong>(Request request)</code>
 <div class="details">
-<p>Handle a DELETE request for this resource</p></div>
+<p>Handle a DELETE request for this resource
+Deletes the specified users workouts</p></div>
 
 <hr>
 

@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:26 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -41,15 +41,15 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">The Unknown Package\TestOfActivityResource</div>
-<a href="../source/tests/activityresourcetest.php.html#line5" class="location">tests/activityResourceTest.php at line 5</a>
+<a href="../source/tests/resources/activityresourcetest.php.html#line10" class="location">tests/resources/activityResourceTest.php at line 10</a>
 
 <h1>Class TestOfActivityResource</h1>
 
-<pre class="tree">UnitTestCase<br> └─<strong>TestOfActivityResource</strong><br /></pre>
+<pre class="tree">UnitTestCase<br> └─<a href="../the unknown package/testofresource.html">TestOfResource</a><br>       └─<strong>TestOfActivityResource</strong><br /></pre>
 
 <hr>
 
-<p class="signature">public  class <strong>TestOfActivityResource</strong><br>extends UnitTestCase
+<p class="signature">public  class <strong>TestOfActivityResource</strong><br>extends <a href="../the unknown package/testofresource.html">TestOfResource</a>
 
 </p>
 
@@ -58,20 +58,8 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type">protected static  void</td>
-<td class="description"><p class="name"><a href="#getMethod()">getMethod</a>(mixed name)</p></td>
-</tr>
-<tr>
 <td class="type"> void</td>
 <td class="description"><p class="name"><a href="#setup()">setup</a>()</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#testSecured()">testSecured</a>()</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#testViews()">testViews</a>()</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
@@ -79,25 +67,44 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#testGetMimes()">testGetMimes</a>()</p></td>
+<td class="description"><p class="name"><a href="#testGetType()">testGetType</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testPostType()">testPostType</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testPutType()">testPutType</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testDeleteType()">testDeleteType</a>()</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
 <td class="description"><p class="name"><a href="#testGetBody()">testGetBody</a>()</p></td>
 </tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testPostBody()">testPostBody</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testPutBody()">testPutBody</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testDeleteBody()">testDeleteBody</a>()</p></td>
+</tr>
 </table>
 
+<table class="inherit">
+<tr><th colspan="2">Methods inherited from The Unknown Package\TestOfResource</th></tr>
+<tr><td><a href="../the unknown package/testofresource.html#DeleteBody()">DeleteBody</a>, <a href="../the unknown package/testofresource.html#DeleteType()">DeleteType</a>, <a href="../the unknown package/testofresource.html#GetBody()">GetBody</a>, <a href="../the unknown package/testofresource.html#GetType()">GetType</a>, <a href="../the unknown package/testofresource.html#PostBody()">PostBody</a>, <a href="../the unknown package/testofresource.html#PostType()">PostType</a>, <a href="../the unknown package/testofresource.html#PutBody()">PutBody</a>, <a href="../the unknown package/testofresource.html#PutType()">PutType</a>, <a href="../the unknown package/testofresource.html#getMethod()">getMethod</a>, <a href="../the unknown package/testofresource.html#getResponse()">getResponse</a>, <a href="../the unknown package/testofresource.html#init()">init</a>, <a href="../the unknown package/testofresource.html#setModels()">setModels</a></td></tr></table>
+
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/tests/activityresourcetest.php.html#line12" class="location">tests/activityResourceTest.php at line 12</a>
-
-<h3 id="getMethod()">getMethod</h3>
-<code class="signature">protected static  void <strong>getMethod</strong>(mixed name)</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/tests/activityresourcetest.php.html#line19" class="location">tests/activityResourceTest.php at line 19</a>
+<a href="../source/tests/resources/activityresourcetest.php.html#line16" class="location">tests/resources/activityResourceTest.php at line 16</a>
 
 <h3 id="setup()">setup</h3>
 <code class="signature">public  void <strong>setup</strong>()</code>
@@ -106,25 +113,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/tests/activityresourcetest.php.html#line26" class="location">tests/activityResourceTest.php at line 26</a>
-
-<h3 id="testSecured()">testSecured</h3>
-<code class="signature">public  void <strong>testSecured</strong>()</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/tests/activityresourcetest.php.html#line32" class="location">tests/activityResourceTest.php at line 32</a>
-
-<h3 id="testViews()">testViews</h3>
-<code class="signature">public  void <strong>testViews</strong>()</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/tests/activityresourcetest.php.html#line43" class="location">tests/activityResourceTest.php at line 43</a>
+<a href="../source/tests/resources/activityresourcetest.php.html#line20" class="location">tests/resources/activityResourceTest.php at line 20</a>
 
 <h3 id="testGetCodes()">testGetCodes</h3>
 <code class="signature">public  void <strong>testGetCodes</strong>()</code>
@@ -133,19 +122,73 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/tests/activityresourcetest.php.html#line59" class="location">tests/activityResourceTest.php at line 59</a>
+<a href="../source/tests/resources/activityresourcetest.php.html#line43" class="location">tests/resources/activityResourceTest.php at line 43</a>
 
-<h3 id="testGetMimes()">testGetMimes</h3>
-<code class="signature">public  void <strong>testGetMimes</strong>()</code>
+<h3 id="testGetType()">testGetType</h3>
+<code class="signature">public  void <strong>testGetType</strong>()</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/tests/activityresourcetest.php.html#line74" class="location">tests/activityResourceTest.php at line 74</a>
+<a href="../source/tests/resources/activityresourcetest.php.html#line49" class="location">tests/resources/activityResourceTest.php at line 49</a>
+
+<h3 id="testPostType()">testPostType</h3>
+<code class="signature">public  void <strong>testPostType</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/tests/resources/activityresourcetest.php.html#line53" class="location">tests/resources/activityResourceTest.php at line 53</a>
+
+<h3 id="testPutType()">testPutType</h3>
+<code class="signature">public  void <strong>testPutType</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/tests/resources/activityresourcetest.php.html#line57" class="location">tests/resources/activityResourceTest.php at line 57</a>
+
+<h3 id="testDeleteType()">testDeleteType</h3>
+<code class="signature">public  void <strong>testDeleteType</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/tests/resources/activityresourcetest.php.html#line61" class="location">tests/resources/activityResourceTest.php at line 61</a>
 
 <h3 id="testGetBody()">testGetBody</h3>
 <code class="signature">public  void <strong>testGetBody</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/tests/resources/activityresourcetest.php.html#line67" class="location">tests/resources/activityResourceTest.php at line 67</a>
+
+<h3 id="testPostBody()">testPostBody</h3>
+<code class="signature">public  void <strong>testPostBody</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/tests/resources/activityresourcetest.php.html#line71" class="location">tests/resources/activityResourceTest.php at line 71</a>
+
+<h3 id="testPutBody()">testPutBody</h3>
+<code class="signature">public  void <strong>testPutBody</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/tests/resources/activityresourcetest.php.html#line75" class="location">tests/resources/activityResourceTest.php at line 75</a>
+
+<h3 id="testDeleteBody()">testDeleteBody</h3>
+<code class="signature">public  void <strong>testDeleteBody</strong>()</code>
 <div class="details">
 </div>
 

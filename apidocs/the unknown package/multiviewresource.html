@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">The Unknown Package\MultiViewResource</div>
-<a href="../source/lib/multiviewresource.php.html#line10" class="location">lib/MultiViewResource.php at line 10</a>
+<a href="../source/lib/multiviewresource.php.html#line12" class="location">lib/MultiViewResource.php at line 12</a>
 
 <h1>Class MultiViewResource</h1>
 
@@ -60,13 +60,18 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <div class="comment" id="overview_description"><p></p></div>
 
+<dl>
+<dt>Author:</dt>
+<dd>Martin Buckley - MBuckley@gmail.com Allows Resources derived from this class to handle multiple document types. Currently handled are: XML, JSON, YAML Default format is XML</dd>
+</dl>
 <hr>
 
 <table id="summary_constructor">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed parameters)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed parameters)</p><p class="description">Constructor for all multi format resources
+Creates a new instance of the Database</p></td>
 </tr>
 </table>
 
@@ -74,40 +79,65 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#get_view()">get_view</a>(mixed request)</p><p class="description">Defaults to xml</p></td>
+<td class="description"><p class="name"><a href="#setModel()">setModel</a>(Mixed model)</p><p class="description">Sets the model to be controlled</p></td>
+</tr>
+<tr>
+<td class="type"> View</td>
+<td class="description"><p class="name"><a href="#get_view()">get_view</a>(Request instance, mixed request)</p><p class="description">Checks the parameters passed to the resource against a mime times list to select the apropriate view to handle the document type requested
+Defaults to xml</p></td>
 </tr>
 <tr>
 <td class="type">protected  void</td>
-<td class="description"><p class="name"><a href="#isSecured()">isSecured</a>(mixed username, mixed password)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#isSecured()">isSecured</a>(String the, mixed username, mixed password)</p><p class="description">Checks for user autherisation using BAsic Authentication</p></td>
 </tr>
 </table>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../source/lib/multiviewresource.php.html#line22" class="location">lib/MultiViewResource.php at line 22</a>
+<a href="../source/lib/multiviewresource.php.html#line24" class="location">lib/MultiViewResource.php at line 24</a>
 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>(mixed parameters)</code>
 <div class="details">
-<p></p></div>
+<p>Constructor for all multi format resources
+Creates a new instance of the Database</p></div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/lib/multiviewresource.php.html#line35" class="location">lib/MultiViewResource.php at line 35</a>
+<a href="../source/lib/multiviewresource.php.html#line38" class="location">lib/MultiViewResource.php at line 38</a>
 
-<h3 id="get_view()">get_view</h3>
-<code class="signature">public  void <strong>get_view</strong>(mixed request)</code>
+<h3 id="setModel()">setModel</h3>
+<code class="signature">public  void <strong>setModel</strong>(Mixed model)</code>
 <div class="details">
-<p>Defaults to xml</p></div>
+<p>Sets the model to be controlled</p></div>
 
 <hr>
 
-<a href="../source/lib/multiviewresource.php.html#line49" class="location">lib/MultiViewResource.php at line 49</a>
+<a href="../source/lib/multiviewresource.php.html#line48" class="location">lib/MultiViewResource.php at line 48</a>
+
+<h3 id="get_view()">get_view</h3>
+<code class="signature">public  View <strong>get_view</strong>(Request instance, mixed request)</code>
+<div class="details">
+<p>Checks the parameters passed to the resource against a mime times list to select the apropriate view to handle the document type requested
+Defaults to xml</p><dl>
+<dt>Returns:</dt>
+<dd>to handle the documents</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/lib/multiviewresource.php.html#line63" class="location">lib/MultiViewResource.php at line 63</a>
 
 <h3 id="isSecured()">isSecured</h3>
-<code class="signature">protected  void <strong>isSecured</strong>(mixed username, mixed password)</code>
+<code class="signature">protected  void <strong>isSecured</strong>(String the, mixed username, mixed password)</code>
 <div class="details">
-<p></p></div>
+<p>Checks for user autherisation using BAsic Authentication</p><dl>
+<dt>Parameters:</dt>
+<dd>the - username</dd>
+<dd>the - password</dd>
+</dl>
+</div>
 
 <hr>
 

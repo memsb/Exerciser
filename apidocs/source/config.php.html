@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -37,14 +37,21 @@
 <hr>
 
 <a name="line1"></a><pre><?php
-<a name="line2"></a>define('URI', '/exerciser', true);
+<a name="line2"></a>namespace Exerciser;
 <a name="line3"></a>
-<a name="line4"></a>define('HOST', 'localhost', true);
-<a name="line5"></a>define('DATABASE', 'exercise', true);
-<a name="line6"></a>define('username', 'exerciser', true);
-<a name="line7"></a>define('PASSWORD', 'exerciser', true);
-<a name="line8"></a>?>
-<a name="line9"></a></pre>
+<a name="line4"></a>define('ROOT', '/var/www/exerciser/', true);
+<a name="line5"></a>define('LIB', ROOT . 'lib/', true);
+<a name="line6"></a>define('RESOURCES', ROOT . 'resources/', true);
+<a name="line7"></a>define('CLASSES', ROOT . 'classes/', true);
+<a name="line8"></a>
+<a name="line9"></a>define('URI', '/exerciser', true);
+<a name="line10"></a>
+<a name="line11"></a>define('HOST', 'localhost', true);
+<a name="line12"></a>define('DATABASE', 'exercise', true);
+<a name="line13"></a>define('username', 'exerciser', true);
+<a name="line14"></a>define('PASSWORD', 'exerciser', true);
+<a name="line15"></a>?>
+<a name="line16"></a></pre>
 <div class="header">
 <h1>PHPDoctor</h1>
 <ul>

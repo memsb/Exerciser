@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -37,11 +37,11 @@
 <hr>
 
 <a name="line1"></a><pre><?php
-<a name="line2"></a>
-<a name="line3"></a>/**
-<a name="line4"></a>*
-<a name="line5"></a>*
-<a name="line6"></a>*/
+<a name="line2"></a>/**
+<a name="line3"></a> * 	Generates a unique ID number to be the users API Key with some added salt
+<a name="line4"></a> * 	@return String of hexidecimal
+<a name="line5"></a> *	@namespace Exerciser
+<a name="line6"></a> */
 <a name="line7"></a>function generateAPIKey(){
 <a name="line8"></a>	return uniqid('apikey_');
 <a name="line9"></a>}

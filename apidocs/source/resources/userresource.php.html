@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -38,134 +38,136 @@
 
 <a name="line1"></a><pre><?php
 <a name="line2"></a>
-<a name="line3"></a>require_once dirname(__FILE__) . '/../classes/user.php';
-<a name="line4"></a>require_once dirname(__FILE__) . '/../lib/MultiViewResource.php';
+<a name="line3"></a>require_once CLASSES .  'user.php';
+<a name="line4"></a>require_once LIB .  'MultiViewResource.php';
 <a name="line5"></a>
 <a name="line6"></a>/**
-<a name="line7"></a> * @namespace Tonic\Exerciser\Users\Username
-<a name="line8"></a> * @uri /users/([A-Za-z0-9_]+)
-<a name="line9"></a> */
-<a name="line10"></a>class UserResource extends MultiViewResource {
-<a name="line11"></a>
-<a name="line12"></a>	/**
-<a name="line13"></a>	*
-<a name="line14"></a>	*
-<a name="line15"></a>	*/
-<a name="line16"></a>	public function __construct($parameters){
-<a name="line17"></a>		parent::__construct($parameters);
-<a name="line18"></a>		$this->model = new User($this->db);
-<a name="line19"></a>			
-<a name="line20"></a>	}
-<a name="line21"></a>
-<a name="line22"></a>	/**
-<a name="line23"></a>	* Sets the model to be controlled
-<a name="line24"></a>	* @param Activity model
-<a name="line25"></a>	*/
-<a name="line26"></a>	public function setModel($model){
-<a name="line27"></a>		$this->model = $model;
-<a name="line28"></a>	}    
-<a name="line29"></a>
-<a name="line30"></a>	/**
-<a name="line31"></a>	* Handle a GET request for this resource
-<a name="line32"></a>	* @param Request request
-<a name="line33"></a>	* @return Response
-<a name="line34"></a>	*/
-<a name="line35"></a>	public function get($request) {
-<a name="line36"></a>		$response = new Response($request);
-<a name="line37"></a>		$ID = $this->parameters[0];
-<a name="line38"></a>		$this->view = $this->get_view($request);
-<a name="line39"></a>		try{
-<a name="line40"></a>			$this->model->setLocation($request->uri);
-<a name="line41"></a>			$this->model->load($ID);			
-<a name="line42"></a>
-<a name="line43"></a>			$response = new Response($request);
-<a name="line44"></a>			$response->code = Response::OK;
-<a name="line45"></a>			$response->addHeader('Content-type', $this->model->type($this->view));
-<a name="line46"></a>			$response->body = $this->model->generateDocument($this->view);
-<a name="line47"></a>		}catch (Exception $e) {
-<a name="line48"></a>			$response->code = Response::NOTFOUND;
-<a name="line49"></a>		}     
-<a name="line50"></a>
-<a name="line51"></a>		return $response;
-<a name="line52"></a>	}
-<a name="line53"></a>
-<a name="line54"></a>
-<a name="line55"></a>	/**
-<a name="line56"></a>	* Handle a PUT request for this resource
-<a name="line57"></a>	* @param Request request
-<a name="line58"></a>	* @return Response
-<a name="line59"></a>	*/
-<a name="line60"></a>	public function put($request) {
-<a name="line61"></a>		$response = new Response($request);
-<a name="line62"></a>		$ID = $this->parameters[0];
-<a name="line63"></a>		$this->view = $this->get_view($request);
-<a name="line64"></a>		try{
-<a name="line65"></a>			$this->model->setLocation($request->uri);
-<a name="line66"></a>			$this->model->load($ID);
-<a name="line67"></a>			$this->isSecured($this->model->user_id, $this->model->password);
-<a name="line68"></a>			$this->model->parse($request->data, $this->view);
-<a name="line69"></a>			$this->model->update();		
-<a name="line70"></a>	
-<a name="line71"></a>			$response->code = Response::CREATED;
-<a name="line72"></a>			$response->addHeader('Location', $this->model->location());
-<a name="line73"></a>		}catch (UnexpectedValueException $e) {
-<a name="line74"></a>			$response->code = Response::UNSUPPORTEDMEDIATYPE;
-<a name="line75"></a>		}catch (Exception $e) {
-<a name="line76"></a>			$response->code = Response::NOTFOUND;
-<a name="line77"></a>		}
-<a name="line78"></a>		return $response;  
-<a name="line79"></a>	}
-<a name="line80"></a>
-<a name="line81"></a>	/**
-<a name="line82"></a>	*
-<a name="line83"></a>	*
-<a name="line84"></a>	*/
-<a name="line85"></a>	public function post($request){
-<a name="line86"></a>		$response = new Response($request);
-<a name="line87"></a>		$this->view = $this->get_view($request);
-<a name="line88"></a>		try{	
-<a name="line89"></a>			$this->model->setLocation($request->uri);	
-<a name="line90"></a>			$this->model->parse($request->data, $this->view);
-<a name="line91"></a>			$this->model->create();			
-<a name="line92"></a>			$response->code = Response::CREATED;
-<a name="line93"></a>			$response->addHeader('Content-type', $this->model->type($this->view));
-<a name="line94"></a>			$response->addHeader('Location', $this->model->location());
-<a name="line95"></a>			$response->body = $this->model->generateNewUserDocument($this->view);
-<a name="line96"></a>		}catch (Exception $e) {
-<a name="line97"></a>			$response->code = Response::UNSUPPORTEDMEDIATYPE;
-<a name="line98"></a>			$response->body = $e->getMessage();
-<a name="line99"></a>		}		
-<a name="line100"></a>
-<a name="line101"></a>		return $response;
-<a name="line102"></a>	}
-<a name="line103"></a>
+<a name="line7"></a> * @author Martin Buckley - MBuckley@gmail.com
+<a name="line8"></a> * Controller for User resource
+<a name="line9"></a> *
+<a name="line10"></a> * @namespace Exerciser\Resources
+<a name="line11"></a> * @uri /users/([A-Za-z0-9_]+)
+<a name="line12"></a> */
+<a name="line13"></a>class UserResource extends MultiViewResource {
+<a name="line14"></a>
+<a name="line15"></a>	/**
+<a name="line16"></a>	 * Constructor for User resource
+<a name="line17"></a>	 * @param array of configuration parameters
+<a name="line18"></a>	 */
+<a name="line19"></a>	public function __construct($parameters){
+<a name="line20"></a>		parent::__construct($parameters);
+<a name="line21"></a>		$this->model = new User($this->db);
+<a name="line22"></a>			
+<a name="line23"></a>	}
+<a name="line24"></a>
+<a name="line25"></a>	/**
+<a name="line26"></a>	 * Handle a GET request for this resource
+<a name="line27"></a>	 * Returns a document containing information on a specified user
+<a name="line28"></a>	 * @param Request request
+<a name="line29"></a>	 * @return Response
+<a name="line30"></a>	 */
+<a name="line31"></a>	public function get($request) {
+<a name="line32"></a>		$response = new Response($request);
+<a name="line33"></a>		$ID = $this->parameters[0];
+<a name="line34"></a>		$this->view = $this->get_view($request);
+<a name="line35"></a>		try{
+<a name="line36"></a>			$this->model->setLocation($request->uri);
+<a name="line37"></a>			$this->model->load($ID);			
+<a name="line38"></a>
+<a name="line39"></a>			$response = new Response($request);
+<a name="line40"></a>			$response->code = Response::OK;
+<a name="line41"></a>			$response->addHeader('Content-type', $this->model->type($this->view));
+<a name="line42"></a>			$response->body = $this->model->generateDocument($this->view);
+<a name="line43"></a>		}catch (Exception $e) {
+<a name="line44"></a>			$response->code = Response::NOTFOUND;
+<a name="line45"></a>		}     
+<a name="line46"></a>
+<a name="line47"></a>		return $response;
+<a name="line48"></a>	}
+<a name="line49"></a>
+<a name="line50"></a>	/**
+<a name="line51"></a>	 * Handle a PUT request for this resource
+<a name="line52"></a>	 * Updates the specified users details using the information from the document provided
+<a name="line53"></a>	 * Requires users autherisation via Basic Auth and a valid API key
+<a name="line54"></a>	 * @param Request request
+<a name="line55"></a>	 * @return Response
+<a name="line56"></a>	 */
+<a name="line57"></a>	public function put($request) {
+<a name="line58"></a>		$response = new Response($request);
+<a name="line59"></a>		$ID = $this->parameters[0];
+<a name="line60"></a>		$this->view = $this->get_view($request);
+<a name="line61"></a>		try{
+<a name="line62"></a>			$this->model->setLocation($request->uri);
+<a name="line63"></a>			$this->model->load($ID);
+<a name="line64"></a>			$this->isSecured($this->model->user_id, $this->model->api_key);
+<a name="line65"></a>			$this->model->parse($request->data, $this->view);
+<a name="line66"></a>			$this->model->update();		
+<a name="line67"></a>	
+<a name="line68"></a>			$response->code = Response::CREATED;
+<a name="line69"></a>			$response->addHeader('Location', $this->model->location());
+<a name="line70"></a>		}catch (ResponseException $e){
+<a name="line71"></a>			throw $e;
+<a name="line72"></a>		}catch (UnexpectedValueException $e) {
+<a name="line73"></a>			$response->code = Response::UNSUPPORTEDMEDIATYPE;
+<a name="line74"></a>		}catch (Exception $e) {
+<a name="line75"></a>			$response->code = Response::NOTFOUND;
+<a name="line76"></a>		}
+<a name="line77"></a>		return $response;  
+<a name="line78"></a>	}
+<a name="line79"></a>
+<a name="line80"></a>	/**
+<a name="line81"></a>	 * Handle a POST request for this resource
+<a name="line82"></a>	 * Creates a new site user using the details provided
+<a name="line83"></a>	 * Returns a document containing the users ID number and API key for use in future autherisation
+<a name="line84"></a>	 * @param Request request
+<a name="line85"></a>	 * @return Response
+<a name="line86"></a>	 */
+<a name="line87"></a>	public function post($request){
+<a name="line88"></a>		$response = new Response($request);
+<a name="line89"></a>		$this->view = $this->get_view($request);
+<a name="line90"></a>		try{	
+<a name="line91"></a>			$this->model->setLocation($request->uri);	
+<a name="line92"></a>			$this->model->parse($request->data, $this->view);
+<a name="line93"></a>			$this->model->create();			
+<a name="line94"></a>			$response->code = Response::CREATED;
+<a name="line95"></a>			$response->addHeader('Content-type', $this->model->type($this->view));
+<a name="line96"></a>			$response->addHeader('Location', $this->model->location());
+<a name="line97"></a>			$response->body = $this->model->generateNewUserDocument($this->view);
+<a name="line98"></a>		}catch (Exception $e) {
+<a name="line99"></a>			$response->code = Response::UNSUPPORTEDMEDIATYPE;
+<a name="line100"></a>			$response->body = $e->getMessage();
+<a name="line101"></a>		}
+<a name="line102"></a>		return $response;
+<a name="line103"></a>	}
 <a name="line104"></a>	
 <a name="line105"></a>	/**
-<a name="line106"></a>	* Handle a DELETE request for this resource
-<a name="line107"></a>	* @param Request request
-<a name="line108"></a>	* @return Response
-<a name="line109"></a>	*/
-<a name="line110"></a>	public function delete($request) {
-<a name="line111"></a>		$response = new Response($request);
-<a name="line112"></a>		$ID = $this->parameters[0];	
-<a name="line113"></a>
-<a name="line114"></a>		try{
-<a name="line115"></a>			$this->model->load($ID);
-<a name="line116"></a>			$this->isSecured($this->model->user_id, $this->model->password);
-<a name="line117"></a>			$this->model->delete();
-<a name="line118"></a>
-<a name="line119"></a>			$response = new Response($request);
-<a name="line120"></a>			$response->code = Response::NOCONTENT;
-<a name="line121"></a>		}catch (Exception $e) {
-<a name="line122"></a>			$response->code = Response::NOTFOUND;
-<a name="line123"></a>		} 
-<a name="line124"></a>
-<a name="line125"></a>		return $response;
-<a name="line126"></a>	}
-<a name="line127"></a>
-<a name="line128"></a>}
-<a name="line129"></a>?>
-<a name="line130"></a></pre>
+<a name="line106"></a>	 * Handle a DELETE request for this resource
+<a name="line107"></a>	 * Requires users autherisation via Basic Auth and a valid API key
+<a name="line108"></a>	 * @param Request request
+<a name="line109"></a>	 * @return Response
+<a name="line110"></a>	 */
+<a name="line111"></a>	public function delete($request) {
+<a name="line112"></a>		$response = new Response($request);
+<a name="line113"></a>		$ID = $this->parameters[0];	
+<a name="line114"></a>
+<a name="line115"></a>		try{
+<a name="line116"></a>			$this->model->load($ID);
+<a name="line117"></a>			$this->isSecured($this->model->user_id, $this->model->api_key);
+<a name="line118"></a>			$this->model->delete();
+<a name="line119"></a>
+<a name="line120"></a>			$response = new Response($request);
+<a name="line121"></a>			$response->code = Response::NOCONTENT;
+<a name="line122"></a>		}catch (ResponseException $e){
+<a name="line123"></a>			throw $e;
+<a name="line124"></a>		}catch (Exception $e) {
+<a name="line125"></a>			$response->code = Response::NOTFOUND;
+<a name="line126"></a>		}
+<a name="line127"></a>		return $response;
+<a name="line128"></a>	}
+<a name="line129"></a>
+<a name="line130"></a>}
+<a name="line131"></a>?>
+<a name="line132"></a></pre>
 <div class="header">
 <h1>PHPDoctor</h1>
 <ul>

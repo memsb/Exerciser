@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -48,132 +48,80 @@ Detail: <a href="#detail_global">Global</a>
 <tr><th colspan="2" class="title">Global Summary</th></tr>
 <tr>
 <td class="type">final  mixed</td>
-<td class="description"><p class="name"><a href="#DATABASE">DATABASE</a></p></td>
+<td class="description"><p class="name"><a href="#TEST_CLASSES">TEST_CLASSES</a></p></td>
 </tr>
 <tr>
 <td class="type">final  mixed</td>
-<td class="description"><p class="name"><a href="#HOST">HOST</a></p></td>
+<td class="description"><p class="name"><a href="#TEST_DATABASE">TEST_DATABASE</a></p></td>
 </tr>
 <tr>
 <td class="type">final  mixed</td>
-<td class="description"><p class="name"><a href="#PASSWORD">PASSWORD</a></p></td>
+<td class="description"><p class="name"><a href="#TEST_LIB">TEST_LIB</a></p></td>
 </tr>
 <tr>
 <td class="type">final  mixed</td>
-<td class="description"><p class="name"><a href="#URI">URI</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#config">config</a></p></td>
-</tr>
-<tr>
-<td class="type"> ResponseException</td>
-<td class="description"><p class="name"><a href="#e">e</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#request">request</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#resource">resource</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#response">response</a></p></td>
+<td class="description"><p class="name"><a href="#TEST_PASSWORD">TEST_PASSWORD</a></p></td>
 </tr>
 <tr>
 <td class="type">final  mixed</td>
-<td class="description"><p class="name"><a href="#username">username</a></p></td>
+<td class="description"><p class="name"><a href="#TEST_RESOURCES">TEST_RESOURCES</a></p></td>
+</tr>
+<tr>
+<td class="type">final  mixed</td>
+<td class="description"><p class="name"><a href="#TEST_USERNAME">TEST_USERNAME</a></p></td>
 </tr>
 </table>
 
 <h2 id="detail_global">Global Detail</h2>
-<a href="../source/config.php.html#line5" class="location">config.php at line 5</a>
+<a href="../source/tests/tests.php.html#line8" class="location">tests/tests.php at line 8</a>
 
-<h3 id="DATABASE">DATABASE</h3>
-<code class="signature">public final  mixed <strong>DATABASE</strong> = 'exercise', true</code>
+<h3 id="TEST_CLASSES">TEST_CLASSES</h3>
+<code class="signature">public final  mixed <strong>TEST_CLASSES</strong> = ROOT . 'tests/classes/', true</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/config.php.html#line4" class="location">config.php at line 4</a>
+<a href="../source/tests/lib/dbatest.php.html#line5" class="location">tests/lib/DBATest.php at line 5</a>
 
-<h3 id="HOST">HOST</h3>
-<code class="signature">public final  mixed <strong>HOST</strong> = 'localhost', true</code>
+<h3 id="TEST_DATABASE">TEST_DATABASE</h3>
+<code class="signature">public final  mixed <strong>TEST_DATABASE</strong> = 'test', true</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/config.php.html#line7" class="location">config.php at line 7</a>
+<a href="../source/tests/tests.php.html#line9" class="location">tests/tests.php at line 9</a>
 
-<h3 id="PASSWORD">PASSWORD</h3>
-<code class="signature">public final  mixed <strong>PASSWORD</strong> = 'exerciser', true</code>
+<h3 id="TEST_LIB">TEST_LIB</h3>
+<code class="signature">public final  mixed <strong>TEST_LIB</strong> = ROOT . 'tests/lib/', true</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/config.php.html#line2" class="location">config.php at line 2</a>
+<a href="../source/tests/lib/dbatest.php.html#line7" class="location">tests/lib/DBATest.php at line 7</a>
 
-<h3 id="URI">URI</h3>
-<code class="signature">public final  mixed <strong>URI</strong> = '/exerciser', true</code>
+<h3 id="TEST_PASSWORD">TEST_PASSWORD</h3>
+<code class="signature">public final  mixed <strong>TEST_PASSWORD</strong> = 'test', true</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/dispatch.php.html#line9" class="location">dispatch.php at line 9</a>
+<a href="../source/tests/tests.php.html#line10" class="location">tests/tests.php at line 10</a>
 
-<h3 id="config">config</h3>
-<code class="signature">public  mixed <strong>config</strong> = array('baseUri' =&gt; URI</code>
+<h3 id="TEST_RESOURCES">TEST_RESOURCES</h3>
+<code class="signature">public final  mixed <strong>TEST_RESOURCES</strong> = ROOT . 'tests/resources/', true</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/dispatch.php.html#line15" class="location">dispatch.php at line 15</a>
+<a href="../source/tests/lib/dbatest.php.html#line6" class="location">tests/lib/DBATest.php at line 6</a>
 
-<h3 id="e">e</h3>
-<code class="signature">public  ResponseException <strong>e</strong> = $e-&gt;response($request</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/dispatch.php.html#line10" class="location">dispatch.php at line 10</a>
-
-<h3 id="request">request</h3>
-<code class="signature">public  mixed <strong>request</strong> = new Request($config</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/dispatch.php.html#line13" class="location">dispatch.php at line 13</a>
-
-<h3 id="resource">resource</h3>
-<code class="signature">public  mixed <strong>resource</strong> = $request-&gt;loadResource</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/dispatch.php.html#line14" class="location">dispatch.php at line 14</a>
-
-<h3 id="response">response</h3>
-<code class="signature">public  mixed <strong>response</strong> = $resource-&gt;exec($request</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/config.php.html#line6" class="location">config.php at line 6</a>
-
-<h3 id="username">username</h3>
-<code class="signature">public final  mixed <strong>username</strong> = 'exerciser', true</code>
+<h3 id="TEST_USERNAME">TEST_USERNAME</h3>
+<code class="signature">public final  mixed <strong>TEST_USERNAME</strong> = 'test', true</code>
 <div class="details">
 </div>
 

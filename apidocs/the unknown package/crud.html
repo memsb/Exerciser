@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:20 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -64,11 +64,19 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </dl>
 <hr>
 
+<table id="summary_constructor">
+<tr><th colspan="2">Constructor Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db)</p></td>
+</tr>
+</table>
+
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#load()">load</a>(mixed ID)</p><p class="description">Loads the objects attributes from the database</p></td>
+<td class="description"><p class="name"><a href="#load()">load</a>(mixed optional, mixed ID)</p><p class="description">Loads the objects attributes from the database</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
@@ -80,7 +88,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#delete()">delete</a>()</p><p class="description">Deteles the object from the database</p></td>
+<td class="description"><p class="name"><a href="#delete()">delete</a>()</p><p class="description">Deletes the object from the database</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
@@ -91,26 +99,44 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <td class="description"><p class="name"><a href="#location()">location</a>()</p><p class="description">Gets the uri of the object</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#parse()">parse</a>(mixed data_str, mixed view)</p></td>
+<td class="type"> String</td>
+<td class="description"><p class="name"><a href="#type()">type</a>(View the, mixed view)</p><p class="description">Gets the mime type</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#generateDocument()">generateDocument</a>(mixed view)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#parse()">parse</a>(View the, mixed data_str, mixed view)</p><p class="description">Parses a document using the specified view</p></td>
+</tr>
+<tr>
+<td class="type"> String</td>
+<td class="description"><p class="name"><a href="#generateDocument()">generateDocument</a>(View the, mixed view)</p><p class="description">Generates a document from the model and the selected view</p></td>
 </tr>
 </table>
 
-<h2 id="detail_method">Method Detail</h2>
-<a href="../source/lib/crud.php.html#line35" class="location">lib/CRUD.php at line 35</a>
+<h2 id="detail_method">Constructor Detail</h2>
+<a href="../source/lib/crud.php.html#line15" class="location">lib/CRUD.php at line 15</a>
 
-<h3 id="load()">load</h3>
-<code class="signature">public  void <strong>load</strong>(mixed ID)</code>
+<h3 id="__construct()">__construct</h3>
+<code class="signature">public  void <strong>__construct</strong>(mixed db)</code>
 <div class="details">
-<p>Loads the objects attributes from the database</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/crud.php.html#line42" class="location">lib/CRUD.php at line 42</a>
+<h2 id="detail_method">Method Detail</h2>
+<a href="../source/lib/crud.php.html#line44" class="location">lib/CRUD.php at line 44</a>
+
+<h3 id="load()">load</h3>
+<code class="signature">public  void <strong>load</strong>(mixed optional, mixed ID)</code>
+<div class="details">
+<p>Loads the objects attributes from the database</p><dl>
+<dt>Parameters:</dt>
+<dd>optional - identifier</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/lib/crud.php.html#line51" class="location">lib/CRUD.php at line 51</a>
 
 <h3 id="create()">create</h3>
 <code class="signature">public  void <strong>create</strong>()</code>
@@ -119,7 +145,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/lib/crud.php.html#line49" class="location">lib/CRUD.php at line 49</a>
+<a href="../source/lib/crud.php.html#line58" class="location">lib/CRUD.php at line 58</a>
 
 <h3 id="update()">update</h3>
 <code class="signature">public  void <strong>update</strong>()</code>
@@ -128,16 +154,16 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/lib/crud.php.html#line56" class="location">lib/CRUD.php at line 56</a>
+<a href="../source/lib/crud.php.html#line65" class="location">lib/CRUD.php at line 65</a>
 
 <h3 id="delete()">delete</h3>
 <code class="signature">public  void <strong>delete</strong>()</code>
 <div class="details">
-<p>Deteles the object from the database</p></div>
+<p>Deletes the object from the database</p></div>
 
 <hr>
 
-<a href="../source/lib/crud.php.html#line64" class="location">lib/CRUD.php at line 64</a>
+<a href="../source/lib/crud.php.html#line73" class="location">lib/CRUD.php at line 73</a>
 
 <h3 id="setLocation()">setLocation</h3>
 <code class="signature">public  void <strong>setLocation</strong>(String the, mixed uri)</code>
@@ -150,7 +176,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/lib/crud.php.html#line72" class="location">lib/CRUD.php at line 72</a>
+<a href="../source/lib/crud.php.html#line81" class="location">lib/CRUD.php at line 81</a>
 
 <h3 id="location()">location</h3>
 <code class="signature">public  String <strong>location</strong>()</code>
@@ -163,21 +189,47 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/lib/crud.php.html#line76" class="location">lib/CRUD.php at line 76</a>
+<a href="../source/lib/crud.php.html#line90" class="location">lib/CRUD.php at line 90</a>
 
-<h3 id="parse()">parse</h3>
-<code class="signature">public  void <strong>parse</strong>(mixed data_str, mixed view)</code>
+<h3 id="type()">type</h3>
+<code class="signature">public  String <strong>type</strong>(View the, mixed view)</code>
 <div class="details">
+<p>Gets the mime type</p><dl>
+<dt>Parameters:</dt>
+<dd>the - view to combine the type with</dd>
+<dt>Returns:</dt>
+<dd>the mime type</dd>
+</dl>
 </div>
 
 <hr>
 
-<a href="../source/lib/crud.php.html#line84" class="location">lib/CRUD.php at line 84</a>
+<a href="../source/lib/crud.php.html#line101" class="location">lib/CRUD.php at line 101</a>
+
+<h3 id="parse()">parse</h3>
+<code class="signature">public  void <strong>parse</strong>(View the, mixed data_str, mixed view)</code>
+<div class="details">
+<p>Parses a document using the specified view</p><dl>
+<dt>Parameters:</dt>
+<dd>the - document string</dd>
+<dd>the - view</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/lib/crud.php.html#line110" class="location">lib/CRUD.php at line 110</a>
 
 <h3 id="generateDocument()">generateDocument</h3>
-<code class="signature">public  void <strong>generateDocument</strong>(mixed view)</code>
+<code class="signature">public  String <strong>generateDocument</strong>(View the, mixed view)</code>
 <div class="details">
-<p></p></div>
+<p>Generates a document from the model and the selected view</p><dl>
+<dt>Parameters:</dt>
+<dd>the - view</dd>
+<dt>Returns:</dt>
+<dd>the generated document</dd>
+</dl>
+</div>
 
 <hr>
 

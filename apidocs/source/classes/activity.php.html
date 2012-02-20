@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -38,92 +38,82 @@
 
 <a name="line1"></a><pre><?php
 <a name="line2"></a>
-<a name="line3"></a>require_once dirname(__FILE__) . '/../lib/CRUD.php';
+<a name="line3"></a>require_once LIB . 'CRUD.php';
 <a name="line4"></a>
 <a name="line5"></a>/**
-<a name="line6"></a>*	@author Martin Buckley - MBuckley@gmail.com
-<a name="line7"></a>*	Represents an Activity a workout may include.
-<a name="line8"></a>*/
-<a name="line9"></a>class Activity extends CRUD {
-<a name="line10"></a>
-<a name="line11"></a>	private $type = 'activity';
-<a name="line12"></a>
-<a name="line13"></a>	protected $activity_id = 0;
-<a name="line14"></a>	protected $activity_name = '';
-<a name="line15"></a>	protected $description = '';
-<a name="line16"></a>	protected $kcal_hour = 0;
-<a name="line17"></a>
-<a name="line18"></a>	/**
-<a name="line19"></a>	* @access public
-<a name="line20"></a>	*/
-<a name="line21"></a>	public function __construct($db){		
-<a name="line22"></a>		if( $db == NULL )
-<a name="line23"></a>			throw new BadMethodCallException('Database not specified.');
-<a name="line24"></a>		$this->db = $db;
-<a name="line25"></a>		$this->db->connect();
-<a name="line26"></a>	}
-<a name="line27"></a>
-<a name="line28"></a>	/**
-<a name="line29"></a>	* Loads the  details of the activity specified by ID number
-<a name="line30"></a>	* @access public
-<a name="line31"></a>	* @param int the activity id number
-<a name="line32"></a>	*/
-<a name="line33"></a>	public function load($activityID){
-<a name="line34"></a>		$id = $this->db->clean($activityID);
-<a name="line35"></a>		$result = $this->db->query("SELECT 	Activity_ID,
-<a name="line36"></a>							Activity_Name,
-<a name="line37"></a>							Description,
-<a name="line38"></a>							kcal_Hour
-<a name="line39"></a>							FROM Activities WHERE Activity_ID = '$id'"
-<a name="line40"></a>					);
-<a name="line41"></a>
-<a name="line42"></a>		if( ! $result || count($result) == 0 )
-<a name="line43"></a>			throw new LengthException("No matching entry in database");
-<a name="line44"></a>
-<a name="line45"></a>		$row = $result[0];
-<a name="line46"></a>		$this->activity_id = $row['Activity_ID'];
-<a name="line47"></a>		$this->activity_name = $row['Activity_Name'];
-<a name="line48"></a>		$this->description = $row['Description'];
-<a name="line49"></a>		$this->kcal_hour = $row['Kcal_Hour'];
-<a name="line50"></a>	}
-<a name="line51"></a>
-<a name="line52"></a>	/**
-<a name="line53"></a>	*
-<a name="line54"></a>	*
-<a name="line55"></a>	*/
-<a name="line56"></a>	public function addProperties($view){
-<a name="line57"></a>		$view->startElement('activity');
-<a name="line58"></a>
-<a name="line59"></a>		$view->startElement('activity_id');
-<a name="line60"></a>		$view->text($this->activity_id);
-<a name="line61"></a>		$view->endElement();
-<a name="line62"></a>
-<a name="line63"></a>		$view->startElement('activity_name');
-<a name="line64"></a>		$view->text($this->activity_name);
-<a name="line65"></a>		$view->endElement();
-<a name="line66"></a>
-<a name="line67"></a>		$view->startElement('description');
-<a name="line68"></a>		$view->text($this->description);
-<a name="line69"></a>		$view->endElement();
-<a name="line70"></a>
-<a name="line71"></a>		$view->startElement('kcal_hour');
-<a name="line72"></a>		$view->text($this->kcal_hour);
+<a name="line6"></a> *	@author Martin Buckley - MBuckley@gmail.com
+<a name="line7"></a> *	Represents an Activity a workout may include.
+<a name="line8"></a> * 	@namespace Exerciser
+<a name="line9"></a> */
+<a name="line10"></a>class Activity extends CRUD {
+<a name="line11"></a>
+<a name="line12"></a>	protected $type = 'activity';
+<a name="line13"></a>
+<a name="line14"></a>	protected $activity_id = 0;
+<a name="line15"></a>	protected $activity_name = '';
+<a name="line16"></a>	protected $description = '';
+<a name="line17"></a>	protected $kcal_hour = 0;
+<a name="line18"></a>
+<a name="line19"></a>	/**
+<a name="line20"></a>	 * @access public
+<a name="line21"></a>	 */
+<a name="line22"></a>	public function __construct($db){		
+<a name="line23"></a>		parent::__construct($db);
+<a name="line24"></a>	}
+<a name="line25"></a>
+<a name="line26"></a>	/**
+<a name="line27"></a>	 * Loads the  details of the activity specified by ID number
+<a name="line28"></a>	 * @access public
+<a name="line29"></a>	 * @param int the activity id number
+<a name="line30"></a>	 */
+<a name="line31"></a>	public function load($activityID){
+<a name="line32"></a>		$id = $this->db->clean($activityID);
+<a name="line33"></a>		$result = $this->db->query("SELECT 	Activity_ID,
+<a name="line34"></a>							Activity_Name,
+<a name="line35"></a>							Description,
+<a name="line36"></a>							Kcal_Hour
+<a name="line37"></a>							FROM Activities WHERE Activity_ID = '$id'"
+<a name="line38"></a>					);
+<a name="line39"></a>
+<a name="line40"></a>		if( ! $result || count($result) == 0 )
+<a name="line41"></a>			throw new LengthException("No matching entry in database");
+<a name="line42"></a>
+<a name="line43"></a>		$row = $result[0];
+<a name="line44"></a>		$this->activity_id = $row['Activity_ID'];
+<a name="line45"></a>		$this->activity_name = $row['Activity_Name'];
+<a name="line46"></a>		$this->description = $row['Description'];
+<a name="line47"></a>		$this->kcal_hour = $row['Kcal_Hour'];
+<a name="line48"></a>	}
+<a name="line49"></a>
+<a name="line50"></a>	/**
+<a name="line51"></a>	 * Adds elements to the specified view
+<a name="line52"></a>	 * @param View type of document requested
+<a name="line53"></a>	 */
+<a name="line54"></a>	public function addProperties($view){
+<a name="line55"></a>		$view->startElement('activity');
+<a name="line56"></a>
+<a name="line57"></a>		$view->startElement('activity_id');
+<a name="line58"></a>		$view->text($this->activity_id);
+<a name="line59"></a>		$view->endElement();
+<a name="line60"></a>
+<a name="line61"></a>		$view->startElement('activity_name');
+<a name="line62"></a>		$view->text($this->activity_name);
+<a name="line63"></a>		$view->endElement();
+<a name="line64"></a>
+<a name="line65"></a>		$view->startElement('description');
+<a name="line66"></a>		$view->text($this->description);
+<a name="line67"></a>		$view->endElement();
+<a name="line68"></a>
+<a name="line69"></a>		$view->startElement('kcal_hour');
+<a name="line70"></a>		$view->text($this->kcal_hour);
+<a name="line71"></a>		$view->endElement();
+<a name="line72"></a>		
 <a name="line73"></a>		$view->endElement();
-<a name="line74"></a>		
-<a name="line75"></a>		$view->endElement();
-<a name="line76"></a>	}
-<a name="line77"></a>
-<a name="line78"></a>	/**
-<a name="line79"></a>	*
-<a name="line80"></a>	*
-<a name="line81"></a>	*/
-<a name="line82"></a>	public function type($view){
-<a name="line83"></a>		return $view->type() . $this->type;
-<a name="line84"></a>	}
-<a name="line85"></a>}
-<a name="line86"></a>
-<a name="line87"></a>?>
-<a name="line88"></a></pre>
+<a name="line74"></a>	}
+<a name="line75"></a>}
+<a name="line76"></a>
+<a name="line77"></a>?>
+<a name="line78"></a></pre>
 <div class="header">
 <h1>PHPDoctor</h1>
 <ul>

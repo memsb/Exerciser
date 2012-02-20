@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -37,33 +37,35 @@
 <hr>
 
 <a name="line1"></a><pre><?php
-<a name="line2"></a>
-<a name="line3"></a>// load Tonic library
-<a name="line4"></a>require_once '/usr/share/php5/tonic/lib/tonic.php';
-<a name="line5"></a>require_once 'config.php';
-<a name="line6"></a>
-<a name="line7"></a>
-<a name="line8"></a>// handle request
-<a name="line9"></a>$config = array('baseUri' => URI);
-<a name="line10"></a>$request = new Request($config);
-<a name="line11"></a>
-<a name="line12"></a>try {
-<a name="line13"></a>    $resource = $request->loadResource();
-<a name="line14"></a>    $response = $resource->exec($request);
-<a name="line15"></a>} catch (ResponseException $e) {
-<a name="line16"></a>	
-<a name="line17"></a>    switch ($e->getCode()) {
-<a name="line18"></a>    case Response::UNAUTHORIZED:
-<a name="line19"></a>        $response = $e->response($request);
-<a name="line20"></a>        $response->addHeader('WWW-Authenticate', 'Basic realm="Exerciser"');
-<a name="line21"></a>        break;
-<a name="line22"></a>    default:
-<a name="line23"></a>        $response = $e->response($request);
-<a name="line24"></a>    }
-<a name="line25"></a>}
-<a name="line26"></a>$response->output();
-<a name="line27"></a>
-<a name="line28"></a></pre>
+<a name="line2"></a>namespace Exerciser;
+<a name="line3"></a>
+<a name="line4"></a>// load Tonic library
+<a name="line5"></a>require_once '/usr/share/php5/tonic/lib/tonic.php';
+<a name="line6"></a>require_once 'config.php';
+<a name="line7"></a>require_once 'includes.php';
+<a name="line8"></a>
+<a name="line9"></a>
+<a name="line10"></a>// handle request
+<a name="line11"></a>$config = array('baseUri' => URI);
+<a name="line12"></a>$request = new Request($config);
+<a name="line13"></a>
+<a name="line14"></a>try {
+<a name="line15"></a>    $resource = $request->loadResource();
+<a name="line16"></a>    $response = $resource->exec($request);
+<a name="line17"></a>} catch (ResponseException $e) {
+<a name="line18"></a>	
+<a name="line19"></a>    switch ($e->getCode()) {
+<a name="line20"></a>    case Response::UNAUTHORIZED:
+<a name="line21"></a>        $response = $e->response($request);
+<a name="line22"></a>        $response->addHeader('WWW-Authenticate', 'Basic realm="Exerciser"');
+<a name="line23"></a>        break;
+<a name="line24"></a>    default:
+<a name="line25"></a>        $response = $e->response($request);
+<a name="line26"></a>    }
+<a name="line27"></a>}
+<a name="line28"></a>$response->output();
+<a name="line29"></a>
+<a name="line30"></a></pre>
 <div class="header">
 <h1>PHPDoctor</h1>
 <ul>

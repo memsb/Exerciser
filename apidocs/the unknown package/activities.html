@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:20 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -57,7 +57,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <dl>
 <dt>Author:</dt>
-<dd>Martin Buckley - MBuckley@gmail.com CRUD - Create Retrive Update Delete. A basis for classes to represent system objects</dd>
+<dd>Martin Buckley - MBuckley@gmail.com Contains a list of Activity</dd>
 </dl>
 <hr>
 
@@ -65,7 +65,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db, <a href="../the unknown package/database.html">Database</a> instance)</p><p class="description">Constructor calls constructor in CRUD</p></td>
 </tr>
 </table>
 
@@ -73,83 +73,92 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#load()">load</a>(mixed ID)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#load()">load</a>(mixed optional, mixed ID)</p><p class="description">Loads all activities from database</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#size()">size</a>()</p></td>
+<td class="type"> Int</td>
+<td class="description"><p class="name"><a href="#size()">size</a>()</p><p class="description">Gives a count of how many Activity have been loaded</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#getActivities()">getActivities</a>()</p></td>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#getActivities()">getActivities</a>()</p><p class="description">Gives the list of loaded activities</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#generateDocument()">generateDocument</a>(mixed view)</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#type()">type</a>(mixed view)</p><p class="description"></p></td>
+<td class="type"> String</td>
+<td class="description"><p class="name"><a href="#generateDocument()">generateDocument</a>(View type, mixed view, View the)</p><p class="description">Generates a document representation of the model in the requested view</p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from The Unknown Package\CRUD</th></tr>
-<tr><td><a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
+<tr><td><a href="../the unknown package/crud.html#__construct()">__construct</a>, <a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#type()">type</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
 <a href="../source/classes/activities.php.html#line19" class="location">classes/activities.php at line 19</a>
 
 <h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(mixed db)</code>
+<code class="signature">public  void <strong>__construct</strong>(mixed db, <a href="../the unknown package/database.html">Database</a> instance)</code>
 <div class="details">
-<p></p></div>
+<p>Constructor calls constructor in CRUD</p><dl>
+<dt>Parameters:</dt>
+<dd>instance - to be used</dd>
+</dl>
+</div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/classes/activities.php.html#line30" class="location">classes/activities.php at line 30</a>
+<a href="../source/classes/activities.php.html#line26" class="location">classes/activities.php at line 26</a>
 
 <h3 id="load()">load</h3>
-<code class="signature">public  void <strong>load</strong>(mixed ID)</code>
+<code class="signature">public  void <strong>load</strong>(mixed optional, mixed ID)</code>
 <div class="details">
-<p></p></div>
+<p>Loads all activities from database</p><dl>
+<dt>Parameters:</dt>
+<dd>optional - identifier</dd>
+</dl>
+</div>
 
 <hr>
 
 <a href="../source/classes/activities.php.html#line40" class="location">classes/activities.php at line 40</a>
 
 <h3 id="size()">size</h3>
-<code class="signature">public  void <strong>size</strong>()</code>
+<code class="signature">public  Int <strong>size</strong>()</code>
 <div class="details">
+<p>Gives a count of how many Activity have been loaded</p><dl>
+<dt>Returns:</dt>
+<dd>the number of activities loaded</dd>
+</dl>
 </div>
 
 <hr>
 
-<a href="../source/classes/activities.php.html#line44" class="location">classes/activities.php at line 44</a>
+<a href="../source/classes/activities.php.html#line48" class="location">classes/activities.php at line 48</a>
 
 <h3 id="getActivities()">getActivities</h3>
-<code class="signature">public  void <strong>getActivities</strong>()</code>
+<code class="signature">public  array <strong>getActivities</strong>()</code>
 <div class="details">
+<p>Gives the list of loaded activities</p><dl>
+<dt>Returns:</dt>
+<dd>of Activity</dd>
+</dl>
 </div>
 
 <hr>
 
-<a href="../source/classes/activities.php.html#line52" class="location">classes/activities.php at line 52</a>
+<a href="../source/classes/activities.php.html#line57" class="location">classes/activities.php at line 57</a>
 
 <h3 id="generateDocument()">generateDocument</h3>
-<code class="signature">public  void <strong>generateDocument</strong>(mixed view)</code>
+<code class="signature">public  String <strong>generateDocument</strong>(View type, mixed view, View the)</code>
 <div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/activities.php.html#line69" class="location">classes/activities.php at line 69</a>
-
-<h3 id="type()">type</h3>
-<code class="signature">public  void <strong>type</strong>(mixed view)</code>
-<div class="details">
-<p></p></div>
+<p>Generates a document representation of the model in the requested view</p><dl>
+<dt>Parameters:</dt>
+<dd>type - requested</dd>
+<dt>Returns:</dt>
+<dd>containing the document</dd>
+</dl>
+</div>
 
 <hr>
 

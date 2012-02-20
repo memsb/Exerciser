@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">The Unknown Package\JSON</div>
-<a href="../source/lib/view.php.html#line347" class="location">lib/view.php at line 347</a>
+<a href="../source/lib/view.php.html#line326" class="location">lib/view.php at line 326</a>
 
 <h1>Class JSON</h1>
 
@@ -57,7 +57,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <dl>
 <dt>Author:</dt>
-<dd>Martin Buckley - MBuckley@gmail.com</dd>
+<dd>Martin Buckley - MBuckley@gmail.com JSON document view</dd>
 </dl>
 <hr>
 
@@ -69,7 +69,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>()</p><p class="description">Creates a new Document, creating a new instance of Tree</p></td>
 </tr>
 </table>
 
@@ -77,19 +77,15 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#parse()">parse</a>(mixed data_str)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#parse()">parse</a>(String containing, mixed data_str)</p><p class="description">Parses the document string into the Tree</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#startDocument()">startDocument</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#startDocument()">startDocument</a>()</p><p class="description">Creates a new document Tree</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#toString()">toString</a>()</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#type()">type</a>()</p><p class="description"></p></td>
+<td class="type"> String</td>
+<td class="description"><p class="name"><a href="#toString()">toString</a>()</p><p class="description">Converts the Tree into a document</p></td>
 </tr>
 </table>
 
@@ -98,49 +94,48 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><td><a href="../the unknown package/tree.html#__construct()">__construct</a>, <a href="../the unknown package/tree.html#create()">create</a>, <a href="../the unknown package/tree.html#endElement()">endElement</a>, <a href="../the unknown package/tree.html#getArray()">getArray</a>, <a href="../the unknown package/tree.html#isEmpty()">isEmpty</a>, <a href="../the unknown package/tree.html#isHead()">isHead</a>, <a href="../the unknown package/tree.html#iterate()">iterate</a>, <a href="../the unknown package/tree.html#process()">process</a>, <a href="../the unknown package/tree.html#startElement()">startElement</a>, <a href="../the unknown package/tree.html#text()">text</a>, <a href="../the unknown package/tree.html#toString()">toString</a>, <a href="../the unknown package/tree.html#type()">type</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../source/lib/view.php.html#line355" class="location">lib/view.php at line 355</a>
+<a href="../source/lib/view.php.html#line333" class="location">lib/view.php at line 333</a>
 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Creates a new Document, creating a new instance of Tree</p></div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/lib/view.php.html#line363" class="location">lib/view.php at line 363</a>
+<a href="../source/lib/view.php.html#line341" class="location">lib/view.php at line 341</a>
 
 <h3 id="parse()">parse</h3>
-<code class="signature">public  void <strong>parse</strong>(mixed data_str)</code>
+<code class="signature">public  void <strong>parse</strong>(String containing, mixed data_str)</code>
 <div class="details">
-<p></p></div>
+<p>Parses the document string into the Tree</p><dl>
+<dt>Parameters:</dt>
+<dd>containing - the document</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line378" class="location">lib/view.php at line 378</a>
+<a href="../source/lib/view.php.html#line355" class="location">lib/view.php at line 355</a>
 
 <h3 id="startDocument()">startDocument</h3>
 <code class="signature">public  void <strong>startDocument</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Creates a new document Tree</p></div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line386" class="location">lib/view.php at line 386</a>
+<a href="../source/lib/view.php.html#line363" class="location">lib/view.php at line 363</a>
 
 <h3 id="toString()">toString</h3>
-<code class="signature">public  void <strong>toString</strong>()</code>
+<code class="signature">public  String <strong>toString</strong>()</code>
 <div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/lib/view.php.html#line394" class="location">lib/view.php at line 394</a>
-
-<h3 id="type()">type</h3>
-<code class="signature">public  void <strong>type</strong>()</code>
-<div class="details">
-<p></p></div>
+<p>Converts the Tree into a document</p><dl>
+<dt>Returns:</dt>
+<dd>containing the document</dd>
+</dl>
+</div>
 
 <hr>
 

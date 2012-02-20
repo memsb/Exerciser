@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css">
 <link rel="start" href="../../../../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Exerciser\Workouts\Workout\WorkoutResource</div>
-<a href="../../../../source/resources/workoutresource.php.html#line11" class="location">resources/workoutResource.php at line 11</a>
+<a href="../../../../source/resources/workoutresource.php.html#line14" class="location">resources/workoutResource.php at line 14</a>
 
 <h1>Class WorkoutResource</h1>
 
@@ -56,6 +56,8 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <div class="comment" id="overview_description"><p></p></div>
 
 <dl>
+<dt>Author:</dt>
+<dd>Martin Buckley - MBuckley@gmail.com Controller for Workout resource</dd>
 <dt>Uri:</dt>
 <dd>/workouts/([0-9]+)</dd>
 </dl>
@@ -65,7 +67,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed parameters)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed parameters, array of)</p><p class="description">Constructor for Workout reasource</p></td>
 </tr>
 </table>
 
@@ -73,83 +75,101 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setModel()">setModel</a>(<a href="../../../../the unknown package/activity.html">Activity</a> model)</p><p class="description">Sets the model to be controlled</p></td>
+<td class="description"><p class="name"><a href="#setUser()">setUser</a>(<a href="../../../../the unknown package/user.html">User</a> model, mixed user)</p><p class="description">Sets the user model</p></td>
 </tr>
 <tr>
 <td class="type"> Response</td>
-<td class="description"><p class="name"><a href="#get()">get</a>(Request request)</p><p class="description">Handle a GET request for this resource</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#post()">post</a>(mixed request)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#get()">get</a>(Request request)</p><p class="description">Handle a GET request for this resource
+Returns a document containing workout information</p></td>
 </tr>
 <tr>
 <td class="type"> Response</td>
-<td class="description"><p class="name"><a href="#put()">put</a>(Request request)</p><p class="description">Handle a PUT request for this resource</p></td>
+<td class="description"><p class="name"><a href="#post()">post</a>(Request request)</p><p class="description">Handle a POST request for this resource
+Creats a new wrkout for the specified user using the details in the document provided
+Requires users autherisation via Basic Auth and a valid API key</p></td>
 </tr>
 <tr>
 <td class="type"> Response</td>
-<td class="description"><p class="name"><a href="#delete()">delete</a>(Request request)</p><p class="description">Handle a DELETE request for this resource</p></td>
+<td class="description"><p class="name"><a href="#put()">put</a>(Request request)</p><p class="description">Handle a PUT request for this resource
+Updates the details of the specified workout using the details contained within the passed document
+Requires users autherisation via Basic Auth and a valid API key</p></td>
+</tr>
+<tr>
+<td class="type"> Response</td>
+<td class="description"><p class="name"><a href="#delete()">delete</a>(Request request)</p><p class="description">Handle a DELETE request for this resource
+Deletes a specified workout
+Requires users autherisation via Basic Auth and a valid API key</p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from The Unknown Package\MultiViewResource</th></tr>
-<tr><td><a href="../../../../the unknown package/multiviewresource.html#__construct()">__construct</a>, <a href="../../../../the unknown package/multiviewresource.html#get_view()">get_view</a>, <a href="../../../../the unknown package/multiviewresource.html#isSecured()">isSecured</a></td></tr></table>
+<tr><td><a href="../../../../the unknown package/multiviewresource.html#__construct()">__construct</a>, <a href="../../../../the unknown package/multiviewresource.html#get_view()">get_view</a>, <a href="../../../../the unknown package/multiviewresource.html#isSecured()">isSecured</a>, <a href="../../../../the unknown package/multiviewresource.html#setModel()">setModel</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../../../../source/resources/workoutresource.php.html#line17" class="location">resources/workoutResource.php at line 17</a>
+<a href="../../../../source/resources/workoutresource.php.html#line20" class="location">resources/workoutResource.php at line 20</a>
 
 <h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(mixed parameters)</code>
+<code class="signature">public  void <strong>__construct</strong>(mixed parameters, array of)</code>
 <div class="details">
-<p></p></div>
+<p>Constructor for Workout reasource</p><dl>
+<dt>Parameters:</dt>
+<dd>of - configuration parameters</dd>
+</dl>
+</div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../../../../source/resources/workoutresource.php.html#line26" class="location">resources/workoutResource.php at line 26</a>
+<a href="../../../../source/resources/workoutresource.php.html#line30" class="location">resources/workoutResource.php at line 30</a>
 
-<h3 id="setModel()">setModel</h3>
-<code class="signature">public  void <strong>setModel</strong>(<a href="../../../../the unknown package/activity.html">Activity</a> model)</code>
+<h3 id="setUser()">setUser</h3>
+<code class="signature">public  void <strong>setUser</strong>(<a href="../../../../the unknown package/user.html">User</a> model, mixed user)</code>
 <div class="details">
-<p>Sets the model to be controlled</p></div>
+<p>Sets the user model</p></div>
 
 <hr>
 
-<a href="../../../../source/resources/workoutresource.php.html#line35" class="location">resources/workoutResource.php at line 35</a>
+<a href="../../../../source/resources/workoutresource.php.html#line40" class="location">resources/workoutResource.php at line 40</a>
 
 <h3 id="get()">get</h3>
 <code class="signature">public  Response <strong>get</strong>(Request request)</code>
 <div class="details">
-<p>Handle a GET request for this resource</p></div>
+<p>Handle a GET request for this resource
+Returns a document containing workout information</p></div>
 
 <hr>
 
-<a href="../../../../source/resources/workoutresource.php.html#line56" class="location">resources/workoutResource.php at line 56</a>
+<a href="../../../../source/resources/workoutresource.php.html#line64" class="location">resources/workoutResource.php at line 64</a>
 
 <h3 id="post()">post</h3>
-<code class="signature">public  void <strong>post</strong>(mixed request)</code>
+<code class="signature">public  Response <strong>post</strong>(Request request)</code>
 <div class="details">
-<p></p></div>
+<p>Handle a POST request for this resource
+Creats a new wrkout for the specified user using the details in the document provided
+Requires users autherisation via Basic Auth and a valid API key</p></div>
 
 <hr>
 
-<a href="../../../../source/resources/workoutresource.php.html#line81" class="location">resources/workoutResource.php at line 81</a>
+<a href="../../../../source/resources/workoutresource.php.html#line91" class="location">resources/workoutResource.php at line 91</a>
 
 <h3 id="put()">put</h3>
 <code class="signature">public  Response <strong>put</strong>(Request request)</code>
 <div class="details">
-<p>Handle a PUT request for this resource</p></div>
+<p>Handle a PUT request for this resource
+Updates the details of the specified workout using the details contained within the passed document
+Requires users autherisation via Basic Auth and a valid API key</p></div>
 
 <hr>
 
-<a href="../../../../source/resources/workoutresource.php.html#line109" class="location">resources/workoutResource.php at line 109</a>
+<a href="../../../../source/resources/workoutresource.php.html#line123" class="location">resources/workoutResource.php at line 123</a>
 
 <h3 id="delete()">delete</h3>
 <code class="signature">public  Response <strong>delete</strong>(Request request)</code>
 <div class="details">
-<p>Handle a DELETE request for this resource</p></div>
+<p>Handle a DELETE request for this resource
+Deletes a specified workout
+Requires users autherisation via Basic Auth and a valid API key</p></div>
 
 <hr>
 

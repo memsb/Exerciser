@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -39,37 +39,51 @@
 <a name="line1"></a><pre><?php
 <a name="line2"></a>require_once('/usr/share/php5/simpletest/autorun.php');
 <a name="line3"></a>require_once('/usr/share/php5/simpletest/unit_tester.php');
-<a name="line4"></a>require_once('/usr/share/php5/simpletest/mock_objects.php');
-<a name="line5"></a>
-<a name="line6"></a>class AllTests extends TestSuite {
-<a name="line7"></a>	function AllTests() {
-<a name="line8"></a>		$this->TestSuite('All tests');
-<a name="line9"></a>		/* Test Library code */
-<a name="line10"></a>
-<a name="line11"></a>		/* Test Models & views */
-<a name="line12"></a>		$this->addFile('/var/www/exerciser/tests/viewTest.php');
-<a name="line13"></a>		$this->addFile('/var/www/exerciser/tests/activityTest.php');
-<a name="line14"></a>		$this->addFile('/var/www/exerciser/tests/activitiesTest.php');
-<a name="line15"></a>		$this->addFile('/var/www/exerciser/tests/workoutTest.php');
-<a name="line16"></a>		$this->addFile('/var/www/exerciser/tests/workoutsTest.php');
-<a name="line17"></a>		$this->addFile('/var/www/exerciser/tests/userTest.php');
-<a name="line18"></a>		$this->addFile('/var/www/exerciser/tests/usersTest.php');
-<a name="line19"></a>		//$this->addFile('/var/www/exerciser/tests/statsTest.php');
-<a name="line20"></a>
-<a name="line21"></a>		/* Test Resources */
-<a name="line22"></a>		//$this->addFile('/var/www/exerciser/tests/activityResourceTest.php');
-<a name="line23"></a>		//$this->addFile('/var/www/exerciser/tests/activitiesResourceTest.php');
-<a name="line24"></a>		//$this->addFile('/var/www/exerciser/tests/workoutResourceTest.php');
-<a name="line25"></a>		//$this->addFile('/var/www/exerciser/tests/workoutsResourceTest.php');
-<a name="line26"></a>		//$this->addFile('/var/www/exerciser/tests/userResourceTest.php');
-<a name="line27"></a>		//$this->addFile('/var/www/exerciser/tests/usersResourceTest.php');
-<a name="line28"></a>		//$this->addFile('/var/www/exerciser/tests/exerciserResourceTest.php');
-<a name="line29"></a>	}
-<a name="line30"></a>}
-<a name="line31"></a>
-<a name="line32"></a>
-<a name="line33"></a>?>
-<a name="line34"></a></pre>
+<a name="line4"></a>require_once('/usr/share/php5/simpletest/web_tester.php');
+<a name="line5"></a>require_once('/usr/share/php5/simpletest/mock_objects.php');
+<a name="line6"></a>require_once('/var/www/exerciser/config.php');
+<a name="line7"></a>
+<a name="line8"></a>define('TEST_CLASSES', ROOT . 'tests/classes/', true);
+<a name="line9"></a>define('TEST_LIB', ROOT . 'tests/lib/', true);
+<a name="line10"></a>define('TEST_RESOURCES', ROOT . 'tests/resources/', true);
+<a name="line11"></a>
+<a name="line12"></a>
+<a name="line13"></a>/*
+<a name="line14"></a> * @namespace Exerciser\Tests
+<a name="line15"></a> */
+<a name="line16"></a>class AllTests extends TestSuite {
+<a name="line17"></a>	function AllTests() {
+<a name="line18"></a>		$this->TestSuite('All tests');
+<a name="line19"></a>
+<a name="line20"></a>		/* Test Library code */
+<a name="line21"></a>		$this->addFile('/var/www/exerciser/tests/lib/viewTest.php');
+<a name="line22"></a>		$this->addFile('/var/www/exerciser/tests/lib/CRUDTest.php');
+<a name="line23"></a>		$this->addFile('/var/www/exerciser/tests/lib/DBATest.php');
+<a name="line24"></a>
+<a name="line25"></a>		/* Test Models & views */		
+<a name="line26"></a>		$this->addFile('/var/www/exerciser/tests/classes/activityTest.php');
+<a name="line27"></a>		$this->addFile('/var/www/exerciser/tests/classes/activitiesTest.php');
+<a name="line28"></a>		$this->addFile('/var/www/exerciser/tests/classes/workoutTest.php');
+<a name="line29"></a>		$this->addFile('/var/www/exerciser/tests/classes/workoutsTest.php');
+<a name="line30"></a>		$this->addFile('/var/www/exerciser/tests/classes/userTest.php');
+<a name="line31"></a>		$this->addFile('/var/www/exerciser/tests/classes/usersTest.php');
+<a name="line32"></a>		$this->addFile('/var/www/exerciser/tests/classes/statsTest.php');
+<a name="line33"></a>
+<a name="line34"></a>		/* Test Resources */
+<a name="line35"></a>		$this->addFile('/var/www/exerciser/tests/resources/multiViewResourceTest.php');
+<a name="line36"></a>		$this->addFile('/var/www/exerciser/tests/resources/activityResourceTest.php');
+<a name="line37"></a>		$this->addFile('/var/www/exerciser/tests/resources/activitiesResourceTest.php');
+<a name="line38"></a>		$this->addFile('/var/www/exerciser/tests/resources/workoutResourceTest.php');
+<a name="line39"></a>		$this->addFile('/var/www/exerciser/tests/resources/workoutsResourceTest.php');
+<a name="line40"></a>		$this->addFile('/var/www/exerciser/tests/resources/userResourceTest.php');
+<a name="line41"></a>		$this->addFile('/var/www/exerciser/tests/resources/usersResourceTest.php');
+<a name="line42"></a>		$this->addFile('/var/www/exerciser/tests/resources/exerciserResourceTest.php');
+<a name="line43"></a>	}
+<a name="line44"></a>}
+<a name="line45"></a>
+<a name="line46"></a>
+<a name="line47"></a>?>
+<a name="line48"></a></pre>
 <div class="header">
 <h1>PHPDoctor</h1>
 <ul>

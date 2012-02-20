@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
+
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+<link rel="start" href="../../../overview-summary.html">
+
+<title>tests/classes/activityTest.php (PHPDoctor)</title>
+
+</head>
+<body id="file" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../../overview-files.html">Files</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../../todo-list.html">Todo</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../../index.html" target="_top">Frames</a>
+<a href="../../../source/tests/classes/activitytest.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<h1>tests/classes/activityTest.php</h1>
+<hr>
+
+<a name="line1"></a><pre><?php
+<a name="line2"></a>
+<a name="line3"></a>require_once(CLASSES . 'activity.php');
+<a name="line4"></a>require_once(LIB . 'DBA.php');
+<a name="line5"></a>
+<a name="line6"></a>/*
+<a name="line7"></a> * @namespace Exerciser\Tests\Models
+<a name="line8"></a> */
+<a name="line9"></a>class TestOfActivityClass extends UnitTestCase {
+<a name="line10"></a>
+<a name="line11"></a>	private $uri = 'uri';
+<a name="line12"></a>	private $db;
+<a name="line13"></a>	private $activity;
+<a name="line14"></a>
+<a name="line15"></a>	protected $fields = array(
+<a name="line16"></a>				'activity_id' => array('value' => 2, 'default' => 0), 
+<a name="line17"></a>				'activity_name' => array('value' => 'name', 'default' => ''), 
+<a name="line18"></a>				'description' => array('value' => 'description', 'default' => ''), 
+<a name="line19"></a>				'kcal_hour' => array('value' => 200, 'default' => 0)
+<a name="line20"></a>				);
+<a name="line21"></a>
+<a name="line22"></a>	protected $Database_Mapping = array(
+<a name="line23"></a>				'activity_id' => 'Activity_ID',
+<a name="line24"></a>				'activity_name' => 'Activity_Name',
+<a name="line25"></a>				'description' => 'Description',
+<a name="line26"></a>				'kcal_hour' => 'Kcal_Hour'
+<a name="line27"></a>				);
+<a name="line28"></a>
+<a name="line29"></a>	private function toDB(){
+<a name="line30"></a>		$data = array();
+<a name="line31"></a>		foreach( $this->Database_Mapping as $attribute_key => $database_key )
+<a name="line32"></a>			$data[$database_key] = $this->fields[$attribute_key]['value'];
+<a name="line33"></a>		return $data;
+<a name="line34"></a>	}
+<a name="line35"></a>
+<a name="line36"></a>	function setup(){
+<a name="line37"></a>		Mock::generate('Database');
+<a name="line38"></a>		$this->db = &new MockDatabase();
+<a name="line39"></a>		$this->db->setReturnValue('connect', '');
+<a name="line40"></a>		$this->activity = new Activity($this->db);
+<a name="line41"></a>	}
+<a name="line42"></a>
+<a name="line43"></a>	function testResourceLocation() {		
+<a name="line44"></a>		$this->assertEqual($this->activity->location(), '');
+<a name="line45"></a>		$this->activity->setLocation($this->uri);
+<a name="line46"></a>		$this->assertEqual($this->activity->location(), $this->uri);
+<a name="line47"></a>	}
+<a name="line48"></a>
+<a name="line49"></a>	function testNotLoaded() {
+<a name="line50"></a>		$this->activity->setLocation($this->uri);
+<a name="line51"></a>		foreach($this->fields as $key => $value)
+<a name="line52"></a>			$this->assertEqual($this->activity->$key, $value['default']);
+<a name="line53"></a>	}
+<a name="line54"></a>
+<a name="line55"></a>	function testNoDatabase(){
+<a name="line56"></a>		$this->expectException('BadMethodCallException');
+<a name="line57"></a>		$activity = new Activity(NULL);
+<a name="line58"></a>	}
+<a name="line59"></a>
+<a name="line60"></a>	function testSetsAndGets() {
+<a name="line61"></a>		foreach($this->fields as $key => $value)
+<a name="line62"></a>			$this->activity->$key = $value['value'];
+<a name="line63"></a>
+<a name="line64"></a>		foreach($this->fields as $key => $value)
+<a name="line65"></a>			$this->assertEqual($this->activity->$key, $value['value']);
+<a name="line66"></a>	}
+<a name="line67"></a>
+<a name="line68"></a>	function testLoadFailure(){				
+<a name="line69"></a>		$this->db->setReturnValue('query', array());
+<a name="line70"></a>		$this->expectException('LengthException');
+<a name="line71"></a>		$this->activity->load(0);
+<a name="line72"></a>	}
+<a name="line73"></a>
+<a name="line74"></a>	function testLoadSuccess(){
+<a name="line75"></a>		$this->db->setReturnValue('query', array($this->toDB()));
+<a name="line76"></a>		$this->activity->load(0);
+<a name="line77"></a>		foreach($this->fields as $key => $value)
+<a name="line78"></a>			$this->assertEqual($this->activity->$key, $value['value']);
+<a name="line79"></a>	}
+<a name="line80"></a>}
+<a name="line81"></a>
+<a name="line82"></a>/*
+<a name="line83"></a> * @namespace Exerciser\Tests\Views
+<a name="line84"></a> */
+<a name="line85"></a>class TestOfActivityView extends UnitTestCase {
+<a name="line86"></a>
+<a name="line87"></a>	protected $view;
+<a name="line88"></a>	protected $db;
+<a name="line89"></a>	protected $activity;
+<a name="line90"></a>
+<a name="line91"></a>	protected $fields = array(
+<a name="line92"></a>			'activity_id' => array('value' => 2, 'default' => 0), 
+<a name="line93"></a>			'activity_name' => array('value' => 'name', 'default' => ''), 
+<a name="line94"></a>			'description' => array('value' => 'description', 'default' => ''), 
+<a name="line95"></a>			'kcal_hour' => array('value' => 200, 'default' => 0)
+<a name="line96"></a>			);
+<a name="line97"></a>
+<a name="line98"></a>	function setup(){
+<a name="line99"></a>		Mock::generate('Database');
+<a name="line100"></a>		$this->db = &new MockDatabase();
+<a name="line101"></a>		$this->db->setReturnValue('connect', '');		
+<a name="line102"></a>		$this->activity = new Activity($this->db);
+<a name="line103"></a>	}
+<a name="line104"></a>
+<a name="line105"></a>	function testParseEmptyDocument() {		
+<a name="line106"></a>		$this->expectException('BadMethodCallException');
+<a name="line107"></a>		$this->activity->parse(NULL, NULL);
+<a name="line108"></a>	}
+<a name="line109"></a>
+<a name="line110"></a>	protected function createDoc(){
+<a name="line111"></a>		foreach($this->fields as $key => $value)
+<a name="line112"></a>			$this->activity->$key = $value['value'];
+<a name="line113"></a>
+<a name="line114"></a>		$doc = $this->activity->generateDocument($this->view);
+<a name="line115"></a>		$this->assertNotNull($doc);
+<a name="line116"></a>		return $doc;
+<a name="line117"></a>	}
+<a name="line118"></a>}
+<a name="line119"></a>
+<a name="line120"></a>/*
+<a name="line121"></a> * @namespace Exerciser\Tests\Views
+<a name="line122"></a> */
+<a name="line123"></a>class TestOfXMLActivityClass extends TestOfActivityView {
+<a name="line124"></a>
+<a name="line125"></a>	function setup(){
+<a name="line126"></a>		parent::setup();
+<a name="line127"></a>		$this->view = new XML();		
+<a name="line128"></a>	}
+<a name="line129"></a>
+<a name="line130"></a>	function testDocumentType() {
+<a name="line131"></a>		$this->assertEqual($this->activity->type($this->view), 'application/xml+activity');
+<a name="line132"></a>	}
+<a name="line133"></a>	
+<a name="line134"></a>	function testGenerateDocument() {
+<a name="line135"></a>		$doc = $this->createDoc();
+<a name="line136"></a>
+<a name="line137"></a>		$data = (array)simplexml_load_string($doc);
+<a name="line138"></a>		$this->assertNotNull($data);		
+<a name="line139"></a>
+<a name="line140"></a>		foreach($this->fields as $key => $value)
+<a name="line141"></a>			$this->assertEqual($this->activity->$key, $value['value']);
+<a name="line142"></a>	}
+<a name="line143"></a>
+<a name="line144"></a>	function testEmptyDocument() {
+<a name="line145"></a>		$this->assertNotNull($this->activity->generateDocument($this->view), '');
+<a name="line146"></a>	}
+<a name="line147"></a>}
+<a name="line148"></a>
+<a name="line149"></a>
+<a name="line150"></a>/*
+<a name="line151"></a> * @namespace Exerciser\Tests\Views
+<a name="line152"></a> */
+<a name="line153"></a>class TestOfJSONActivityClass extends TestOfActivityView {
+<a name="line154"></a>
+<a name="line155"></a>	function setup(){
+<a name="line156"></a>		parent::setup();
+<a name="line157"></a>		$this->view = new JSON();		
+<a name="line158"></a>	}
+<a name="line159"></a>
+<a name="line160"></a>	function testDocumentType() {
+<a name="line161"></a>		$this->assertEqual($this->activity->type($this->view), 'application/json+activity');
+<a name="line162"></a>	}
+<a name="line163"></a>
+<a name="line164"></a>	function testEmptyDocument() {
+<a name="line165"></a>		$this->assertNotNull($this->activity->generateDocument($this->view), '');
+<a name="line166"></a>	}
+<a name="line167"></a>	
+<a name="line168"></a>	function testGenerateDocument() {
+<a name="line169"></a>		$doc = $this->createDoc();
+<a name="line170"></a>
+<a name="line171"></a>		$item = json_decode($doc, true);
+<a name="line172"></a>		$data = $item['activity'];
+<a name="line173"></a>		$this->assertNotNull($data);
+<a name="line174"></a>
+<a name="line175"></a>		foreach($this->fields as $key => $value)
+<a name="line176"></a>			$this->assertEqual($data[$key], $value['value']);
+<a name="line177"></a>	}
+<a name="line178"></a>}
+<a name="line179"></a>
+<a name="line180"></a>
+<a name="line181"></a>/*
+<a name="line182"></a> * @namespace Exerciser\Tests\Views
+<a name="line183"></a> */
+<a name="line184"></a>class TestOfYAMLActivityClass extends TestOfActivityView {
+<a name="line185"></a>
+<a name="line186"></a>	function setup(){
+<a name="line187"></a>		parent::setup();
+<a name="line188"></a>		$this->view = new YAML();		
+<a name="line189"></a>	}
+<a name="line190"></a>
+<a name="line191"></a>	function testEmptyDocument() {
+<a name="line192"></a>		$this->assertNotNull($this->activity->generateDocument($this->view), '');
+<a name="line193"></a>	}
+<a name="line194"></a>
+<a name="line195"></a>	function testDocumentType() {
+<a name="line196"></a>		$this->assertEqual($this->activity->type($this->view), 'text/x-yaml+activity');
+<a name="line197"></a>	}
+<a name="line198"></a>	
+<a name="line199"></a>	function testGenerateDocument() {
+<a name="line200"></a>		$doc = $this->createDoc();
+<a name="line201"></a>
+<a name="line202"></a>		$item = yaml_parse($doc);
+<a name="line203"></a>		$data = $item['activity'];
+<a name="line204"></a>		$this->assertNotNull($data);
+<a name="line205"></a>
+<a name="line206"></a>		foreach($this->fields as $key => $value)
+<a name="line207"></a>			$this->assertEqual($data[$key], $value['value']);
+<a name="line208"></a>	}
+<a name="line209"></a>}
+<a name="line210"></a>
+<a name="line211"></a>?>
+<a name="line212"></a></pre>
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../../overview-files.html">Files</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../../todo-list.html">Todo</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../../index.html" target="_top">Frames</a>
+<a href="../../../source/tests/classes/activitytest.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>

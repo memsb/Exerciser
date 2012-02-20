@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -38,106 +38,79 @@
 
 <a name="line1"></a><pre><?php
 <a name="line2"></a>
-<a name="line3"></a>require_once dirname(__FILE__) . '/../lib/CRUD.php';
-<a name="line4"></a>require_once dirname(__FILE__) . '/user.php';
+<a name="line3"></a>require_once LIB . 'CRUD.php';
+<a name="line4"></a>require_once CLASSES . '/user.php';
 <a name="line5"></a>
 <a name="line6"></a>/**
-<a name="line7"></a>*
-<a name="line8"></a>*
-<a name="line9"></a>*/
-<a name="line10"></a>class Users extends CRUD {
-<a name="line11"></a>
-<a name="line12"></a>	private $type = 'users';
-<a name="line13"></a>
+<a name="line7"></a> *	@author Martin Buckley - MBuckley@gmail.com
+<a name="line8"></a> *	Users stores a list of User instances
+<a name="line9"></a> * 	@namespace Exerciser
+<a name="line10"></a> */
+<a name="line11"></a>class Users extends CRUD {
+<a name="line12"></a>
+<a name="line13"></a>	protected $type = 'users';
 <a name="line14"></a>	protected $users = array();
 <a name="line15"></a>
 <a name="line16"></a>	/**
-<a name="line17"></a>	*
-<a name="line18"></a>	*
-<a name="line19"></a>	*/
+<a name="line17"></a>	 * Constructor calls constructor in CRUD
+<a name="line18"></a>	 * @param Database instance to be used
+<a name="line19"></a>	 */
 <a name="line20"></a>	public function __construct($db){
-<a name="line21"></a>		$this->db = $db;
-<a name="line22"></a>		if( $this->db == NULL )
-<a name="line23"></a>			throw new BadMethodCallException('Database not specified.');
-<a name="line24"></a>		$this->db->connect();
-<a name="line25"></a>	}
-<a name="line26"></a>
-<a name="line27"></a>	/**
-<a name="line28"></a>	*
-<a name="line29"></a>	*
-<a name="line30"></a>	*/
-<a name="line31"></a>	public function setLocation($uri){
-<a name="line32"></a>		$this->uri = $uri;
-<a name="line33"></a>	}
-<a name="line34"></a>
-<a name="line35"></a>	/**
-<a name="line36"></a>	*
-<a name="line37"></a>	*
-<a name="line38"></a>	*/
-<a name="line39"></a>	public function size(){
-<a name="line40"></a>		return count($this->users);
-<a name="line41"></a>	}
-<a name="line42"></a>
-<a name="line43"></a>	/**
-<a name="line44"></a>	*
-<a name="line45"></a>	*
-<a name="line46"></a>	*/
-<a name="line47"></a>	public function addUser(User $user){
-<a name="line48"></a>		$this->users[] = $user;
-<a name="line49"></a>	}
-<a name="line50"></a>
-<a name="line51"></a>	/**
-<a name="line52"></a>	*
-<a name="line53"></a>	*
-<a name="line54"></a>	*/
-<a name="line55"></a>	public function load(){
-<a name="line56"></a>		$result = $this->db->query("SELECT User_ID FROM Users");		
-<a name="line57"></a>		foreach($result as $row){
-<a name="line58"></a>			$id = $row['User_ID'];
-<a name="line59"></a>			$user = new User($this->db);
-<a name="line60"></a>			$user->setLocation($this->uri . '/' . $id);
-<a name="line61"></a>			$user->load($id);
-<a name="line62"></a>			$this->users[] = $user;
-<a name="line63"></a>		}
-<a name="line64"></a>	}
-<a name="line65"></a>
-<a name="line66"></a>	/**
-<a name="line67"></a>	*
-<a name="line68"></a>	*
-<a name="line69"></a>	*/
-<a name="line70"></a>	public function location(){
-<a name="line71"></a>		return $this->uri;
-<a name="line72"></a>	}
-<a name="line73"></a>	
-<a name="line74"></a>	/**
-<a name="line75"></a>	*
-<a name="line76"></a>	*
-<a name="line77"></a>	*/
-<a name="line78"></a>	public function generateDocument($view){
-<a name="line79"></a>		$view->startDocument();
-<a name="line80"></a>		$view->startElement('users');
-<a name="line81"></a>		$i = 0;
-<a name="line82"></a>		foreach($this->users as $user){
-<a name="line83"></a>			$view->startElement($i++);		
-<a name="line84"></a>			$user->addProperties($view);
-<a name="line85"></a>			$view->endElement();
-<a name="line86"></a>		}
-<a name="line87"></a>
-<a name="line88"></a>		$view->endElement();
-<a name="line89"></a>		return $view->toString();
-<a name="line90"></a>	}
-<a name="line91"></a>
-<a name="line92"></a>	/**
-<a name="line93"></a>	*
-<a name="line94"></a>	*
-<a name="line95"></a>	*/
-<a name="line96"></a>	public function type($view){
-<a name="line97"></a>		return $view->type() . $this->type;
-<a name="line98"></a>	}
-<a name="line99"></a>}
-<a name="line100"></a>
-<a name="line101"></a>?>
-<a name="line102"></a></pre>
+<a name="line21"></a>		parent::__construct($db);
+<a name="line22"></a>	}
+<a name="line23"></a>
+<a name="line24"></a>	/**
+<a name="line25"></a>	 * Gives a count of User loaded
+<a name="line26"></a>	 * @param Int the count
+<a name="line27"></a>	 */
+<a name="line28"></a>	public function size(){
+<a name="line29"></a>		return count($this->users);
+<a name="line30"></a>	}
+<a name="line31"></a>
+<a name="line32"></a>	/**
+<a name="line33"></a>	 * Adds a User to the user list
+<a name="line34"></a>	 * @param User the user
+<a name="line35"></a>	 */
+<a name="line36"></a>	public function addUser(User $user){
+<a name="line37"></a>		$this->users[] = $user;
+<a name="line38"></a>	}
+<a name="line39"></a>
+<a name="line40"></a>	/**
+<a name="line41"></a>	 * Loads all User from database
+<a name="line42"></a>	 */
+<a name="line43"></a>	public function load(){
+<a name="line44"></a>		$result = $this->db->query("SELECT User_ID FROM Users");		
+<a name="line45"></a>		foreach($result as $row){
+<a name="line46"></a>			$id = $row['User_ID'];
+<a name="line47"></a>			$user = new User($this->db);
+<a name="line48"></a>			$user->setLocation($this->uri . '/' . $id);
+<a name="line49"></a>			$user->load($id);
+<a name="line50"></a>			$this->users[] = $user;
+<a name="line51"></a>		}
+<a name="line52"></a>	}
+<a name="line53"></a>
+<a name="line54"></a>	/**
+<a name="line55"></a>	 * Generates a document representation of the model in the requested view
+<a name="line56"></a>	 * @param View type requested
+<a name="line57"></a>	 * @return String containing the document
+<a name="line58"></a>	 */
+<a name="line59"></a>	public function generateDocument($view){
+<a name="line60"></a>		$view->startDocument();
+<a name="line61"></a>		$view->startElement('users');
+<a name="line62"></a>		$i = 0;
+<a name="line63"></a>		foreach($this->users as $user){
+<a name="line64"></a>			$view->startElement($i++);		
+<a name="line65"></a>			$user->addProperties($view);
+<a name="line66"></a>			$view->endElement();
+<a name="line67"></a>		}
+<a name="line68"></a>
+<a name="line69"></a>		$view->endElement();
+<a name="line70"></a>		return $view->toString();
+<a name="line71"></a>	}
+<a name="line72"></a>}
+<a name="line73"></a>
+<a name="line74"></a>?>
+<a name="line75"></a></pre>
 <div class="header">
 <h1>PHPDoctor</h1>
 <ul>

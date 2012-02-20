@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Mon, 20 Feb 2012 23:04:27 +0000">
+
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+<link rel="start" href="../../../overview-summary.html">
+
+<title>tests/resources/userResourceTest.php (PHPDoctor)</title>
+
+</head>
+<body id="file" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../../overview-files.html">Files</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../../todo-list.html">Todo</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../../index.html" target="_top">Frames</a>
+<a href="../../../source/tests/resources/userresourcetest.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<h1>tests/resources/userResourceTest.php</h1>
+<hr>
+
+<a name="line1"></a><pre><?php
+<a name="line2"></a>
+<a name="line3"></a>require_once(TEST_RESOURCES . 'resourceTest.php');
+<a name="line4"></a>require_once(RESOURCES . 'userResource.php');
+<a name="line5"></a>require_once(CLASSES . 'user.php');
+<a name="line6"></a>
+<a name="line7"></a>/*
+<a name="line8"></a> * @namespace Exerciser\Tests\Resources
+<a name="line9"></a> */
+<a name="line10"></a>class TestOfUserResource extends TestOfResource {
+<a name="line11"></a>
+<a name="line12"></a>	protected $uri = '/users/1';
+<a name="line13"></a>	protected $type = 'user';
+<a name="line14"></a>	protected $data = 'doc';
+<a name="line15"></a>
+<a name="line16"></a>	protected $user;
+<a name="line17"></a>
+<a name="line18"></a>	protected $user_id = 1;
+<a name="line19"></a>	protected $password = 'password';
+<a name="line20"></a>
+<a name="line21"></a>	function setup() {
+<a name="line22"></a>		parent::init();
+<a name="line23"></a>		Mock::generate('User');
+<a name="line24"></a>		$this->model = &new MockUser();	
+<a name="line25"></a>		$this->model->setReturnValue('type', $this->type);
+<a name="line26"></a>		$this->model->setReturnValue('generateDocument', $this->doc);
+<a name="line27"></a>		$this->model->setReturnValue('generateNewUserDocument', $this->doc);
+<a name="line28"></a>	}
+<a name="line29"></a>
+<a name="line30"></a>	protected function get_auth_user(){
+<a name="line31"></a>		$user = &new MockUser();
+<a name="line32"></a>		$user->user_id = $this->user_id;
+<a name="line33"></a>		$user->api_key = $this->password;
+<a name="line34"></a>		$_SERVER['PHP_AUTH_USER'] = $this->user_id; 
+<a name="line35"></a>		$_SERVER['PHP_AUTH_PW'] = $this->password;
+<a name="line36"></a>		return $user;
+<a name="line37"></a>	}
+<a name="line38"></a>
+<a name="line39"></a>	function testGetCodes() {
+<a name="line40"></a>		$response = $this->getResponse();
+<a name="line41"></a>		$this->assertEqual($response->code, Response::OK);
+<a name="line42"></a>		$response = $this->getResponse($this->uri . '.xml');
+<a name="line43"></a>		$this->assertEqual($response->code, Response::OK);
+<a name="line44"></a>		$response = $this->getResponse($this->uri . '.json');
+<a name="line45"></a>		$this->assertEqual($response->code, Response::OK);
+<a name="line46"></a>		$response = $this->getResponse($this->uri . '.yaml');
+<a name="line47"></a>		$this->assertEqual($response->code, Response::OK);
+<a name="line48"></a>
+<a name="line49"></a>		$this->model->throwOn('load');
+<a name="line50"></a>		$response = $this->getResponse();
+<a name="line51"></a>		$this->assertEqual($response->code, Response::NOTFOUND);		
+<a name="line52"></a>	}
+<a name="line53"></a>
+<a name="line54"></a>	function testPostCodes(){
+<a name="line55"></a>		$this->method = 'POST';
+<a name="line56"></a>
+<a name="line57"></a>		$this->model = $this->get_auth_user();
+<a name="line58"></a>		$response = $this->getResponse();
+<a name="line59"></a>		$this->assertEqual($response->code, Response::CREATED);
+<a name="line60"></a>
+<a name="line61"></a>		$this->model = $this->get_auth_user();
+<a name="line62"></a>		$this->model->throwOn('parse');
+<a name="line63"></a>		$response = $this->getResponse();
+<a name="line64"></a>		$this->assertEqual($response->code, Response::UNSUPPORTEDMEDIATYPE);
+<a name="line65"></a>
+<a name="line66"></a>		$this->model = $this->get_auth_user();
+<a name="line67"></a>		$this->model->throwOn('create');
+<a name="line68"></a>		$response = $this->getResponse();
+<a name="line69"></a>		$this->assertEqual($response->code, Response::UNSUPPORTEDMEDIATYPE);
+<a name="line70"></a>	}
+<a name="line71"></a>
+<a name="line72"></a>	function testPutCodes(){
+<a name="line73"></a>		$this->method = 'PUT';
+<a name="line74"></a>
+<a name="line75"></a>		$this->expectException('ResponseException');
+<a name="line76"></a>		$response = $this->getResponse();
+<a name="line77"></a>
+<a name="line78"></a>		$this->model = &new MockUser();
+<a name="line79"></a>		$this->model->throwOn('load');
+<a name="line80"></a>		$response = $this->getResponse();
+<a name="line81"></a>		$this->assertEqual($response->code, Response::NOTFOUND);
+<a name="line82"></a>
+<a name="line83"></a>		$this->model = $this->get_auth_user();
+<a name="line84"></a>		$response = $this->getResponse();
+<a name="line85"></a>		$this->assertEqual($response->code, Response::OK);
+<a name="line86"></a>
+<a name="line87"></a>		$this->model = $this->get_auth_user();
+<a name="line88"></a>		$this->model->throwOn('parse', new UnexpectedValueException());
+<a name="line89"></a>		$response = $this->getResponse();
+<a name="line90"></a>		$this->assertEqual($response->code, Response::UNSUPPORTEDMEDIATYPE);
+<a name="line91"></a>
+<a name="line92"></a>		$this->model = $this->get_auth_user();
+<a name="line93"></a>		$this->model->throwOn('update');
+<a name="line94"></a>		$response = $this->getResponse();
+<a name="line95"></a>		$this->assertEqual($response->code, Response::NOTFOUND);
+<a name="line96"></a>	}
+<a name="line97"></a>
+<a name="line98"></a>	function testDeleteCodes(){
+<a name="line99"></a>		$this->method = 'DELETE';
+<a name="line100"></a>	
+<a name="line101"></a>		$this->expectException('ResponseException');
+<a name="line102"></a>		$response = $this->getResponse();
+<a name="line103"></a>
+<a name="line104"></a>		$this->model = $this->get_auth_user();
+<a name="line105"></a>		$response = $this->getResponse();
+<a name="line106"></a>		$this->assertEqual($response->code, Response::NOCONTENT);
+<a name="line107"></a>
+<a name="line108"></a>		$this->model = $this->get_auth_user();
+<a name="line109"></a>		$this->model->throwOn('load');
+<a name="line110"></a>		$response = $this->getResponse();
+<a name="line111"></a>		$this->assertEqual($response->code, Response::NOTFOUND);
+<a name="line112"></a>
+<a name="line113"></a>		$this->model = $this->get_auth_user();
+<a name="line114"></a>		$this->model->throwOn('delete');
+<a name="line115"></a>		$response = $this->getResponse();
+<a name="line116"></a>		$this->assertEqual($response->code, Response::NOTFOUND);		
+<a name="line117"></a>	}
+<a name="line118"></a>
+<a name="line119"></a>	function testGetType() {
+<a name="line120"></a>		$this->method = 'GET';
+<a name="line121"></a>		$response = $this->getResponse();
+<a name="line122"></a>		$this->assertEqual($response->headers['Content-type'], $this->type);
+<a name="line123"></a>	}	
+<a name="line124"></a>
+<a name="line125"></a>	function testGetBody() {
+<a name="line126"></a>		$this->method = 'GET';
+<a name="line127"></a>		$response = $this->getResponse();
+<a name="line128"></a>		$this->assertEqual($response->body, $this->doc);	
+<a name="line129"></a>	}
+<a name="line130"></a>}
+<a name="line131"></a>
+<a name="line132"></a>?>
+<a name="line133"></a></pre>
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../../overview-files.html">Files</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../../todo-list.html">Todo</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../../index.html" target="_top">Frames</a>
+<a href="../../../source/tests/resources/userresourcetest.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>

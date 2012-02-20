@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:20 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -73,21 +73,17 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#load()">load</a>(int the, mixed activityID, mixed ID)</p><p class="description">Loads the  details of the activity specified by ID number</p></td>
+<td class="description"><p class="name"><a href="#load()">load</a>(int the, mixed activityID, mixed optional, mixed ID)</p><p class="description">Loads the  details of the activity specified by ID number</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addProperties()">addProperties</a>(mixed view)</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#type()">type</a>(mixed view)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#addProperties()">addProperties</a>(View type, mixed view)</p><p class="description">Adds elements to the specified view</p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from The Unknown Package\CRUD</th></tr>
-<tr><td><a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
+<tr><td><a href="../the unknown package/crud.html#__construct()">__construct</a>, <a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#type()">type</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
 <a href="../source/classes/activity.php.html#line21" class="location">classes/activity.php at line 21</a>
@@ -100,10 +96,10 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/classes/activity.php.html#line33" class="location">classes/activity.php at line 33</a>
+<a href="../source/classes/activity.php.html#line30" class="location">classes/activity.php at line 30</a>
 
 <h3 id="load()">load</h3>
-<code class="signature">public  void <strong>load</strong>(int the, mixed activityID, mixed ID)</code>
+<code class="signature">public  void <strong>load</strong>(int the, mixed activityID, mixed optional, mixed ID)</code>
 <div class="details">
 <p>Loads the  details of the activity specified by ID number</p><dl>
 <dt>Parameters:</dt>
@@ -113,21 +109,16 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/classes/activity.php.html#line52" class="location">classes/activity.php at line 52</a>
+<a href="../source/classes/activity.php.html#line49" class="location">classes/activity.php at line 49</a>
 
 <h3 id="addProperties()">addProperties</h3>
-<code class="signature">public  void <strong>addProperties</strong>(mixed view)</code>
+<code class="signature">public  void <strong>addProperties</strong>(View type, mixed view)</code>
 <div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/activity.php.html#line78" class="location">classes/activity.php at line 78</a>
-
-<h3 id="type()">type</h3>
-<code class="signature">public  void <strong>type</strong>(mixed view)</code>
-<div class="details">
-<p></p></div>
+<p>Adds elements to the specified view</p><dl>
+<dt>Parameters:</dt>
+<dd>type - of document requested</dd>
+</dl>
+</div>
 
 <hr>
 

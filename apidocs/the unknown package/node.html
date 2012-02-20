@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 20:39:39 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -55,7 +55,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <dl>
 <dt>Author:</dt>
-<dd>Martin Buckley - MBuckley@gmail.com</dd>
+<dd>Martin Buckley - MBuckley@gmail.com Node contains basic text along with a refference to children. For use in Tree class</dd>
 </dl>
 <hr>
 
@@ -79,7 +79,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(str name)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(str name, String optional)</p><p class="description">Constructer for node</p></td>
 </tr>
 </table>
 
@@ -87,15 +87,15 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#text()">text</a>(mixed text)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#text()">text</a>(String node, mixed text)</p><p class="description">Adds node text</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addChild()">addChild</a>(<a href="../the unknown package/node.html">Node</a> child)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#addChild()">addChild</a>(<a href="../the unknown package/node.html">Node</a> a, <a href="../the unknown package/node.html">Node</a> child)</p><p class="description">Adds a child to the Node</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#isLeaf()">isLeaf</a>()</p><p class="description"></p></td>
+<td class="type"> Boolean</td>
+<td class="description"><p class="name"><a href="#isLeaf()">isLeaf</a>()</p><p class="description">Checks if the node is a leaf.</p></td>
 </tr>
 </table>
 
@@ -131,9 +131,13 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <a href="../source/lib/view.php.html#line17" class="location">lib/view.php at line 17</a>
 
 <h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(str name)</code>
+<code class="signature">public  void <strong>__construct</strong>(str name, String optional)</code>
 <div class="details">
-<p></p></div>
+<p>Constructer for node</p><dl>
+<dt>Parameters:</dt>
+<dd>optional - node name</dd>
+</dl>
+</div>
 
 <hr>
 
@@ -141,27 +145,39 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <a href="../source/lib/view.php.html#line25" class="location">lib/view.php at line 25</a>
 
 <h3 id="text()">text</h3>
-<code class="signature">public  void <strong>text</strong>(mixed text)</code>
+<code class="signature">public  void <strong>text</strong>(String node, mixed text)</code>
 <div class="details">
-<p></p></div>
+<p>Adds node text</p><dl>
+<dt>Parameters:</dt>
+<dd>node - text</dd>
+</dl>
+</div>
 
 <hr>
 
 <a href="../source/lib/view.php.html#line33" class="location">lib/view.php at line 33</a>
 
 <h3 id="addChild()">addChild</h3>
-<code class="signature">public  void <strong>addChild</strong>(<a href="../the unknown package/node.html">Node</a> child)</code>
+<code class="signature">public  void <strong>addChild</strong>(<a href="../the unknown package/node.html">Node</a> a, <a href="../the unknown package/node.html">Node</a> child)</code>
 <div class="details">
-<p></p></div>
+<p>Adds a child to the Node</p><dl>
+<dt>Parameters:</dt>
+<dd>a - child Node</dd>
+</dl>
+</div>
 
 <hr>
 
 <a href="../source/lib/view.php.html#line41" class="location">lib/view.php at line 41</a>
 
 <h3 id="isLeaf()">isLeaf</h3>
-<code class="signature">public  void <strong>isLeaf</strong>()</code>
+<code class="signature">public  Boolean <strong>isLeaf</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Checks if the node is a leaf.</p><dl>
+<dt>Returns:</dt>
+<dd>True if node has no children</dd>
+</dl>
+</div>
 
 <hr>
 

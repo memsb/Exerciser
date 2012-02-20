@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">The Unknown Package\Workouts</div>
-<a href="../source/classes/workouts.php.html#line10" class="location">classes/workouts.php at line 10</a>
+<a href="../source/classes/workouts.php.html#line11" class="location">classes/workouts.php at line 11</a>
 
 <h1>Class Workouts</h1>
 
@@ -57,7 +57,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <dl>
 <dt>Author:</dt>
-<dd>Martin Buckley - MBuckley@gmail.com CRUD - Create Retrive Update Delete. A basis for classes to represent system objects</dd>
+<dd>Martin Buckley - MBuckley@gmail.com Workouts class is a model class containing a list of Workout Workouts can be loaded on a per user, activity or time period basis</dd>
 </dl>
 <hr>
 
@@ -65,7 +65,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db, <a href="../the unknown package/database.html">Database</a> instance)</p><p class="description">Constructor calls constructor in CRUD</p></td>
 </tr>
 </table>
 
@@ -73,178 +73,183 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setLocation()">setLocation</a>(mixed uri, String the)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#setDate()">setDate</a>(Int datetime, mixed date)</p><p class="description">Sets the date on which to load Workouts from</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setDate()">setDate</a>(mixed date)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#setPeriod()">setPeriod</a>(Int datetime, mixed from, mixed to)</p><p class="description">Sets the time period to load workouts from</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setPeriod()">setPeriod</a>(mixed from, mixed to)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#setActivity()">setActivity</a>(<a href="../the unknown package/activity.html">Activity</a> activity)</p><p class="description">Sets the activity type to load</p></td>
+</tr>
+<tr>
+<td class="type"> Array</td>
+<td class="description"><p class="name"><a href="#getWorkouts()">getWorkouts</a>()</p><p class="description">Gives the list of loaded Workout</p></td>
+</tr>
+<tr>
+<td class="type"> Int</td>
+<td class="description"><p class="name"><a href="#size()">size</a>()</p><p class="description">Gives a count of the number of loaded Workout</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setActivity()">setActivity</a>(mixed activity)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#retrieve()">retrieve</a>(Int the, mixed user_id)</p><p class="description">Retrives all relevant Workout from the database</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#getWorkouts()">getWorkouts</a>()</p></td>
+<td class="description"><p class="name"><a href="#addWorkout()">addWorkout</a>(<a href="../the unknown package/workout.html">Workout</a> to, <a href="../the unknown package/workout.html">Workout</a> workout)</p><p class="description">Adds a Workout the the Workouts list</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#size()">size</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#load()">load</a>(Int the, mixed user_id, mixed optional, mixed ID)</p><p class="description">Loads all Workout from database</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#retrieve()">retrieve</a>(mixed user_id)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#delete()">delete</a>()</p><p class="description">Deletes all Workout for selected User from Database</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addWorkout()">addWorkout</a>(<a href="../the unknown package/workout.html">Workout</a> workout)</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#load()">load</a>(mixed user_id, mixed ID)</p><p class="description">Loads the objects attributes from the database</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#delete()">delete</a>()</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#type()">type</a>(mixed view)</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#generateDocument()">generateDocument</a>(mixed view)</p><p class="description"></p></td>
+<td class="type"> String</td>
+<td class="description"><p class="name"><a href="#generateDocument()">generateDocument</a>(View type, mixed view, View the)</p><p class="description">Generates a document representation of the model in the requested view</p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from The Unknown Package\CRUD</th></tr>
-<tr><td><a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
+<tr><td><a href="../the unknown package/crud.html#__construct()">__construct</a>, <a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#type()">type</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
 <a href="../source/classes/workouts.php.html#line21" class="location">classes/workouts.php at line 21</a>
 
 <h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(mixed db)</code>
+<code class="signature">public  void <strong>__construct</strong>(mixed db, <a href="../the unknown package/database.html">Database</a> instance)</code>
 <div class="details">
-<p></p></div>
-
-<hr>
-
-<h2 id="detail_method">Method Detail</h2>
-<a href="../source/classes/workouts.php.html#line32" class="location">classes/workouts.php at line 32</a>
-
-<h3 id="setLocation()">setLocation</h3>
-<code class="signature">public  void <strong>setLocation</strong>(mixed uri, String the)</code>
-<div class="details">
-<p></p><dl>
+<p>Constructor calls constructor in CRUD</p><dl>
 <dt>Parameters:</dt>
-<dd>the - location uri</dd>
+<dd>instance - to be used</dd>
 </dl>
 </div>
 
 <hr>
 
-<a href="../source/classes/workouts.php.html#line40" class="location">classes/workouts.php at line 40</a>
+<h2 id="detail_method">Method Detail</h2>
+<a href="../source/classes/workouts.php.html#line29" class="location">classes/workouts.php at line 29</a>
 
 <h3 id="setDate()">setDate</h3>
-<code class="signature">public  void <strong>setDate</strong>(mixed date)</code>
+<code class="signature">public  void <strong>setDate</strong>(Int datetime, mixed date)</code>
 <div class="details">
-<p></p></div>
+<p>Sets the date on which to load Workouts from</p></div>
 
 <hr>
 
-<a href="../source/classes/workouts.php.html#line49" class="location">classes/workouts.php at line 49</a>
+<a href="../source/classes/workouts.php.html#line39" class="location">classes/workouts.php at line 39</a>
 
 <h3 id="setPeriod()">setPeriod</h3>
-<code class="signature">public  void <strong>setPeriod</strong>(mixed from, mixed to)</code>
+<code class="signature">public  void <strong>setPeriod</strong>(Int datetime, mixed from, mixed to)</code>
 <div class="details">
-<p></p></div>
+<p>Sets the time period to load workouts from</p><dl>
+<dt>Parameters:</dt>
+<dd>datetime - to load from</dd>
+<dd>datetime - to load to</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/classes/workouts.php.html#line58" class="location">classes/workouts.php at line 58</a>
+<a href="../source/classes/workouts.php.html#line48" class="location">classes/workouts.php at line 48</a>
 
 <h3 id="setActivity()">setActivity</h3>
-<code class="signature">public  void <strong>setActivity</strong>(mixed activity)</code>
+<code class="signature">public  void <strong>setActivity</strong>(<a href="../the unknown package/activity.html">Activity</a> activity)</code>
 <div class="details">
-<p></p></div>
+<p>Sets the activity type to load</p></div>
 
 <hr>
 
-<a href="../source/classes/workouts.php.html#line62" class="location">classes/workouts.php at line 62</a>
+<a href="../source/classes/workouts.php.html#line56" class="location">classes/workouts.php at line 56</a>
 
 <h3 id="getWorkouts()">getWorkouts</h3>
-<code class="signature">public  void <strong>getWorkouts</strong>()</code>
+<code class="signature">public  Array <strong>getWorkouts</strong>()</code>
 <div class="details">
+<p>Gives the list of loaded Workout</p><dl>
+<dt>Returns:</dt>
+<dd>of Workout</dd>
+</dl>
 </div>
 
 <hr>
 
-<a href="../source/classes/workouts.php.html#line70" class="location">classes/workouts.php at line 70</a>
+<a href="../source/classes/workouts.php.html#line64" class="location">classes/workouts.php at line 64</a>
 
 <h3 id="size()">size</h3>
-<code class="signature">public  void <strong>size</strong>()</code>
+<code class="signature">public  Int <strong>size</strong>()</code>
 <div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/workouts.php.html#line78" class="location">classes/workouts.php at line 78</a>
-
-<h3 id="retrieve()">retrieve</h3>
-<code class="signature">public  void <strong>retrieve</strong>(mixed user_id)</code>
-<div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/workouts.php.html#line100" class="location">classes/workouts.php at line 100</a>
-
-<h3 id="addWorkout()">addWorkout</h3>
-<code class="signature">public  void <strong>addWorkout</strong>(<a href="../the unknown package/workout.html">Workout</a> workout)</code>
-<div class="details">
+<p>Gives a count of the number of loaded Workout</p><dl>
+<dt>Returns:</dt>
+<dd>the number of loaded Workout</dd>
+</dl>
 </div>
 
 <hr>
 
-<a href="../source/classes/workouts.php.html#line108" class="location">classes/workouts.php at line 108</a>
+<a href="../source/classes/workouts.php.html#line72" class="location">classes/workouts.php at line 72</a>
 
-<h3 id="load()">load</h3>
-<code class="signature">public  void <strong>load</strong>(mixed user_id, mixed ID)</code>
+<h3 id="retrieve()">retrieve</h3>
+<code class="signature">public  void <strong>retrieve</strong>(Int the, mixed user_id)</code>
 <div class="details">
-<p>Loads the objects attributes from the database</p></div>
+<p>Retrives all relevant Workout from the database</p><dl>
+<dt>Parameters:</dt>
+<dd>the - users ID number</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/classes/workouts.php.html#line122" class="location">classes/workouts.php at line 122</a>
+<a href="../source/classes/workouts.php.html#line95" class="location">classes/workouts.php at line 95</a>
+
+<h3 id="addWorkout()">addWorkout</h3>
+<code class="signature">public  void <strong>addWorkout</strong>(<a href="../the unknown package/workout.html">Workout</a> to, <a href="../the unknown package/workout.html">Workout</a> workout)</code>
+<div class="details">
+<p>Adds a Workout the the Workouts list</p><dl>
+<dt>Parameters:</dt>
+<dd>to - be added</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/classes/workouts.php.html#line103" class="location">classes/workouts.php at line 103</a>
+
+<h3 id="load()">load</h3>
+<code class="signature">public  void <strong>load</strong>(Int the, mixed user_id, mixed optional, mixed ID)</code>
+<div class="details">
+<p>Loads all Workout from database</p><dl>
+<dt>Parameters:</dt>
+<dd>the - user ID</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/classes/workouts.php.html#line116" class="location">classes/workouts.php at line 116</a>
 
 <h3 id="delete()">delete</h3>
 <code class="signature">public  void <strong>delete</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Deletes all Workout for selected User from Database</p></div>
 
 <hr>
 
-<a href="../source/classes/workouts.php.html#line134" class="location">classes/workouts.php at line 134</a>
-
-<h3 id="type()">type</h3>
-<code class="signature">public  void <strong>type</strong>(mixed view)</code>
-<div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/workouts.php.html#line142" class="location">classes/workouts.php at line 142</a>
+<a href="../source/classes/workouts.php.html#line129" class="location">classes/workouts.php at line 129</a>
 
 <h3 id="generateDocument()">generateDocument</h3>
-<code class="signature">public  void <strong>generateDocument</strong>(mixed view)</code>
+<code class="signature">public  String <strong>generateDocument</strong>(View type, mixed view, View the)</code>
 <div class="details">
-<p></p></div>
+<p>Generates a document representation of the model in the requested view</p><dl>
+<dt>Parameters:</dt>
+<dd>type - requested</dd>
+<dt>Returns:</dt>
+<dd>containing the document</dd>
+</dl>
+</div>
 
 <hr>
 

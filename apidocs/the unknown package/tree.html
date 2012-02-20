@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">The Unknown Package\Tree</div>
-<a href="../source/lib/view.php.html#line50" class="location">lib/view.php at line 50</a>
+<a href="../source/lib/view.php.html#line51" class="location">lib/view.php at line 51</a>
 
 <h1>Class Tree</h1>
 
@@ -60,7 +60,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <dl>
 <dt>Author:</dt>
-<dd>Martin Buckley - MBuckley@gmail.com</dd>
+<dd>Martin Buckley - MBuckley@gmail.com Tree class contains a N-ary tree of nodes for the purposes of building a document</dd>
 </dl>
 <hr>
 
@@ -76,60 +76,62 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>()</p><p class="description">Constructor, creates a new empty Tree</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#isEmpty()">isEmpty</a>()</p><p class="description"></p></td>
+<td class="type"> Boolean</td>
+<td class="description"><p class="name"><a href="#isEmpty()">isEmpty</a>()</p><p class="description">Checks if Tree is empty</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#create()">create</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#create()">create</a>()</p><p class="description">Initialises the Tree</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#startElement()">startElement</a>(mixed name)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#startElement()">startElement</a>(String the, mixed name)</p><p class="description">Adds a new node as a child of the current Node</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#endElement()">endElement</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#endElement()">endElement</a>()</p><p class="description">Finishes addition to current Node</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#text()">text</a>(mixed text)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#text()">text</a>(String the, mixed text)</p><p class="description">Adds text to the current node.
+</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#toString()">toString</a>()</p><p class="description"></p></td>
+<td class="type"> String</td>
+<td class="description"><p class="name"><a href="#toString()">toString</a>()</p><p class="description">Turns the current Tree document into a text representation of the array.</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#isHead()">isHead</a>(mixed node)</p><p class="description"></p></td>
+<td class="type"> Boolean</td>
+<td class="description"><p class="name"><a href="#isHead()">isHead</a>(mixed node)</p><p class="description">Checks if a Node is the root</p></td>
 </tr>
 <tr>
 <td class="type">protected  void</td>
-<td class="description"><p class="name"><a href="#process()">process</a>(mixed data)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#process()">process</a>(Array of, mixed data)</p><p class="description">Parses a tree like array into the Tree</p></td>
+</tr>
+<tr>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#getArray()">getArray</a>()</p><p class="description">Converts the tree to an array with a tree like structure</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#getArray()">getArray</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#iterate()">iterate</a>(<a href="../exerciser/node.html">Node</a> to, mixed current)</p><p class="description">Iterates through the children of the specified Node
+Builds an Array structure recursively</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#iterate()">iterate</a>(mixed current)</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#type()">type</a>()</p><p class="description"></p></td>
+<td class="type"> String</td>
+<td class="description"><p class="name"><a href="#type()">type</a>()</p><p class="description">Gets the type of document being processed</p></td>
 </tr>
 </table>
 
 <h2 id="detail_field">Field Detail</h2>
-<a href="../source/lib/view.php.html#line52" class="location">lib/view.php at line 52</a>
+<a href="../source/lib/view.php.html#line53" class="location">lib/view.php at line 53</a>
 
 <h3 id="head">head</h3>
 <code class="signature">public  mixed <strong>$head</strong> = ''</code>
@@ -144,7 +146,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Constructor, creates a new empty Tree</p></div>
 
 <hr>
 
@@ -152,99 +154,137 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <a href="../source/lib/view.php.html#line69" class="location">lib/view.php at line 69</a>
 
 <h3 id="isEmpty()">isEmpty</h3>
-<code class="signature">public  void <strong>isEmpty</strong>()</code>
+<code class="signature">public  Boolean <strong>isEmpty</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Checks if Tree is empty</p><dl>
+<dt>Returns:</dt>
+<dd>True is tree is empty</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line77" class="location">lib/view.php at line 77</a>
+<a href="../source/lib/view.php.html#line76" class="location">lib/view.php at line 76</a>
 
 <h3 id="create()">create</h3>
 <code class="signature">public  void <strong>create</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Initialises the Tree</p></div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line87" class="location">lib/view.php at line 87</a>
+<a href="../source/lib/view.php.html#line86" class="location">lib/view.php at line 86</a>
 
 <h3 id="startElement()">startElement</h3>
-<code class="signature">public  void <strong>startElement</strong>(mixed name)</code>
+<code class="signature">public  void <strong>startElement</strong>(String the, mixed name)</code>
 <div class="details">
-<p></p></div>
+<p>Adds a new node as a child of the current Node</p><dl>
+<dt>Parameters:</dt>
+<dd>the - Node name</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line102" class="location">lib/view.php at line 102</a>
+<a href="../source/lib/view.php.html#line100" class="location">lib/view.php at line 100</a>
 
 <h3 id="endElement()">endElement</h3>
 <code class="signature">public  void <strong>endElement</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Finishes addition to current Node</p></div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line114" class="location">lib/view.php at line 114</a>
+<a href="../source/lib/view.php.html#line113" class="location">lib/view.php at line 113</a>
 
 <h3 id="text()">text</h3>
-<code class="signature">public  void <strong>text</strong>(mixed text)</code>
+<code class="signature">public  void <strong>text</strong>(String the, mixed text)</code>
 <div class="details">
-<p></p></div>
+<p>Adds text to the current node.
+Text is only visible on Leaf nodes</p><dl>
+<dt>Parameters:</dt>
+<dd>the - node text</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line122" class="location">lib/view.php at line 122</a>
+<a href="../source/lib/view.php.html#line121" class="location">lib/view.php at line 121</a>
 
 <h3 id="toString()">toString</h3>
-<code class="signature">public  void <strong>toString</strong>()</code>
+<code class="signature">public  String <strong>toString</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Turns the current Tree document into a text representation of the array.</p><dl>
+<dt>Returns:</dt>
+<dd>containing the document array</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line130" class="location">lib/view.php at line 130</a>
+<a href="../source/lib/view.php.html#line129" class="location">lib/view.php at line 129</a>
 
 <h3 id="isHead()">isHead</h3>
-<code class="signature">public  void <strong>isHead</strong>(mixed node)</code>
+<code class="signature">public  Boolean <strong>isHead</strong>(mixed node)</code>
 <div class="details">
-<p></p></div>
+<p>Checks if a Node is the root</p><dl>
+<dt>Returns:</dt>
+<dd>True if the specified node is the Root Node</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line138" class="location">lib/view.php at line 138</a>
+<a href="../source/lib/view.php.html#line137" class="location">lib/view.php at line 137</a>
 
 <h3 id="process()">process</h3>
-<code class="signature">protected  void <strong>process</strong>(mixed data)</code>
+<code class="signature">protected  void <strong>process</strong>(Array of, mixed data)</code>
 <div class="details">
-<p></p></div>
+<p>Parses a tree like array into the Tree</p><dl>
+<dt>Parameters:</dt>
+<dd>of - values to be processed</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/lib/view.php.html#line155" class="location">lib/view.php at line 155</a>
+<a href="../source/lib/view.php.html#line154" class="location">lib/view.php at line 154</a>
 
 <h3 id="getArray()">getArray</h3>
-<code class="signature">public  void <strong>getArray</strong>()</code>
+<code class="signature">public  array <strong>getArray</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Converts the tree to an array with a tree like structure</p><dl>
+<dt>Returns:</dt>
+<dd>containing all nodes in tree structure</dd>
+</dl>
+</div>
 
 <hr>
 
 <a href="../source/lib/view.php.html#line163" class="location">lib/view.php at line 163</a>
 
 <h3 id="iterate()">iterate</h3>
-<code class="signature">public  void <strong>iterate</strong>(mixed current)</code>
+<code class="signature">public  void <strong>iterate</strong>(<a href="../exerciser/node.html">Node</a> to, mixed current)</code>
 <div class="details">
-<p></p></div>
+<p>Iterates through the children of the specified Node
+Builds an Array structure recursively</p><dl>
+<dt>Parameters:</dt>
+<dd>to - iterate</dd>
+</dl>
+</div>
 
 <hr>
 
 <a href="../source/lib/view.php.html#line183" class="location">lib/view.php at line 183</a>
 
 <h3 id="type()">type</h3>
-<code class="signature">public  void <strong>type</strong>()</code>
+<code class="signature">public  String <strong>type</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Gets the type of document being processed</p><dl>
+<dt>Returns:</dt>
+<dd>the type</dd>
+</dl>
+</div>
 
 <hr>
 

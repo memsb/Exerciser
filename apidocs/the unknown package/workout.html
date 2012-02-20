@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 17 Feb 2012 19:59:21 +0000">
+<meta name="when" content="Mon, 20 Feb 2012 22:06:10 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -65,7 +65,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed db, <a href="../the unknown package/database.html">Database</a> instance)</p><p class="description">Constructor calls constructor in CRUD</p></td>
 </tr>
 </table>
 
@@ -73,156 +73,138 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#setLocation()">setLocation</a>(mixed uri, String the)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#load()">load</a>(Int the, mixed workoutID, mixed optional, mixed ID)</p><p class="description">Loads the details of the specified Workout</p></td>
+</tr>
+<tr>
+<td class="type"> Boolean</td>
+<td class="description"><p class="name"><a href="#create()">create</a>()</p><p class="description">Creates a new workout using the current details</p></td>
+</tr>
+<tr>
+<td class="type"> Boolean</td>
+<td class="description"><p class="name"><a href="#update()">update</a>()</p><p class="description">Updates the current workout</p></td>
+</tr>
+<tr>
+<td class="type"> Boolean</td>
+<td class="description"><p class="name"><a href="#delete()">delete</a>()</p><p class="description">Deletes the current workout</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#load()">load</a>(mixed workoutID, mixed ID)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#validate()">validate</a>()</p><p class="description">Iterates through the required values to check they are specified</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#create()">create</a>()</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#parse()">parse</a>(String containing, View specifying, mixed data_str, mixed view, View the)</p><p class="description">Utilises the View specified to read data from the document</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#update()">update</a>()</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#delete()">delete</a>()</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#validate()">validate</a>()</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> String</td>
-<td class="description"><p class="name"><a href="#location()">location</a>()</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#type()">type</a>(mixed view)</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#parse()">parse</a>(mixed data_str, mixed view)</p><p class="description"></p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addProperties()">addProperties</a>(mixed view)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#addProperties()">addProperties</a>(View specifying, mixed view)</p><p class="description">Adds elements to the specified View</p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from The Unknown Package\CRUD</th></tr>
-<tr><td><a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
+<tr><td><a href="../the unknown package/crud.html#__construct()">__construct</a>, <a href="../the unknown package/crud.html#create()">create</a>, <a href="../the unknown package/crud.html#delete()">delete</a>, <a href="../the unknown package/crud.html#generateDocument()">generateDocument</a>, <a href="../the unknown package/crud.html#load()">load</a>, <a href="../the unknown package/crud.html#location()">location</a>, <a href="../the unknown package/crud.html#parse()">parse</a>, <a href="../the unknown package/crud.html#setLocation()">setLocation</a>, <a href="../the unknown package/crud.html#type()">type</a>, <a href="../the unknown package/crud.html#update()">update</a></td></tr></table>
 
 <h2 id="detail_method">Constructor Detail</h2>
 <a href="../source/classes/workout.php.html#line28" class="location">classes/workout.php at line 28</a>
 
 <h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(mixed db)</code>
+<code class="signature">public  void <strong>__construct</strong>(mixed db, <a href="../the unknown package/database.html">Database</a> instance)</code>
 <div class="details">
-<p></p></div>
+<p>Constructor calls constructor in CRUD</p><dl>
+<dt>Parameters:</dt>
+<dd>instance - to be used</dd>
+</dl>
+</div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/classes/workout.php.html#line39" class="location">classes/workout.php at line 39</a>
+<a href="../source/classes/workout.php.html#line36" class="location">classes/workout.php at line 36</a>
 
-<h3 id="setLocation()">setLocation</h3>
-<code class="signature">public  void <strong>setLocation</strong>(mixed uri, String the)</code>
+<h3 id="load()">load</h3>
+<code class="signature">public  void <strong>load</strong>(Int the, mixed workoutID, mixed optional, mixed ID)</code>
 <div class="details">
-<p></p><dl>
+<p>Loads the details of the specified Workout</p><dl>
 <dt>Parameters:</dt>
-<dd>the - location uri</dd>
+<dd>the - Workout ID</dd>
 </dl>
 </div>
 
 <hr>
 
-<a href="../source/classes/workout.php.html#line47" class="location">classes/workout.php at line 47</a>
-
-<h3 id="load()">load</h3>
-<code class="signature">public  void <strong>load</strong>(mixed workoutID, mixed ID)</code>
-<div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/workout.php.html#line69" class="location">classes/workout.php at line 69</a>
+<a href="../source/classes/workout.php.html#line58" class="location">classes/workout.php at line 58</a>
 
 <h3 id="create()">create</h3>
-<code class="signature">public  void <strong>create</strong>()</code>
+<code class="signature">public  Boolean <strong>create</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Creates a new workout using the current details</p><dl>
+<dt>Returns:</dt>
+<dd>True on success</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/classes/workout.php.html#line90" class="location">classes/workout.php at line 90</a>
+<a href="../source/classes/workout.php.html#line79" class="location">classes/workout.php at line 79</a>
 
 <h3 id="update()">update</h3>
-<code class="signature">public  void <strong>update</strong>()</code>
+<code class="signature">public  Boolean <strong>update</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Updates the current workout</p><dl>
+<dt>Returns:</dt>
+<dd>True on success</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/classes/workout.php.html#line108" class="location">classes/workout.php at line 108</a>
+<a href="../source/classes/workout.php.html#line97" class="location">classes/workout.php at line 97</a>
 
 <h3 id="delete()">delete</h3>
-<code class="signature">public  void <strong>delete</strong>()</code>
+<code class="signature">public  Boolean <strong>delete</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Deletes the current workout</p><dl>
+<dt>Returns:</dt>
+<dd>True on success</dd>
+</dl>
+</div>
 
 <hr>
 
-<a href="../source/classes/workout.php.html#line121" class="location">classes/workout.php at line 121</a>
+<a href="../source/classes/workout.php.html#line109" class="location">classes/workout.php at line 109</a>
 
 <h3 id="validate()">validate</h3>
 <code class="signature">public  void <strong>validate</strong>()</code>
 <div class="details">
-<p></p></div>
+<p>Iterates through the required values to check they are specified</p></div>
 
 <hr>
 
-<a href="../source/classes/workout.php.html#line131" class="location">classes/workout.php at line 131</a>
+<a href="../source/classes/workout.php.html#line120" class="location">classes/workout.php at line 120</a>
 
-<h3 id="location()">location</h3>
-<code class="signature">public  String <strong>location</strong>()</code>
+<h3 id="parse()">parse</h3>
+<code class="signature">public  void <strong>parse</strong>(String containing, View specifying, mixed data_str, mixed view, View the)</code>
 <div class="details">
-<p></p><dl>
-<dt>Returns:</dt>
-<dd>the location uri</dd>
+<p>Utilises the View specified to read data from the document</p><dl>
+<dt>Parameters:</dt>
+<dd>containing - the document</dd>
+<dd>specifying - the document type</dd>
 </dl>
 </div>
 
 <hr>
 
-<a href="../source/classes/workout.php.html#line139" class="location">classes/workout.php at line 139</a>
-
-<h3 id="type()">type</h3>
-<code class="signature">public  void <strong>type</strong>(mixed view)</code>
-<div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/workout.php.html#line147" class="location">classes/workout.php at line 147</a>
-
-<h3 id="parse()">parse</h3>
-<code class="signature">public  void <strong>parse</strong>(mixed data_str, mixed view)</code>
-<div class="details">
-<p></p></div>
-
-<hr>
-
-<a href="../source/classes/workout.php.html#line167" class="location">classes/workout.php at line 167</a>
+<a href="../source/classes/workout.php.html#line140" class="location">classes/workout.php at line 140</a>
 
 <h3 id="addProperties()">addProperties</h3>
-<code class="signature">public  void <strong>addProperties</strong>(mixed view)</code>
+<code class="signature">public  void <strong>addProperties</strong>(View specifying, mixed view)</code>
 <div class="details">
-<p></p></div>
+<p>Adds elements to the specified View</p><dl>
+<dt>Parameters:</dt>
+<dd>specifying - the document type</dd>
+</dl>
+</div>
 
 <hr>
 
