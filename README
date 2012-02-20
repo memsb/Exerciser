@@ -3,3 +3,9 @@ Location: /apidocs/index.php
 
 Tests:
 Location: /tests/tests.php
+
+A RESTful web service capible of processing:
+XML
+JSON
+YAML
+File formats using an MVC architecture. 
